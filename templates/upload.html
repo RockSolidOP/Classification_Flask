@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>UltraTax Labeler</title>
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 2rem; }
+      .flash { background: #fff3cd; padding: .5rem .75rem; border: 1px solid #ffeeba; margin-bottom: 1rem; }
+      .card { border: 1px solid #ddd; padding: 1rem; border-radius: 6px; max-width: 640px; }
+      .list { margin-top: 1rem; }
+      a { text-decoration: none; color: #2563eb; }
+    </style>
+  </head>
+  <body>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for m in messages %}<div class="flash">{{ m }}</div>{% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="card">
+      <h2>Upload PDF</h2>
+      <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+        <input type="file" accept="application/pdf" name="pdf" required>
+        <button type="submit">Generate Mapping</button>
+      </form>
+
+      {% if existing %}
+        <div class="list">
+          <h3>Existing mappings</h3>
+          <ul>
+            {% for name in existing %}
+              <li>
+                <a href="{{ url_for('edit', stem=name.replace('_enhanced.json','')) }}">{{ name }}</a>
+                • <a href="{{ url_for('download', filename=name) }}">download</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    </div>
+  </body>
+  </html>
+

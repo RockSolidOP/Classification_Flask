@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Edit Labels - {{ stem }}</title>
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 1rem; }
+      .flash { background: #fff3cd; padding: .5rem .75rem; border: 1px solid #ffeeba; margin-bottom: 1rem; }
+      table { border-collapse: collapse; width: 100%; }
+      th, td { border: 1px solid #e5e7eb; padding: .4rem .5rem; font-size: 14px; }
+      th { background: #f9fafb; text-align: left; }
+      input[type=text] { width: 100%; padding: .35rem; }
+      .toolbar { display:flex; gap: .75rem; align-items:center; margin: .5rem 0 1rem; }
+      a { text-decoration: none; color: #2563eb; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    </style>
+  </head>
+  <body>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for m in messages %}<div class="flash">{{ m }}</div>{% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="toolbar">
+      <a href="{{ url_for('index') }}">← Upload another</a>
+      <a class="mono" href="{{ url_for('download', filename=download_name) }}">download JSON</a>
+    </div>
+
+    <h2>Edit Labels: {{ mapping.document }}</h2>
+    <form method="post">
+      <table>
+        <thead>
+          <tr>
+            <th>Page</th>
+            <th>Auto Label</th>
+            <th>Raw Label</th>
+            <th>Normalized</th>
+            <th>Edit Label</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for p in mapping.pages %}
+          <tr>
+            <td>{{ p.page }}</td>
+            <td class="mono">{{ p.label }}</td>
+            <td class="mono">{{ p.raw_label }}</td>
+            <td>{{ '✔' if p.normalized else '' }}</td>
+            <td><input type="text" name="label_{{ p.page }}" value="{{ p.label }}" /></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      <div style="margin-top: 1rem;">
+        <button type="submit">Save Changes</button>
+      </div>
+    </form>
+
+    {% if mapping.bookmarks %}
+      <h3>Original Bookmarks</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Page</th>
+            <th>Bookmark Title</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for b in mapping.bookmarks %}
+          <tr>
+            <td>{{ b.page }}</td>
+            <td class="mono">{{ b.label }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  </body>
+  </html>
+
