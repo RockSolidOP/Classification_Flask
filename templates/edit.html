@@ -24,7 +24,7 @@
 
     <div class="toolbar">
       <a href="{{ url_for('index') }}">← Upload another</a>
-      <a class="mono" href="{{ url_for('download', filename=download_name) }}">download JSON</a>
+      <a class="mono" href="{{ url_for('download', filename=download_name) }}">Download JSON</a>
     </div>
 
     <h2>Edit Labels: {{ mapping.document }}</h2>
@@ -33,10 +33,14 @@
         <thead>
           <tr>
             <th>Page</th>
+            <th>Label</th>
             <th>Auto Label</th>
             <th>Raw Label</th>
-            <th>Normalized</th>
+            <th>Multipage</th>
+            <th>Updated?</th>
             <th>Edit Label</th>
+            <th>Action</th>
+            <th>View</th>
           </tr>
         </thead>
         <tbody>
@@ -44,17 +48,85 @@
           <tr>
             <td>{{ p.page }}</td>
             <td class="mono">{{ p.label }}</td>
+            <td class="mono">{{ p.auto_label }}</td>
             <td class="mono">{{ p.raw_label }}</td>
-            <td>{{ '✔' if p.normalized else '' }}</td>
-            <td><input type="text" name="label_{{ p.page }}" value="{{ p.label }}" /></td>
+            <td>{{ '✔' if p.multipage else '' }}</td>
+            <td>{{ '✔' if p.updated_label else '' }}</td>
+            <td><input type="text" name="label_{{ p.page }}" id="label_{{ p.page }}" value="{{ p.label }}" /></td>
+            <td>
+              <button type="button" onclick="saveRow({{ p.page }})">Save</button>
+              <button type="button" onclick="restoreRow({{ p.page }})">Restore Default</button>
+            </td>
+            <td style="text-align:center">
+              <a title="Preview page {{ p.page }}" target="_blank" rel="noopener"
+                 href="{{ url_for('serve_pdf', filename=mapping.document) }}#page={{ p.page }}">🔍</a>
+            </td>
           </tr>
         {% endfor %}
         </tbody>
       </table>
       <div style="margin-top: 1rem;">
-        <button type="submit">Save Changes</button>
+        <button type="submit">Save All Changes</button>
+        <button type="button" onclick="restoreAll()">Restore Defaults</button>
       </div>
     </form>
+
+    <script>
+      async function saveRow(page) {
+        const input = document.getElementById('label_' + page);
+        const label = input ? input.value : '';
+        try {
+          const res = await fetch('{{ url_for('api_update_label', stem=stem, page=0) }}?name={{ download_name }}'.replace('/0','/' + page), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ label })
+          });
+          const data = await res.json();
+          if (!data.ok) {
+            alert('Save failed: ' + (data.error || res.status));
+          } else {
+            // Light feedback
+            input.style.backgroundColor = '#e6fffa';
+            setTimeout(() => input.style.backgroundColor = '', 500);
+            // Optionally, refresh to update multipage flags; keeping light here
+          }
+        } catch (e) {
+          alert('Save error');
+        }
+      }
+
+      async function restoreRow(page) {
+        const input = document.getElementById('label_' + page);
+        try {
+          const res = await fetch('{{ url_for('api_restore_label', stem=stem, page=0) }}?name={{ download_name }}'.replace('/0','/' + page), {
+            method: 'POST'
+          });
+          const data = await res.json();
+          if (!data.ok) {
+            alert('Restore failed: ' + (data.error || res.status));
+          } else {
+            if (input) input.value = data.label;
+            location.reload();
+          }
+        } catch (e) {
+          alert('Restore error');
+        }
+      }
+
+      async function restoreAll() {
+        try {
+          const res = await fetch('{{ url_for('api_restore_all', stem=stem) }}?name={{ download_name }}', { method: 'POST' });
+          const data = await res.json();
+          if (!data.ok) {
+            alert('Restore all failed: ' + (data.error || res.status));
+          } else {
+            location.reload();
+          }
+        } catch (e) {
+          alert('Restore all error');
+        }
+      }
+    </script>
 
     {% if mapping.bookmarks %}
       <h3>Original Bookmarks</h3>
@@ -77,4 +149,3 @@
     {% endif %}
   </body>
   </html>
-

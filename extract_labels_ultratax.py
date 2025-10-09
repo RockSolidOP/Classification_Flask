@@ -92,60 +92,27 @@ def _roman_to_int(s: str) -> int:
 
 
 def _normalize_title(title: str) -> str:
-    """Domain-specific normalization for UltraTax labels.
+    """Normalize bookmark titles using only the raw text.
 
-    Examples:
-      - "Sch NEC (Form 1040NR)" -> "Sch_NEC_(Form_1040NR)"
-      - "Form 1040-SR" -> "Form_1040_SR"
-      - "Page 2", "Pg 2", "P. 2" -> "P2"
-      - "Page II" -> "P2"
-      - Fallback: generic underscore normalization
+    - Convert Page/Pg/P. N (or roman numerals) to P{N}.
+    - Otherwise, sanitize the raw string: replace commas with spaces, collapse whitespace/dashes to underscores.
+    - No heuristic mapping beyond what is explicitly present in the raw title.
     """
-    raw = title.strip()
-    # Standardize unicode dashes
-    raw = raw.replace("–", "-").replace("—", "-")
+    raw = title.strip().replace("–", "-").replace("—", "-")
     low = raw.lower()
 
-    # Extract schedule code first (prefer short prefix Sch_)
-    sch_m = re.search(r"\b(?:schedule|sch)\s*[-_\s]*([a-z0-9]+)\b", low)
-    sch_label = None
-    if sch_m:
-        sch_label = f"Sch_{sch_m.group(1).upper()}"
-
-    # Extract form flavor (SR/NR/plain)
-    form_label = None
-    if re.search(r"\b1040\s*[-_\s]*sr\b", low):
-        form_label = "Form_1040_SR"
-    elif re.search(r"\b1040\s*[-_\s]*nr\b", low):
-        form_label = "Form_1040NR"
-    elif re.search(r"\b1040\b", low):
-        form_label = "Form_1040"
-
-    # If both schedule and form are present, compose them
-    if sch_label and form_label:
-        return f"{sch_label}_({form_label})"
-
-    # Otherwise, prefer schedule alone if present
-    if sch_label:
-        return sch_label
-
-    # Or return form label if present
-    if form_label:
-        return form_label
-
     # Page/Pg/P. + number or roman numeral -> P{n}
-    m = re.match(r"^\s*(?:p(?:age)?|pg|p\.)\s*([ivxlcdm]+|\d+)\b", low)
+    m = re.match(r"^\s*(?:p(?:age)?|pg|p\.)\s*([ivxlcdm]+|\d+)\s*$", low)
     if m:
         tok = m.group(1)
         if tok.isdigit():
             return f"P{int(tok)}"
-        # roman numerals
         try:
             return f"P{_roman_to_int(tok)}"
         except Exception:
             pass
 
-    # Generic fallback
+    # Generic sanitization of the raw label
     return _normalize_title_basic(raw)
 
 
@@ -242,8 +209,10 @@ def build_bookmark_gt(pdf_path: Path, outdir: Path, family: str, config_name: st
         {
             "page": i,
             "family": "Other",
-            "label": "Other",
-            "normalized": False,
+            "label": "Other",          # current label (editable)
+            "auto_label": "Other",      # auto-generated label (for restore)
+            "updated_label": False,      # set True when user edits label
+            "multipage": False,
             "raw_label": "Other",
         }
         for i in range(1, total_pages + 1)
@@ -278,7 +247,9 @@ def build_bookmark_gt(pdf_path: Path, outdir: Path, family: str, config_name: st
                         "page": pno,
                         "family": family,
                         "label": label,
-                        "normalized": False,
+                        "auto_label": label,
+                        "updated_label": False,
+                        "multipage": False,
                         "raw_label": raw_lbl,
                     }
 
@@ -320,22 +291,26 @@ def build_bookmark_gt(pdf_path: Path, outdir: Path, family: str, config_name: st
         m = prefixed_page_match(lbl)
         if m:
             current_prefix = m.group(1)
-            entry["normalized"] = True
             continue
 
         if is_base_section(lbl):
             current_prefix = lbl
-            entry["label"] = f"{current_prefix}_P1"
-            entry["normalized"] = True
+            new_val = f"{current_prefix}_P1"
+            entry["label"] = new_val
+            entry["auto_label"] = new_val
             continue
 
         if is_page_suffix(lbl) and current_prefix:
-            entry["label"] = f"{current_prefix}_{lbl}"
-            entry["normalized"] = True
+            new_val = f"{current_prefix}_{lbl}"
+            entry["label"] = new_val
+            entry["auto_label"] = new_val
             continue
 
         # interrupt on any other label
         current_prefix = None
+
+    # Compute multipage flags: mark True for any Base_Pn group with size >= 2
+    pages = _apply_multipage_flags(pages)
 
     data = {
         "document": pdf_path.name,
@@ -347,12 +322,34 @@ def build_bookmark_gt(pdf_path: Path, outdir: Path, family: str, config_name: st
     }
 
     outdir.mkdir(parents=True, exist_ok=True)
+    from datetime import datetime
     base = pdf_path.stem
-    out_path = outdir / f"{base}_enhanced.json"
+    date_tag = datetime.now().strftime("%b%d")  # e.g., Oct09
+    out_path = outdir / f"{base}_{date_tag}.json"
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
         f.write("\n")
     return out_path
+
+
+def _apply_multipage_flags(pages: List[dict]) -> List[dict]:
+    base_counts: Dict[str, int] = {}
+    # First pass: count pages per base
+    for e in pages:
+        lbl = e.get("label", "")
+        m = re.match(r"^(.+)_P(\d+)$", lbl)
+        if m:
+            base = m.group(1)
+            base_counts[base] = base_counts.get(base, 0) + 1
+    # Second pass: set flags
+    for e in pages:
+        lbl = e.get("label", "")
+        m = re.match(r"^(.+)_P(\d+)$", lbl)
+        if m and base_counts.get(m.group(1), 0) >= 2:
+            e["multipage"] = True
+        else:
+            e["multipage"] = False
+    return pages
 
 
 def main():
