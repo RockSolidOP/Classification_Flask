@@ -1,0 +1,16 @@
+{
+  "source_pdfs": "CCH/",
+  "ground_truth": "CCH_ground_truth_corrected/",
+  "output_dir": "corpus/",
+  "require_ground_truth": true,
+  "extractor": "pdfminer",
+  "ocr_fallback": false,
+  "text_normalization": ["lowercase", "collapse_whitespace"],
+  "store_fields": ["doc", "page", "text"],
+  "exclude_patterns": [],
+  "overwrite_output": true,
+  "concurrency": 1,
+  "max_docs": 1,
+  "header_top_ratio": 0.15,
+  "font_bins": [8, 10, 12, 14, 18, 24]
+}
