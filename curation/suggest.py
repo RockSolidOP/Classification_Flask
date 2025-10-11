@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from typing import List, Dict, Any
 import json
@@ -18,6 +19,10 @@ def _ensure_open_clip():
     if _MODEL is not None:
         return _MODEL, _PREPROCESS, _TORCH
     try:
+        # Tame OpenMP/threading conflicts before heavy imports
+        os.environ.setdefault("OMP_NUM_THREADS", "1")
+        os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
+        os.environ.setdefault("KMP_INIT_AT_FORK", "FALSE")
         import open_clip
         import torch
     except Exception as e:
@@ -38,8 +43,18 @@ def _ensure_faiss(root: Path):
         import faiss
     except Exception:
         raise RuntimeError("faiss-cpu not installed")
-    index_path = root / "dataset" / "v2" / "faiss" / "clip_vitb32.index"
-    idmap_path = root / "dataset" / "v2" / "faiss" / "id_map.jsonl"
+    faiss_dir = root / "dataset" / "v2" / "faiss"
+    active = None
+    active_file = faiss_dir / "ACTIVE_VERSION.txt"
+    if active_file.exists():
+        try:
+            active = active_file.read_text(encoding="utf-8").strip()
+            if active and not active.startswith("_"):
+                active = f"_{active}"
+        except Exception:
+            active = None
+    index_path = faiss_dir / f"clip_vitb32{active or ''}.index"
+    idmap_path = faiss_dir / f"id_map{active or ''}.jsonl"
     if not index_path.exists() or not idmap_path.exists():
         raise RuntimeError("FAISS index or id_map.jsonl not found; build Step 5 first")
     _INDEX = faiss.read_index(str(index_path))

@@ -21,8 +21,9 @@
   </head>
   <body>
     <div class="nav">
-      <a href="{{ url_for('index') }}">Upload</a>
-      <a href="{{ url_for('curated') }}">Curated</a>
+      <a href="{{ url_for('index') }}" title="Upload a PDF and generate labels">Upload</a>
+      <a href="{{ url_for('curated') }}" title="Review curated dataset, build embeddings, manage versions">Curated</a>
+      <a href="{{ url_for('help_page') }}" title="How to use this app">Help</a>
     </div>
     {% with messages = get_flashed_messages() %}
       {% if messages %}
@@ -36,9 +37,9 @@
     </div>
 
     <div class="actions">
-      <button type="submit" form="editForm">Save All Changes</button>
-      <button type="button" onclick="restoreAll()">Restore Defaults</button>
-      <button type="button" onclick="curateAll()">Curate All</button>
+      <button type="submit" form="editForm" title="Save all label edits on this page to the JSON file">Save All Changes</button>
+      <button type="button" onclick="restoreAll()" title="Restore all labels to auto_label (default)">Restore Defaults</button>
+      <button type="button" onclick="curateAll()" title="Append all labeled pages to curated dataset">Curate All</button>
     </div>
 
     <h2>Edit Labels: {{ mapping.document }}</h2>
@@ -68,20 +69,20 @@
             <td class="mono">{{ p.raw_label }}</td>
             <td>{{ '✔' if p.multipage else '' }}</td>
             <td>{{ '✔' if p.updated_label else '' }}</td>
-            <td><input type="text" name="label_{{ p.page }}" id="label_{{ p.page }}" value="{{ p.label }}" /></td>
+            <td><input type="text" name="label_{{ p.page }}" id="label_{{ p.page }}" value="{{ p.label }}" title="Edit the label for this page" /></td>
             <td>
-              <button type="button" onclick="saveRow({{ p.page }})">Save</button>
-              <button type="button" onclick="restoreRow({{ p.page }})">Restore Default</button>
+              <button type="button" onclick="saveRow({{ p.page }})" title="Save this label immediately">Save</button>
+              <button type="button" onclick="restoreRow({{ p.page }})" title="Restore this page's label to auto_label">Restore Default</button>
             </td>
             <td style="text-align:center">
-              <a title="Preview page {{ p.page }}" target="_blank" rel="noopener"
+              <a title="Preview page {{ p.page }} in the PDF viewer" target="_blank" rel="noopener"
                  href="{{ url_for('serve_pdf', filename=mapping.document) }}#page={{ p.page }}">🔍</a>
             </td>
             <td style="text-align:center">
-              <button type="button" onclick="curateRow({{ p.page }})">Curate</button>
+              <button type="button" onclick="curateRow({{ p.page }})" title="Append this page to curated dataset">Curate</button>
             </td>
             <td style="text-align:center">
-              <button type="button" onclick="suggestRow({{ p.page }})">Suggest</button>
+              <button type="button" onclick="openSuggest({{ p.page }})" title="See suggested labels for this page">Suggest</button>
             </td>
           </tr>
         {% endfor %}
@@ -174,31 +175,119 @@
         }
       }
 
-      async function suggestRow(page) {
-        try {
-          const res = await fetch('{{ url_for('api_suggest', stem=stem, page=0) }}?name={{ download_name }}'.replace('/0','/' + page));
-          const data = await res.json();
-          if (!data.ok) {
-            alert('Suggest failed: ' + (data.error || res.status));
-            return;
-          }
-          const items = (data.results || []).map(r => `${r.rank}. ${r.label} (score ${r.score.toFixed(3)})`).join('\n');
-          if (!items) {
-            alert('No suggestions.');
-            return;
-          }
-          const pick = prompt('Top suggestions:\n\n' + items + '\n\nType the number to apply:', '1');
-          if (!pick) return;
-          const n = parseInt(pick, 10);
-          if (isNaN(n) || n < 1 || n > (data.results || []).length) return;
-          const chosen = data.results[n - 1];
-          const input = document.getElementById('label_' + page);
-          if (input) input.value = chosen.label;
-        } catch (e) {
-          alert('Suggest error');
-        }
+      // Suggest modal UI
+      function openSuggest(page) {
+        const overlay = document.getElementById('suggOverlay');
+        const modal = document.getElementById('suggModal');
+        document.getElementById('suggPage').value = page;
+        document.getElementById('suggList').innerHTML = '<li>Loading...</li>';
+        document.getElementById('suggAliasInfo').textContent = '';
+        overlay.style.display = 'block';
+        modal.style.display = 'block';
+        fetch('{{ url_for('api_suggest', stem=stem, page=0) }}?name={{ download_name }}'.replace('/0','/' + page))
+          .then(r => r.json()).then(data => {
+            if (!data.ok) {
+              document.getElementById('suggList').innerHTML = `<li>Error: ${data.error || 'not available'}</li>`;
+              return;
+            }
+            const list = document.getElementById('suggList');
+            list.innerHTML = '';
+            (data.results || []).forEach((r, idx) => {
+              const li = document.createElement('li');
+              li.innerHTML = `<label><input type="radio" name="suggPick" value="${idx}" ${idx===0?'checked':''}/> ${r.label} <span style='color:#6b7280'>(score ${r.score.toFixed(3)})</span></label>`;
+              list.appendChild(li);
+            });
+          }).catch(() => {
+            document.getElementById('suggList').innerHTML = '<li>Error loading suggestions</li>';
+          });
+      }
+      function closeSuggest() {
+        document.getElementById('suggOverlay').style.display = 'none';
+        document.getElementById('suggModal').style.display = 'none';
+      }
+      function getSelectedSuggestion() {
+        const pick = document.querySelector('input[name="suggPick"]:checked');
+        const page = parseInt(document.getElementById('suggPage').value, 10);
+        return { pick: pick ? parseInt(pick.value,10) : 0, page };
+      }
+      function applySuggestion() {
+        const { pick, page } = getSelectedSuggestion();
+        const rowInput = document.getElementById('label_' + page);
+        const labels = Array.from(document.querySelectorAll('#suggList label'));
+        if (!labels[pick]) return;
+        const text = labels[pick].innerText;
+        const cand = text.split(' (score')[0];
+        if (rowInput) rowInput.value = cand;
+        closeSuggest();
+      }
+      async function saveSuggestion() {
+        const { pick, page } = getSelectedSuggestion();
+        const labels = Array.from(document.querySelectorAll('#suggList label'));
+        if (!labels[pick]) return;
+        const cand = labels[pick].innerText.split(' (score')[0];
+        const res = await fetch('{{ url_for('api_update_label', stem=stem, page=0) }}?name={{ download_name }}'.replace('/0','/' + page), {
+          method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ label: cand })
+        });
+        const data = await res.json();
+        if (!data.ok) return alert('Save failed: ' + (data.error||''));
+        const rowInput = document.getElementById('label_' + page); if (rowInput) rowInput.value = cand;
+        closeSuggest();
+        location.reload();
+      }
+      async function curateSuggestion() {
+        const { pick, page } = getSelectedSuggestion();
+        const labels = Array.from(document.querySelectorAll('#suggList label'));
+        if (!labels[pick]) return;
+        const cand = labels[pick].innerText.split(' (score')[0];
+        // save then curate
+        const res = await fetch('{{ url_for('api_update_label', stem=stem, page=0) }}?name={{ download_name }}'.replace('/0','/' + page), {
+          method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ label: cand })
+        });
+        const data = await res.json(); if (!data.ok) return alert('Save failed');
+        const res2 = await fetch('{{ url_for('api_curate_page', stem=stem, page=0) }}?name={{ download_name }}'.replace('/0','/' + page), { method: 'POST' });
+        const data2 = await res2.json(); if (!data2.ok) return alert('Curate failed: ' + (data2.error||''));
+        const rowInput = document.getElementById('label_' + page); if (rowInput) rowInput.value = cand;
+        closeSuggest();
+        alert('Saved and curated');
+      }
+      async function mergeAndCurate() {
+        const { pick, page } = getSelectedSuggestion();
+        const labels = Array.from(document.querySelectorAll('#suggList label'));
+        if (!labels[pick]) return;
+        const cand = labels[pick].innerText.split(' (score')[0];
+        const current = (document.getElementById('label_' + page)?.value || '').trim();
+        if (!current) return alert('No current label');
+        // Merge alias mapping: current -> cand
+        const m = await fetch('{{ url_for('api_label_alias_merge') }}', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ alias: current, canonical: cand }) });
+        const md = await m.json(); if (!md.ok) return alert('Merge failed: ' + (md.error||''));
+        // Apply and curate
+        const res = await fetch('{{ url_for('api_update_label', stem=stem, page=0) }}?name={{ download_name }}'.replace('/0','/' + page), {
+          method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ label: cand })
+        });
+        const data = await res.json(); if (!data.ok) return alert('Save failed');
+        const res2 = await fetch('{{ url_for('api_curate_page', stem=stem, page=0) }}?name={{ download_name }}'.replace('/0','/' + page), { method: 'POST' });
+        const data2 = await res2.json(); if (!data2.ok) return alert('Curate failed: ' + (data2.error||''));
+        document.getElementById('label_' + page).value = cand;
+        closeSuggest();
+        alert('Merged alias, saved, and curated');
       }
     </script>
+
+    <!-- Suggest Modal -->
+    <div id="suggOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;"></div>
+    <div id="suggModal" style="display:none;position:fixed;top:10%;left:50%;transform:translateX(-50%);background:#111827;color:#e5e7eb;padding:1rem 1.25rem;border-radius:10px;min-width:420px;z-index:1001;box-shadow:0 10px 25px rgba(0,0,0,.3);">
+      <input type="hidden" id="suggPage" />
+      <div style="font-weight:700;margin-bottom:.5rem;">Top suggestions</div>
+      <ul id="suggList" style="list-style:none;padding:0;margin:0 0 .75rem 0;"></ul>
+      <div id="suggAliasInfo" style="font-size:12px;color:#9ca3af;margin-bottom:.5rem;"></div>
+      <div style="display:flex;gap:.5rem;justify-content:flex-end;">
+        <button type="button" onclick="closeSuggest()" title="Close without applying any suggestion">Close</button>
+        <button type="button" onclick="applySuggestion()" title="Fill the Edit Label field with the selected suggestion">Apply</button>
+        <button type="button" onclick="saveSuggestion()" title="Apply and immediately save to the JSON file">Apply + Save</button>
+        <button type="button" onclick="curateSuggestion()" title="Apply, save, and append/update one curated record for this page">Apply + Curate</button>
+        <button type="button" onclick="mergeAndCurate()" title="Map current label to the selected canonical label, then apply, save, and curate">Merge Alias + Curate</button>
+      </div>
+    </div>
 
     {% if mapping.bookmarks %}
       <h3>Original Bookmarks</h3>

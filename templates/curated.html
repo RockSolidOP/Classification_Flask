@@ -15,15 +15,37 @@
   </head>
   <body>
     <div class="nav">
-      <a href="{{ url_for('index') }}">Upload</a>
-      <a href="{{ url_for('curated') }}">Curated</a>
+      <a href="{{ url_for('index') }}" title="Upload a PDF and generate labels">Upload</a>
+      <a href="{{ url_for('curated') }}" title="Review curated dataset, build embeddings, manage versions">Curated</a>
+      <a href="{{ url_for('help_page') }}" title="How to use this app">Help</a>
     </div>
 
     <h2>Curated Dataset</h2>
     <p>Total curated pages: <strong>{{ total }}</strong></p>
-    <p>
-      <button type="button" onclick="deleteAll()" style="background:#fee2e2;border:1px solid #fecaca;padding:.4rem .6rem;">Delete All</button>
-    </p>
+    <div style="border:1px solid #e5e7eb; padding:.6rem; border-radius:6px; margin-bottom:1rem; display:flex; gap:1rem; align-items:center; flex-wrap:wrap;">
+      <div>
+        <button type="button" onclick="buildEmb()" title="Compute OpenCLIP embeddings for curated images and save as next version">Build Embeddings (new version)</button>
+      </div>
+      <div>
+        <label title="Pick an embedding version to build the FAISS index and set as active">Embedding Version:</label>
+        <select id="embVer" title="Available embedding versions detected on disk">
+          {% if versions and versions|length > 0 %}
+            {% for v in versions %}
+              <option value="{{ v }}" {% if v == active_ver %}selected{% endif %}>{{ v }}</option>
+            {% endfor %}
+          {% else %}
+            <option value="default">default</option>
+          {% endif %}
+        </select>
+        <button type="button" onclick="buildIndex()" title="Create FAISS index for the selected embeddings">Build Index</button>
+        <button type="button" onclick="setActive()" title="Use the selected index for Suggest results">Set Active</button>
+        <span style="margin-left:.5rem; color:#6b7280;">Active: {{ active_ver or 'default' }}</span>
+      </div>
+      <div>
+        <button type="button" onclick="dedupe()" title="Remove duplicate curated entries by document and page">Dedupe</button>
+        <button type="button" onclick="deleteAll()" style="background:#fee2e2;border:1px solid #fecaca;padding:.4rem .6rem;" title="Delete ALL curated records and images (irreversible)">Delete All</button>
+      </div>
+    </div>
     {% if total == 0 %}
       <p>No curated records yet. Use the editor to Curate pages.</p>
     {% else %}
@@ -35,8 +57,8 @@
             <th>Label</th>
             <th>Base</th>
             <th>P#</th>
-            <th>View</th>
-            <th>Delete</th>
+            <th title="Open this page in the PDF viewer">View</th>
+            <th title="Remove this record from curated dataset">Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -54,6 +76,44 @@
         </tbody>
       </table>
       <script>
+        async function buildEmb() {
+          try {
+            const res = await fetch('{{ url_for('api_build_embeddings') }}', { method: 'POST' });
+            const data = await res.json();
+            if (!data.ok) return alert('Build embeddings failed: ' + (data.error || ''));
+            alert('Embeddings built: ' + data.version);
+            location.reload();
+          } catch (e) { alert('Build embeddings error'); }
+        }
+        async function dedupe() {
+          if (!confirm('Deduplicate curated index (keep last per page)?')) return;
+          try {
+            const res = await fetch('{{ url_for('api_curated_dedupe') }}', { method:'POST' });
+            const data = await res.json();
+            if (!data.ok) return alert('Dedupe failed');
+            alert(`Dedupe complete. Deleted ${data.deleted}, kept ${data.kept}.`);
+            location.reload();
+          } catch (e) { alert('Dedupe error'); }
+        }
+        async function buildIndex() {
+          const ver = document.getElementById('embVer').value;
+          try {
+            const res = await fetch('{{ url_for('api_build_index') }}', { method: 'POST', headers: {'Content-Type':'application/x-www-form-urlencoded'}, body: 'version=' + encodeURIComponent(ver) });
+            const data = await res.json();
+            if (!data.ok) return alert('Build index failed: ' + (data.error || ''));
+            alert('Index built for ' + ver);
+          } catch (e) { alert('Build index error'); }
+        }
+        async function setActive() {
+          const ver = document.getElementById('embVer').value;
+          try {
+            const res = await fetch('{{ url_for('api_set_active_version') }}', { method: 'POST', headers: {'Content-Type':'application/x-www-form-urlencoded'}, body: 'version=' + encodeURIComponent(ver) });
+            const data = await res.json();
+            if (!data.ok) return alert('Set active failed: ' + (data.error || ''));
+            alert('Active set to ' + ver);
+            location.reload();
+          } catch (e) { alert('Set active error'); }
+        }
         async function deleteAll() {
           if (!confirm('Delete ALL curated records and images? This cannot be undone.')) return;
           try {

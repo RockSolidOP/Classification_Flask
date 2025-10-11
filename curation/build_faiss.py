@@ -1,33 +1,75 @@
 from __future__ import annotations
 
 from pathlib import Path
+import argparse
 import json
 import numpy as np
-import pandas as pd
 
 
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--version", help="Embedding version tag to index (e.g., v3)")
+    args = ap.parse_args()
+
     root = Path(__file__).resolve().parents[1]
-    emb_parquet = root / "dataset" / "v2" / "embeddings" / "clip_vitb32.parquet"
+    emb_dir = root / "dataset" / "v2" / "embeddings"
+    suffix = f"_{args.version}" if args.version else ""
+    emb_parquet = emb_dir / f"clip_vitb32{suffix}.parquet"
+    emb_jsonl = emb_dir / f"clip_vitb32{suffix}.jsonl"
     out_dir = root / "dataset" / "v2" / "faiss"
     out_dir.mkdir(parents=True, exist_ok=True)
-    out_index = out_dir / "clip_vitb32.index"
-    out_idmap = out_dir / "id_map.jsonl"
+    out_index = out_dir / f"clip_vitb32{suffix}.index"
+    out_idmap = out_dir / f"id_map{suffix}.jsonl"
 
     try:
         import faiss
     except Exception as e:
         raise SystemExit("faiss-cpu not installed. Add to requirements and install.") from e
 
-    if not emb_parquet.exists():
-        raise SystemExit(f"Embeddings file not found: {emb_parquet}")
+    # Deduplicate by id, keep last occurrence
+    by_id = {}
 
-    df = pd.read_parquet(emb_parquet)
-    if df.empty:
+    if emb_parquet.exists():
+        try:
+            import pandas as pd  # type: ignore
+            df = pd.read_parquet(emb_parquet)
+            for _, row in df.iterrows():
+            by_id[row["id"]] = {
+                "label": row["label"],
+                "base_label": row.get("base_label", ""),
+                "page_in_form": int(row.get("page_in_form", 1)),
+                "vector": np.array(row["vector"], dtype="float32"),
+            }
+        except Exception:
+            # Fall back to JSONL if parquet cannot be read due to missing deps
+            pass
+    elif emb_jsonl.exists():
+        with open(emb_jsonl, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    rec = json.loads(line)
+                except Exception:
+                    continue
+                by_id[rec.get("id")] = {
+                    "label": rec.get("label", ""),
+                    "base_label": rec.get("base_label", ""),
+                    "page_in_form": int(rec.get("page_in_form", 1)),
+                    "vector": np.array(rec.get("vector", []), dtype="float32"),
+                }
+    else:
+        raise SystemExit(f"No embeddings found in {emb_dir}")
+
+    if not by_id:
         raise SystemExit("No embeddings to index.")
 
-    vecs = np.stack(df["vector"].apply(lambda x: np.array(x, dtype="float32")).to_numpy())
-    # Normalize for cosine similarity (inner product on normalized vectors)
+    ids = list(by_id.keys())
+    labels = [by_id[i]["label"] for i in ids]
+    bases = [by_id[i]["base_label"] for i in ids]
+    pnums = [by_id[i]["page_in_form"] for i in ids]
+    vecs = np.stack([by_id[i]["vector"] for i in ids])
     faiss.normalize_L2(vecs)
 
     d = vecs.shape[1]
@@ -36,13 +78,13 @@ def main():
     faiss.write_index(index, str(out_index))
 
     with open(out_idmap, "w", encoding="utf-8") as f:
-        for i, row in df.iterrows():
+        for i in range(len(ids)):
             f.write(json.dumps({
                 "offset": int(i),
-                "id": row["id"],
-                "label": row["label"],
-                "base_label": row.get("base_label", ""),
-                "page_in_form": int(row.get("page_in_form", 1)),
+                "id": ids[i],
+                "label": labels[i],
+                "base_label": bases[i],
+                "page_in_form": int(pnums[i]),
             }, ensure_ascii=False) + "\n")
 
     print(f"Wrote {out_index} and {out_idmap}")
@@ -50,4 +92,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

@@ -15,8 +15,9 @@
   </head>
   <body>
     <div class="nav">
-      <a href="{{ url_for('index') }}">Upload</a>
-      <a href="{{ url_for('curated') }}">Curated</a>
+      <a href="{{ url_for('index') }}" title="Upload a PDF and generate labels">Upload</a>
+      <a href="{{ url_for('curated') }}" title="Review curated dataset, build embeddings, manage versions">Curated</a>
+      <a href="{{ url_for('help_page') }}" title="How to use this app">Help</a>
     </div>
     {% with messages = get_flashed_messages() %}
       {% if messages %}

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 import sys
 from pathlib import Path
 
@@ -17,6 +18,12 @@ def _augment_sys_path_for_venv():
 
 _augment_sys_path_for_venv()
 
+# Tame OpenMP/threading issues on macOS when using Torch/FAISS/CLIP
+os.environ.setdefault("OMP_NUM_THREADS", "1")
+os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
+os.environ.setdefault("KMP_INIT_AT_FORK", "FALSE")
+os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
+
 from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory, jsonify
 from werkzeug.utils import secure_filename
 
@@ -31,9 +38,36 @@ SOURCE_DIR = ROOT / "Source_PDF"
 OUT_DIR = ROOT / "Ground_Truth"
 DATASET_INDEX = ROOT / "dataset" / "v2" / "index" / "v2.jsonl"
 DATASET_IMAGES = ROOT / "dataset" / "v2" / "images"
+DATASET_ALIASES = ROOT / "dataset" / "v2" / "aliases.json"
 SOURCE_DIR.mkdir(parents=True, exist_ok=True)
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 DATASET_IMAGES.mkdir(parents=True, exist_ok=True)
+
+
+def _load_aliases() -> dict:
+    try:
+        if DATASET_ALIASES.exists():
+            import json
+            with open(DATASET_ALIASES, "r", encoding="utf-8") as f:
+                return json.load(f)
+    except Exception:
+        pass
+    return {}
+
+
+def _save_aliases(aliases: dict) -> None:
+    try:
+        import json
+        DATASET_ALIASES.parent.mkdir(parents=True, exist_ok=True)
+        with open(DATASET_ALIASES, "w", encoding="utf-8") as f:
+            json.dump(aliases, f, ensure_ascii=False, indent=2)
+    except Exception:
+        pass
+
+
+def _canonicalize_label(label: str) -> str:
+    aliases = _load_aliases()
+    return aliases.get(label, label)
 
 
 def _resolve_json_path(stem: str, name: str | None = None) -> Path | None:
@@ -144,12 +178,15 @@ def _append_curated_record(mapping: dict, page_entry: dict, json_name: str) -> N
     # Ensure dataset index dir exists
     DATASET_INDEX.parent.mkdir(parents=True, exist_ok=True)
     # Build minimal record
-    base_label, page_in_form = _derive_base_and_page(page_entry.get("label", "Other"))
+    # Canonicalize label via alias mapping
+    cur_lbl = page_entry.get("label", "Other")
+    can_lbl = _canonicalize_label(cur_lbl)
+    base_label, page_in_form = _derive_base_and_page(can_lbl)
     record = {
         "document": mapping.get("document"),
         "page": int(page_entry.get("page")),
-        "label": page_entry.get("label"),
-        "auto_label": page_entry.get("auto_label", page_entry.get("label")),
+        "label": can_lbl,
+        "auto_label": page_entry.get("auto_label", can_lbl),
         "updated_label": bool(page_entry.get("updated_label", False)),
         "base_label": base_label,
         "page_in_form": page_in_form,
@@ -157,6 +194,11 @@ def _append_curated_record(mapping: dict, page_entry: dict, json_name: str) -> N
         "raw_label": page_entry.get("raw_label", ""),
         "source_json": str((OUT_DIR / json_name).as_posix()),
     }
+    # Remove any existing entries for this doc#page to avoid duplicates
+    try:
+        _ = _delete_curated_records(doc=record["document"], page=record["page"], delete_images=True)
+    except Exception:
+        pass
     # Optional: extract image + words/boxes (best effort)
     try:
         from curation.extract_features import extract_page_features
@@ -300,10 +342,49 @@ def api_curate_all(stem: str):
     return jsonify({"ok": True, "count": count})
 
 
+@app.post("/api/label_alias_merge")
+def api_label_alias_merge():
+    """Merge an alias label into a canonical label for future curation.
+
+    Body: { alias: str, canonical: str }
+    """
+    payload = {}
+    try:
+        payload = request.get_json(force=True)
+    except Exception:
+        return jsonify({"ok": False, "error": "invalid json"}), 400
+    alias = (payload.get("alias") or "").strip()
+    canonical = (payload.get("canonical") or "").strip()
+    if not alias or not canonical:
+        return jsonify({"ok": False, "error": "alias and canonical required"}), 400
+    aliases = _load_aliases()
+    aliases[alias] = canonical
+    _save_aliases(aliases)
+    return jsonify({"ok": True, "alias": alias, "canonical": canonical})
+
+
 @app.route("/curated")
 def curated():
     total = 0
     items = []
+    # List embedding/index versions
+    faiss_dir = ROOT / "dataset" / "v2" / "faiss"
+    emb_dir = ROOT / "dataset" / "v2" / "embeddings"
+    versions = []
+    active_ver = None
+    act_file = faiss_dir / "ACTIVE_VERSION.txt"
+    if act_file.exists():
+        try:
+            active_ver = act_file.read_text(encoding="utf-8").strip()
+        except Exception:
+            active_ver = None
+    # Detect versions by scanning embeddings jsonl
+    import re
+    for p in sorted(emb_dir.glob("clip_vitb32*.jsonl")):
+        m = re.match(r"clip_vitb32(?:_(v\d+))?\.jsonl$", p.name)
+        if m:
+            ver = m.group(1) or "default"
+            versions.append(ver)
     if DATASET_INDEX.exists():
         from collections import deque
         import json
@@ -318,7 +399,7 @@ def curated():
                 items.append(rec)
             except Exception:
                 continue
-    return render_template("curated.html", total=total, items=items)
+    return render_template("curated.html", total=total, items=items, versions=versions, active_ver=active_ver)
 
 
 def _delete_curated_records(doc: str, page: int | None = None, delete_images: bool = True) -> dict:
@@ -395,6 +476,51 @@ def api_curated_delete():
     return jsonify({"ok": True, **stats})
 
 
+@app.post("/api/build_embeddings")
+def api_build_embeddings():
+    # Compute next version vN based on existing files
+    emb_dir = ROOT / "dataset" / "v2" / "embeddings"
+    emb_dir.mkdir(parents=True, exist_ok=True)
+    import re, subprocess
+    max_n = 0
+    for p in emb_dir.glob("clip_vitb32_*.jsonl"):
+        m = re.match(r"clip_vitb32_v(\d+)\.jsonl$", p.name)
+        if m:
+            max_n = max(max_n, int(m.group(1)))
+    ver = f"v{max_n+1}"
+    cmd = [sys.executable, str((ROOT / "curation" / "build_embeddings.py")), "--version", ver]
+    try:
+        subprocess.run(cmd, check=True)
+        return jsonify({"ok": True, "version": ver})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
+@app.post("/api/build_index")
+def api_build_index():
+    ver = request.form.get("version") or request.args.get("version")
+    if not ver:
+        return jsonify({"ok": False, "error": "version required"}), 400
+    import subprocess
+    cmd = [sys.executable, str((ROOT / "curation" / "build_faiss.py")), "--version", ver]
+    try:
+        subprocess.run(cmd, check=True)
+        return jsonify({"ok": True, "version": ver})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
+@app.post("/api/set_active_version")
+def api_set_active_version():
+    ver = request.form.get("version") or request.args.get("version")
+    if not ver:
+        return jsonify({"ok": False, "error": "version required"}), 400
+    faiss_dir = ROOT / "dataset" / "v2" / "faiss"
+    faiss_dir.mkdir(parents=True, exist_ok=True)
+    (faiss_dir / "ACTIVE_VERSION.txt").write_text(ver, encoding="utf-8")
+    return jsonify({"ok": True, "version": ver})
+
+
 def _delete_all_curated(delete_images: bool = True) -> dict:
     """Delete all curated records (and optionally all curated images)."""
     total = 0
@@ -424,6 +550,50 @@ def api_curated_delete_all():
     return jsonify({"ok": True, **stats})
 
 
+@app.post("/api/curated_dedupe")
+def api_curated_dedupe():
+    """Deduplicate curated index by keeping the last entry per document#page."""
+    import json
+    from tempfile import NamedTemporaryFile
+    if not DATASET_INDEX.exists():
+        return jsonify({"ok": True, "deleted": 0, "kept": 0})
+    # First pass: find last index per id
+    positions = {}
+    lines = []
+    with open(DATASET_INDEX, "r", encoding="utf-8") as f:
+        for idx, line in enumerate(f):
+            lines.append(line)
+            try:
+                rec = json.loads(line)
+                key = f"{rec.get('document')}#{int(rec.get('page', -1))}"
+                positions[key] = idx
+            except Exception:
+                pass
+    # Second pass: write only lines whose idx equals last position
+    kept = 0
+    with NamedTemporaryFile("w", delete=False, dir=str(DATASET_INDEX.parent), encoding="utf-8") as tmp:
+        tmp_path = Path(tmp.name)
+        for idx, line in enumerate(lines):
+            try:
+                rec = json.loads(line)
+                key = f"{rec.get('document')}#{int(rec.get('page', -1))}"
+                if positions.get(key) == idx:
+                    tmp.write(line)
+                    kept += 1
+            except Exception:
+                # keep unparsable lines
+                tmp.write(line)
+                kept += 1
+    deleted = len(lines) - kept
+    os.replace(tmp_path, DATASET_INDEX)
+    return jsonify({"ok": True, "deleted": deleted, "kept": kept})
+
+
+@app.route("/help")
+def help_page():
+    return render_template("help.html")
+
+
 @app.get("/api/suggest/<stem>/<int:page>")
 def api_suggest(stem: str, page: int):
     """Return top-k similar curated pages for the given PDF page.
@@ -447,8 +617,24 @@ def api_suggest(stem: str, page: int):
         return jsonify({"ok": False, "error": "source PDF not found"}), 404
     try:
         q = embed_pdf_page(pdf_path, page)
-        results = search_neighbors(ROOT, q, topk=5)
-        return jsonify({"ok": True, "results": results})
+        results = search_neighbors(ROOT, q, topk=10)
+        # Apply alias canonicalization to suggestion labels and dedupe by canonical
+        aliases = _load_aliases()
+        agg = {}
+        for r in results:
+            lbl = r.get("label", "")
+            can = aliases.get(lbl, lbl)
+            # keep best score per canonical label
+            if can not in agg or float(r.get("score", 0.0)) > float(agg[can].get("score", 0.0)):
+                nr = dict(r)
+                nr["label"] = can
+                agg[can] = nr
+        # Sort by score desc and cap to top 5
+        merged = sorted(agg.values(), key=lambda x: float(x.get("score", 0.0)), reverse=True)[:5]
+        # Re-rank
+        for i, m in enumerate(merged, start=1):
+            m["rank"] = i
+        return jsonify({"ok": True, "results": merged})
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 500
 

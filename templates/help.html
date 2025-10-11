@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Help — UltraTax Labeler</title>
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 1.25rem; line-height: 1.5; }
+      .nav { position: sticky; top: 0; background: #fff; border-bottom: 1px solid #e5e7eb; padding: .6rem 1rem; margin: -1.25rem -1.25rem 1rem -1.25rem; z-index: 10; display:flex; gap:1rem; }
+      .nav a { text-decoration: none; color: #2563eb; font-weight: 600; }
+      h2 { margin-top: 1rem; }
+      code { background: #f3f4f6; padding: .1rem .3rem; border-radius: 4px; }
+      ul { margin: .25rem 0 .75rem 1.25rem; }
+    </style>
+  </head>
+  <body>
+    <div class="nav">
+      <a href="{{ url_for('index') }}">Upload</a>
+      <a href="{{ url_for('curated') }}">Curated</a>
+      <a href="{{ url_for('help_page') }}">Help</a>
+    </div>
+
+    <h1>How to Use This App</h1>
+
+    <h2>1) Upload & Generate Labels</h2>
+    <ul>
+      <li>Go to <strong>Upload</strong>, choose a PDF, and click <em>Generate Mapping</em>.</li>
+      <li>Optional: check <em>Apply UltraTax P1/P2 normalization</em> to prefix pages (Base_P1, Base_P2...).</li>
+    </ul>
+
+    <h2>2) Edit Labels</h2>
+    <ul>
+      <li>Edit any label inline; press <em>Save</em> to persist immediately.</li>
+      <li><em>Restore Default</em> resets a row to <code>auto_label</code>.</li>
+      <li>The top bar has <em>Save All</em>, <em>Restore Defaults</em>, and <em>Curate All</em>.</li>
+      <li>Click the magnifying glass to preview the exact PDF page.</li>
+    </ul>
+
+    <h2>3) Curate Pages</h2>
+    <ul>
+      <li><em>Curate</em> (row) appends that page to the curated dataset.</li>
+      <li><em>Curate All</em> appends all labeled rows on the screen.</li>
+      <li>Duplicates are prevented — the latest entry replaces older ones for the same document/page.</li>
+    </ul>
+
+    <h2>4) Suggestions</h2>
+    <ul>
+      <li>Click <em>Suggest</em> to open a modal with top candidate labels.</li>
+      <li>Actions in the modal:</li>
+      <li><strong>Close</strong> — dismiss the modal; no changes are made.</li>
+      <li><strong>Apply</strong> — fill the row’s Edit Label with the chosen suggestion (not saved yet).</li>
+      <li><strong>Apply + Save</strong> — write the chosen label to the JSON immediately for that page.</li>
+      <li><strong>Apply + Curate</strong> — save the chosen label, then append/update one curated record for that page (features extracted if available). Duplicates are prevented.</li>
+      <li><strong>Merge Alias + Curate</strong> — treat the current label as an alias of the chosen label going forward (stored in <code>dataset/v2/aliases.json</code>), save the canonical label, then curate. Suggestions are canonicalized to avoid showing old aliases.</li>
+    </ul>
+
+    <h2>5) Curated Dataset (Review)</h2>
+    <ul>
+      <li>Open <strong>Curated</strong> to see total pages and recent records.</li>
+      <li><em>Dedupe</em> removes duplicates by keeping the latest record per document/page.</li>
+      <li><em>Delete</em> (row) removes a single record; <em>Delete All</em> clears the entire curated set.</li>
+    </ul>
+
+    <h2>6) Embeddings & Index (Suggestions Engine)</h2>
+    <ul>
+      <li><em>Build Embeddings (new version)</em> computes OpenCLIP embeddings for curated images and creates a new version (v1, v2...).</li>
+      <li>Select a version, then <em>Build Index</em> to create a FAISS index for fast suggestions.</li>
+      <li><em>Set Active</em> chooses which index version Suggest uses.</li>
+      <li>If embeddings say “0 vectors”, recurate pages after rendering is enabled so images are saved.</li>
+    </ul>
+
+    <h2>FAQ</h2>
+    <ul>
+      <li><strong>Why don’t I see suggestions?</strong> Build embeddings and an index, then set it as active. Also ensure curated entries have images.</li>
+      <li><strong>Why do I still see alias labels in Suggest?</strong> After merging, the UI deduplicates suggestions by canonical label. Rebuilding embeddings+index makes it permanent.</li>
+      <li><strong>Port is busy?</strong> Run with <code>PORT=5050 python app.py</code>. Try <code>localhost:5050</code> in your browser.</li>
+    </ul>
+
+    <p style="color:#6b7280; font-size:13px;">Tip: hover over most buttons and links to see a one‑line helper.</p>
+  </body>
+  </html>
