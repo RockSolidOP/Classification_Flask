@@ -29,8 +29,11 @@ app.secret_key = "dev-secret"
 ROOT = Path(__file__).resolve().parent
 SOURCE_DIR = ROOT / "Source_PDF"
 OUT_DIR = ROOT / "Ground_Truth"
+DATASET_INDEX = ROOT / "dataset" / "v2" / "index" / "v2.jsonl"
+DATASET_IMAGES = ROOT / "dataset" / "v2" / "images"
 SOURCE_DIR.mkdir(parents=True, exist_ok=True)
 OUT_DIR.mkdir(parents=True, exist_ok=True)
+DATASET_IMAGES.mkdir(parents=True, exist_ok=True)
 
 
 def _resolve_json_path(stem: str, name: str | None = None) -> Path | None:
@@ -129,6 +132,56 @@ def serve_pdf(filename: str):
     return send_from_directory(str(SOURCE_DIR), filename)
 
 
+def _derive_base_and_page(label: str) -> tuple[str, int]:
+    import re as _re
+    m = _re.match(r"^(.+)_P(\d+)$", label)
+    if m:
+        return m.group(1), int(m.group(2))
+    return label, 1
+
+
+def _append_curated_record(mapping: dict, page_entry: dict, json_name: str) -> None:
+    # Ensure dataset index dir exists
+    DATASET_INDEX.parent.mkdir(parents=True, exist_ok=True)
+    # Build minimal record
+    base_label, page_in_form = _derive_base_and_page(page_entry.get("label", "Other"))
+    record = {
+        "document": mapping.get("document"),
+        "page": int(page_entry.get("page")),
+        "label": page_entry.get("label"),
+        "auto_label": page_entry.get("auto_label", page_entry.get("label")),
+        "updated_label": bool(page_entry.get("updated_label", False)),
+        "base_label": base_label,
+        "page_in_form": page_in_form,
+        "multipage": bool(page_entry.get("multipage", False)),
+        "raw_label": page_entry.get("raw_label", ""),
+        "source_json": str((OUT_DIR / json_name).as_posix()),
+    }
+    # Optional: extract image + words/boxes (best effort)
+    try:
+        from curation.extract_features import extract_page_features
+        pdf_path = SOURCE_DIR / mapping.get("document")
+        feats = extract_page_features(
+            pdf_path=pdf_path,
+            page=int(page_entry.get("page")),
+            images_root=DATASET_IMAGES,
+            base_label=base_label,
+            document_name=mapping.get("document"),
+        )
+        if feats:
+            # Store image path relative to repo root for portability
+            if "image_path" in feats:
+                feats["image_path"] = str(Path(feats["image_path"]).as_posix())
+            record.update(feats)
+    except Exception:
+        pass
+
+    import json as _json
+    with open(DATASET_INDEX, "a", encoding="utf-8") as f:
+        f.write(_json.dumps(record, ensure_ascii=False))
+        f.write("\n")
+
+
 @app.post("/api/update_label/<stem>/<int:page>")
 def api_update_label(stem: str, page: int):
     name = request.args.get("name")
@@ -208,5 +261,201 @@ def api_restore_all(stem: str):
     return jsonify({"ok": True})
 
 
+@app.post("/api/curate/<stem>/<int:page>")
+def api_curate_page(stem: str, page: int):
+    """Append a single curated record for the given page to dataset/v2/index/v2.jsonl."""
+    name = request.args.get("name")
+    json_path = _resolve_json_path(stem, name=name)
+    if not json_path or not json_path.exists():
+        return jsonify({"ok": False, "error": "mapping not found"}), 404
+    import json
+    with open(json_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    # Find page entry
+    entry = next((e for e in data.get("pages", []) if int(e.get("page")) == int(page)), None)
+    if not entry:
+        return jsonify({"ok": False, "error": "page not found"}), 404
+    # Optional: skip obvious non-label pages
+    if entry.get("label") == "Other":
+        return jsonify({"ok": False, "error": "label is 'Other'"}), 400
+    _append_curated_record(data, entry, json_path.name)
+    return jsonify({"ok": True})
+
+
+@app.post("/api/curate_all/<stem>")
+def api_curate_all(stem: str):
+    """Append curated records for all labeled pages in the mapping."""
+    name = request.args.get("name")
+    json_path = _resolve_json_path(stem, name=name)
+    if not json_path or not json_path.exists():
+        return jsonify({"ok": False, "error": "mapping not found"}), 404
+    import json
+    with open(json_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    count = 0
+    for e in data.get("pages", []):
+        if e.get("label") and e.get("label") != "Other":
+            _append_curated_record(data, e, json_path.name)
+            count += 1
+    return jsonify({"ok": True, "count": count})
+
+
+@app.route("/curated")
+def curated():
+    total = 0
+    items = []
+    if DATASET_INDEX.exists():
+        from collections import deque
+        import json
+        dq = deque(maxlen=200)
+        with open(DATASET_INDEX, "r", encoding="utf-8") as f:
+            for line in f:
+                total += 1
+                dq.append(line)
+        for line in dq:
+            try:
+                rec = json.loads(line)
+                items.append(rec)
+            except Exception:
+                continue
+    return render_template("curated.html", total=total, items=items)
+
+
+def _delete_curated_records(doc: str, page: int | None = None, delete_images: bool = True) -> dict:
+    """Filter out curated records for a given doc (and page if provided).
+
+    Returns stats: {deleted, kept}. Also deletes image files when available and delete_images is True.
+    """
+    import json
+    import os
+    from tempfile import NamedTemporaryFile
+
+    if not DATASET_INDEX.exists():
+        return {"deleted": 0, "kept": 0}
+
+    deleted = 0
+    kept = 0
+    with open(DATASET_INDEX, "r", encoding="utf-8") as src, NamedTemporaryFile("w", delete=False, dir=str(DATASET_INDEX.parent), encoding="utf-8") as tmp:
+        tmp_path = Path(tmp.name)
+        for line in src:
+            line_s = line.strip()
+            if not line_s:
+                continue
+            try:
+                rec = json.loads(line_s)
+            except Exception:
+                # keep unparsable lines
+                tmp.write(line)
+                kept += 1
+                continue
+            if rec.get("document") == doc and (page is None or int(rec.get("page", -1)) == int(page)):
+                deleted += 1
+                # Best-effort delete image
+                if delete_images:
+                    img = rec.get("image_path")
+                    if img:
+                        try:
+                            Path(img).unlink(missing_ok=True)
+                        except Exception:
+                            pass
+                continue
+            # keep
+            tmp.write(json.dumps(rec, ensure_ascii=False) + "\n")
+            kept += 1
+    # Atomic replace
+    os.replace(tmp_path, DATASET_INDEX)
+    return {"deleted": deleted, "kept": kept}
+
+
+@app.post("/api/curated_delete")
+def api_curated_delete():
+    """Delete a curated record by doc and optional page.
+
+    Body (JSON) or query args: {doc: string, page?: int, delete_images?: bool}
+    """
+    payload = {}
+    try:
+        payload = request.get_json(force=False, silent=True) or {}
+    except Exception:
+        payload = {}
+    doc = (payload.get("doc") or request.args.get("doc") or "").strip()
+    page = payload.get("page") or request.args.get("page")
+    delete_images = payload.get("delete_images")
+    if delete_images is None:
+        delete_images = request.args.get("delete_images", "1") in ("1", "true", "True")
+    if not doc:
+        return jsonify({"ok": False, "error": "doc required"}), 400
+    page_int = None
+    if page is not None and str(page).strip() != "":
+        try:
+            page_int = int(page)
+        except Exception:
+            return jsonify({"ok": False, "error": "invalid page"}), 400
+    stats = _delete_curated_records(doc=doc, page=page_int, delete_images=bool(delete_images))
+    return jsonify({"ok": True, **stats})
+
+
+def _delete_all_curated(delete_images: bool = True) -> dict:
+    """Delete all curated records (and optionally all curated images)."""
+    total = 0
+    if DATASET_INDEX.exists():
+        # Count lines then truncate file
+        with open(DATASET_INDEX, "r", encoding="utf-8") as f:
+            for _ in f:
+                total += 1
+        # Truncate
+        open(DATASET_INDEX, "w", encoding="utf-8").close()
+    images_deleted = 0
+    if delete_images and DATASET_IMAGES.exists():
+        for p in DATASET_IMAGES.rglob("*"):
+            try:
+                if p.is_file():
+                    p.unlink()
+                    images_deleted += 1
+            except Exception:
+                pass
+    return {"deleted": total, "images_deleted": images_deleted}
+
+
+@app.post("/api/curated_delete_all")
+def api_curated_delete_all():
+    delete_images = request.args.get("delete_images", "1") in ("1", "true", "True")
+    stats = _delete_all_curated(delete_images=delete_images)
+    return jsonify({"ok": True, **stats})
+
+
+@app.get("/api/suggest/<stem>/<int:page>")
+def api_suggest(stem: str, page: int):
+    """Return top-k similar curated pages for the given PDF page.
+
+    Requires FAISS index built (Step 5). If unavailable, returns 501.
+    """
+    try:
+        from curation.suggest import embed_pdf_page, search_neighbors
+    except Exception:
+        return jsonify({"ok": False, "error": "suggestion engine not available"}), 501
+
+    name = request.args.get("name")
+    json_path = _resolve_json_path(stem, name=name)
+    if not json_path or not json_path.exists():
+        return jsonify({"ok": False, "error": "mapping not found"}), 404
+    import json as _json
+    with open(json_path, "r", encoding="utf-8") as f:
+        data = _json.load(f)
+    pdf_path = SOURCE_DIR / data.get("document")
+    if not pdf_path.exists():
+        return jsonify({"ok": False, "error": "source PDF not found"}), 404
+    try:
+        q = embed_pdf_page(pdf_path, page)
+        results = search_neighbors(ROOT, q, topk=5)
+        return jsonify({"ok": True, "results": results})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=5000, debug=True)
+    # Bind to configurable host/port to avoid conflicts (e.g., AirPlay using 5000)
+    import os
+    host = os.environ.get("HOST", "0.0.0.0")
+    port = int(os.environ.get("PORT", "5000"))
+    app.run(host=host, port=port, debug=True)

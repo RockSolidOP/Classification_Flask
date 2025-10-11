@@ -8,8 +8,8 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
 WORKDIR /app
 
 # Copy dependency list first (leverages Docker layer cache)
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt requirements-ml.txt ./
+RUN pip install --no-cache-dir -r requirements.txt -r requirements-ml.txt
 
 # Copy app code
 COPY . .
@@ -27,4 +27,3 @@ EXPOSE 5000
 
 # Default command: run the web app
 CMD ["flask", "run"]
-

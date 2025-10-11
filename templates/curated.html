@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Curated Dataset</title>
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 1rem; }
+      .nav { position: sticky; top: 0; background: #fff; border-bottom: 1px solid #e5e7eb; padding: .6rem 1rem; margin: -1rem -1rem 1rem -1rem; z-index: 10; display:flex; gap:1rem; }
+      .nav a { text-decoration: none; color: #2563eb; font-weight: 600; }
+      table { border-collapse: collapse; width: 100%; }
+      th, td { border: 1px solid #e5e7eb; padding: .4rem .5rem; font-size: 14px; }
+      th { background: #f9fafb; text-align: left; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    </style>
+  </head>
+  <body>
+    <div class="nav">
+      <a href="{{ url_for('index') }}">Upload</a>
+      <a href="{{ url_for('curated') }}">Curated</a>
+    </div>
+
+    <h2>Curated Dataset</h2>
+    <p>Total curated pages: <strong>{{ total }}</strong></p>
+    <p>
+      <button type="button" onclick="deleteAll()" style="background:#fee2e2;border:1px solid #fecaca;padding:.4rem .6rem;">Delete All</button>
+    </p>
+    {% if total == 0 %}
+      <p>No curated records yet. Use the editor to Curate pages.</p>
+    {% else %}
+      <table>
+        <thead>
+          <tr>
+            <th>Doc</th>
+            <th>Page</th>
+            <th>Label</th>
+            <th>Base</th>
+            <th>P#</th>
+            <th>View</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for r in items %}
+          <tr>
+            <td class="mono">{{ r.document }}</td>
+            <td>{{ r.page }}</td>
+            <td class="mono">{{ r.label }}</td>
+            <td class="mono">{{ r.base_label }}</td>
+            <td>{{ r.page_in_form }}</td>
+            <td style="text-align:center"><a target="_blank" rel="noopener" href="{{ url_for('serve_pdf', filename=r.document) }}#page={{ r.page }}">🔍</a></td>
+            <td style="text-align:center"><button type="button" onclick="deleteCurated('{{ r.document }}', {{ r.page }})">Delete</button></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      <script>
+        async function deleteAll() {
+          if (!confirm('Delete ALL curated records and images? This cannot be undone.')) return;
+          try {
+            const res = await fetch('{{ url_for('api_curated_delete_all') }}', { method: 'POST' });
+            const data = await res.json();
+            if (!data.ok) {
+              alert('Delete all failed');
+            } else {
+              alert(`Deleted ${data.deleted} records, removed ${data.images_deleted} files`);
+              location.reload();
+            }
+          } catch (e) {
+            alert('Delete all error');
+          }
+        }
+        async function deleteCurated(doc, page) {
+          if (!confirm(`Delete curated record for ${doc}#${page}?`)) return;
+          try {
+            const res = await fetch('{{ url_for('api_curated_delete') }}', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ doc, page, delete_images: true })
+            });
+            const data = await res.json();
+            if (!data.ok) {
+              alert('Delete failed: ' + (data.error || res.status));
+            } else {
+              location.reload();
+            }
+          } catch (e) {
+            alert('Delete error');
+          }
+        }
+      </script>
+    {% endif %}
+  </body>
+  </html>

@@ -5,6 +5,8 @@
     <title>Edit Labels - {{ stem }}</title>
     <style>
       body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 1rem; }
+      .nav { position: sticky; top: 0; background: #fff; border-bottom: 1px solid #e5e7eb; padding: .6rem 1rem; margin: -1rem -1rem 1rem -1rem; z-index: 10; display:flex; gap:1rem; }
+      .nav a { text-decoration: none; color: #2563eb; font-weight: 600; }
       .flash { background: #fff3cd; padding: .5rem .75rem; border: 1px solid #ffeeba; margin-bottom: 1rem; }
       table { border-collapse: collapse; width: 100%; }
       th, td { border: 1px solid #e5e7eb; padding: .4rem .5rem; font-size: 14px; }
@@ -13,9 +15,15 @@
       .toolbar { display:flex; gap: .75rem; align-items:center; margin: .5rem 0 1rem; }
       a { text-decoration: none; color: #2563eb; }
       .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+      .actions { position: sticky; top: 48px; background: #ffffff; border-bottom: 1px solid #e5e7eb; padding: .5rem; z-index: 9; display:flex; gap:.75rem; align-items:center; }
+      .actions button { padding: .4rem .75rem; }
     </style>
   </head>
   <body>
+    <div class="nav">
+      <a href="{{ url_for('index') }}">Upload</a>
+      <a href="{{ url_for('curated') }}">Curated</a>
+    </div>
     {% with messages = get_flashed_messages() %}
       {% if messages %}
         {% for m in messages %}<div class="flash">{{ m }}</div>{% endfor %}
@@ -27,8 +35,14 @@
       <a class="mono" href="{{ url_for('download', filename=download_name) }}">Download JSON</a>
     </div>
 
+    <div class="actions">
+      <button type="submit" form="editForm">Save All Changes</button>
+      <button type="button" onclick="restoreAll()">Restore Defaults</button>
+      <button type="button" onclick="curateAll()">Curate All</button>
+    </div>
+
     <h2>Edit Labels: {{ mapping.document }}</h2>
-    <form method="post">
+    <form id="editForm" method="post">
       <table>
         <thead>
           <tr>
@@ -41,6 +55,8 @@
             <th>Edit Label</th>
             <th>Action</th>
             <th>View</th>
+            <th>Curate</th>
+            <th>Suggest</th>
           </tr>
         </thead>
         <tbody>
@@ -61,14 +77,17 @@
               <a title="Preview page {{ p.page }}" target="_blank" rel="noopener"
                  href="{{ url_for('serve_pdf', filename=mapping.document) }}#page={{ p.page }}">🔍</a>
             </td>
+            <td style="text-align:center">
+              <button type="button" onclick="curateRow({{ p.page }})">Curate</button>
+            </td>
+            <td style="text-align:center">
+              <button type="button" onclick="suggestRow({{ p.page }})">Suggest</button>
+            </td>
           </tr>
         {% endfor %}
         </tbody>
       </table>
-      <div style="margin-top: 1rem;">
-        <button type="submit">Save All Changes</button>
-        <button type="button" onclick="restoreAll()">Restore Defaults</button>
-      </div>
+      
     </form>
 
     <script>
@@ -124,6 +143,59 @@
           }
         } catch (e) {
           alert('Restore all error');
+        }
+      }
+
+      async function curateRow(page) {
+        try {
+          const res = await fetch('{{ url_for('api_curate_page', stem=stem, page=0) }}?name={{ download_name }}'.replace('/0','/' + page), { method: 'POST' });
+          const data = await res.json();
+          if (!data.ok) {
+            alert('Curate failed: ' + (data.error || res.status));
+          } else {
+            alert('Curated page ' + page);
+          }
+        } catch (e) {
+          alert('Curate error');
+        }
+      }
+
+      async function curateAll() {
+        try {
+          const res = await fetch('{{ url_for('api_curate_all', stem=stem) }}?name={{ download_name }}', { method: 'POST' });
+          const data = await res.json();
+          if (!data.ok) {
+            alert('Curate all failed: ' + (data.error || res.status));
+          } else {
+            alert('Curated ' + (data.count || 0) + ' pages');
+          }
+        } catch (e) {
+          alert('Curate all error');
+        }
+      }
+
+      async function suggestRow(page) {
+        try {
+          const res = await fetch('{{ url_for('api_suggest', stem=stem, page=0) }}?name={{ download_name }}'.replace('/0','/' + page));
+          const data = await res.json();
+          if (!data.ok) {
+            alert('Suggest failed: ' + (data.error || res.status));
+            return;
+          }
+          const items = (data.results || []).map(r => `${r.rank}. ${r.label} (score ${r.score.toFixed(3)})`).join('\n');
+          if (!items) {
+            alert('No suggestions.');
+            return;
+          }
+          const pick = prompt('Top suggestions:\n\n' + items + '\n\nType the number to apply:', '1');
+          if (!pick) return;
+          const n = parseInt(pick, 10);
+          if (isNaN(n) || n < 1 || n > (data.results || []).length) return;
+          const chosen = data.results[n - 1];
+          const input = document.getElementById('label_' + page);
+          if (input) input.value = chosen.label;
+        } catch (e) {
+          alert('Suggest error');
         }
       }
     </script>
