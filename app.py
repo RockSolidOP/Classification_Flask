@@ -58,6 +58,8 @@ def upload():
     filename = secure_filename(f.filename)
     pdf_path = SOURCE_DIR / filename
     f.save(str(pdf_path))
+    # Read UltraTax mode checkbox (controls P1/P2 normalization)
+    apply_prefix = bool(request.form.get("ultratax_mode"))
 
     # Generate the enhanced JSON using existing logic
     out_path = ultra.build_bookmark_gt(
@@ -66,6 +68,7 @@ def upload():
         family="UltraTax",
         config_name="bookmarks_v2",
         source="UltraTax",
+        apply_prefix=apply_prefix,
     )
     flash(f"Generated {out_path.name}")
     return redirect(url_for("edit", stem=pdf_path.stem, name=out_path.name))

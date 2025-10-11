@@ -198,7 +198,14 @@ def _collect_outline_entries(first_node, page_ref_map, normalize: bool = True) -
     return entries
 
 
-def build_bookmark_gt(pdf_path: Path, outdir: Path, family: str, config_name: str, source: str) -> Path:
+def build_bookmark_gt(
+    pdf_path: Path,
+    outdir: Path,
+    family: str,
+    config_name: str,
+    source: str,
+    apply_prefix: bool = True,
+) -> Path:
     reader = PdfReader(str(pdf_path))
     total_pages = len(reader.pages)
     root = _resolve(reader.trailer.get("/Root"))
@@ -262,52 +269,53 @@ def build_bookmark_gt(pdf_path: Path, outdir: Path, family: str, config_name: st
                 if 1 <= pno <= total_pages:
                     raw_pages[pno - 1] = {"page": pno, "family": family, "label": label}
 
-    # Post-process: Normalize sequential pages under a base section.
-    # - When a base section (Form_* or Schedule_*) is seen, that page becomes Base_P1 (normalized).
-    # - Subsequent P2/P3/... pages become Base_P2/Base_P3/... until a non-page label interrupts.
-    # - Already-prefixed labels like Base_Pn keep their value and continue the prefix.
-    def is_base_section(lbl: str) -> bool:
-        # Treat any non-page, non-Other label as a base section
-        if lbl == "Other":
-            return False
-        if re.match(r"^P\d+$", lbl):
-            return False
-        return True
+    # Post-process: Only apply P1/P2 normalization when requested (UltraTax mode)
+    if apply_prefix:
+        # - When a base section is seen, that page becomes Base_P1.
+        # - Subsequent P2/P3/... pages become Base_P2/Base_P3/... until interrupted.
+        # - Already-prefixed labels keep their value and continue the prefix.
+        def is_base_section(lbl: str) -> bool:
+            # Treat any non-page, non-Other label as a base section
+            if lbl == "Other":
+                return False
+            if re.match(r"^P\d+$", lbl):
+                return False
+            return True
 
-    def is_page_suffix(lbl: str) -> bool:
-        return bool(re.match(r"^P\d+$", lbl))
+        def is_page_suffix(lbl: str) -> bool:
+            return bool(re.match(r"^P\d+$", lbl))
 
-    def prefixed_page_match(lbl: str):
-        # Generic: Any base label followed by _P{n}
-        return re.match(r"^([A-Za-z0-9_()]+)_P(\d+)$", lbl)
+        def prefixed_page_match(lbl: str):
+            # Generic: Any base label followed by _P{n}
+            return re.match(r"^([A-Za-z0-9_()]+)_P(\d+)$", lbl)
 
-    current_prefix = None
-    for entry in pages:
-        lbl = entry.get("label", "")
-        fam = entry.get("family", "")
-        if fam != family:
-            continue
-
-        m = prefixed_page_match(lbl)
-        if m:
-            current_prefix = m.group(1)
-            continue
-
-        if is_base_section(lbl):
-            current_prefix = lbl
-            new_val = f"{current_prefix}_P1"
-            entry["label"] = new_val
-            entry["auto_label"] = new_val
-            continue
-
-        if is_page_suffix(lbl) and current_prefix:
-            new_val = f"{current_prefix}_{lbl}"
-            entry["label"] = new_val
-            entry["auto_label"] = new_val
-            continue
-
-        # interrupt on any other label
         current_prefix = None
+        for entry in pages:
+            lbl = entry.get("label", "")
+            fam = entry.get("family", "")
+            if fam != family:
+                continue
+
+            m = prefixed_page_match(lbl)
+            if m:
+                current_prefix = m.group(1)
+                continue
+
+            if is_base_section(lbl):
+                current_prefix = lbl
+                new_val = f"{current_prefix}_P1"
+                entry["label"] = new_val
+                entry["auto_label"] = new_val
+                continue
+
+            if is_page_suffix(lbl) and current_prefix:
+                new_val = f"{current_prefix}_{lbl}"
+                entry["label"] = new_val
+                entry["auto_label"] = new_val
+                continue
+
+            # interrupt on any other label
+            current_prefix = None
 
     # Compute multipage flags: mark True for any Base_Pn group with size >= 2
     pages = _apply_multipage_flags(pages)
@@ -318,7 +326,8 @@ def build_bookmark_gt(pdf_path: Path, outdir: Path, family: str, config_name: st
         "source": source,
         "total_pages": total_pages,
         "pages": pages,
-        "bookmarks": raw_pages
+        "bookmarks": raw_pages,
+        "ultratax_mode": bool(apply_prefix),
     }
 
     outdir.mkdir(parents=True, exist_ok=True)
@@ -373,7 +382,7 @@ def main():
 
     outdir.mkdir(parents=True, exist_ok=True)
     for pdf_path in files:
-        out_path = build_bookmark_gt(pdf_path, outdir, family, config_name, source)
+        out_path = build_bookmark_gt(pdf_path, outdir, family, config_name, source, apply_prefix=True)
         print(f"Wrote {out_path}")
 
 

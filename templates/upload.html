@@ -21,7 +21,13 @@
     <div class="card">
       <h2>Upload PDF</h2>
       <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
-        <input type="file" accept="application/pdf" name="pdf" required>
+        <div style="margin-bottom:.5rem;">
+          <input type="file" accept="application/pdf" name="pdf" required>
+        </div>
+        <label style="display:flex; align-items:center; gap:.5rem; margin:.5rem 0;">
+          <input type="checkbox" name="ultratax_mode" value="1">
+          Apply UltraTax P1/P2 normalization
+        </label>
         <button type="submit">Generate Mapping</button>
       </form>
 
