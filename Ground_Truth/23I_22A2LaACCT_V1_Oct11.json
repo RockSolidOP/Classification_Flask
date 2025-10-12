@@ -1,0 +1,2405 @@
+{
+  "document": "23I_22A2LaACCT_V1.PDF",
+  "config": "bookmarks_v2",
+  "source": "UltraTax",
+  "total_pages": 171,
+  "pages": [
+    {
+      "page": 1,
+      "family": "UltraTax",
+      "label": "Cover_Sheet",
+      "auto_label": "Cover_Sheet",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Cover Sheet"
+    },
+    {
+      "page": 2,
+      "family": "UltraTax",
+      "label": "Diagnostics",
+      "auto_label": "Diagnostics",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Diagnostics"
+    },
+    {
+      "page": 3,
+      "family": "UltraTax",
+      "label": "Diagnostics",
+      "auto_label": "Diagnostics",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Diagnostics"
+    },
+    {
+      "page": 4,
+      "family": "UltraTax",
+      "label": "Diagnostics",
+      "auto_label": "Diagnostics",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Diagnostics"
+    },
+    {
+      "page": 5,
+      "family": "UltraTax",
+      "label": "Diagnostics",
+      "auto_label": "Diagnostics",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Diagnostics"
+    },
+    {
+      "page": 6,
+      "family": "UltraTax",
+      "label": "Diagnostics",
+      "auto_label": "Diagnostics",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Diagnostics"
+    },
+    {
+      "page": 7,
+      "family": "UltraTax",
+      "label": "Diagnostics",
+      "auto_label": "Diagnostics",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Diagnostics"
+    },
+    {
+      "page": 8,
+      "family": "UltraTax",
+      "label": "Diagnostics",
+      "auto_label": "Diagnostics",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Diagnostics"
+    },
+    {
+      "page": 9,
+      "family": "UltraTax",
+      "label": "Diagnostics",
+      "auto_label": "Diagnostics",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Diagnostics"
+    },
+    {
+      "page": 10,
+      "family": "UltraTax",
+      "label": "Diagnostics",
+      "auto_label": "Diagnostics",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Diagnostics"
+    },
+    {
+      "page": 11,
+      "family": "UltraTax",
+      "label": "Diagnostics",
+      "auto_label": "Diagnostics",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Diagnostics"
+    },
+    {
+      "page": 12,
+      "family": "UltraTax",
+      "label": "Tax_Return_Carryovers_to_2024",
+      "auto_label": "Tax_Return_Carryovers_to_2024",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Tax Return Carryovers to 2024"
+    },
+    {
+      "page": 13,
+      "family": "UltraTax",
+      "label": "Tax_Return_Carryovers_to_2024",
+      "auto_label": "Tax_Return_Carryovers_to_2024",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Tax Return Carryovers to 2024"
+    },
+    {
+      "page": 14,
+      "family": "UltraTax",
+      "label": "Tax_Return_Carryovers_to_2024",
+      "auto_label": "Tax_Return_Carryovers_to_2024",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Tax Return Carryovers to 2024"
+    },
+    {
+      "page": 15,
+      "family": "UltraTax",
+      "label": "Tax_Return_Carryovers_to_2024",
+      "auto_label": "Tax_Return_Carryovers_to_2024",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Tax Return Carryovers to 2024"
+    },
+    {
+      "page": 16,
+      "family": "UltraTax",
+      "label": "Tax_Return_Carryovers_to_2024",
+      "auto_label": "Tax_Return_Carryovers_to_2024",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Tax Return Carryovers to 2024"
+    },
+    {
+      "page": 17,
+      "family": "UltraTax",
+      "label": "Tax_Return_Carryovers_to_2024",
+      "auto_label": "Tax_Return_Carryovers_to_2024",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Tax Return Carryovers to 2024"
+    },
+    {
+      "page": 18,
+      "family": "UltraTax",
+      "label": "Tax_Return_Carryovers_to_2024",
+      "auto_label": "Tax_Return_Carryovers_to_2024",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Tax Return Carryovers to 2024"
+    },
+    {
+      "page": 19,
+      "family": "UltraTax",
+      "label": "Return_Summary_Page_1",
+      "auto_label": "Return_Summary_Page_1",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Return Summary, Page 1"
+    },
+    {
+      "page": 20,
+      "family": "UltraTax",
+      "label": "Return_Summary_Page_2",
+      "auto_label": "Return_Summary_Page_2",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Return Summary, Page 2"
+    },
+    {
+      "page": 21,
+      "family": "UltraTax",
+      "label": "Data_Entry",
+      "auto_label": "Data_Entry",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Data Entry"
+    },
+    {
+      "page": 22,
+      "family": "UltraTax",
+      "label": "Data_Entry",
+      "auto_label": "Data_Entry",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Data Entry"
+    },
+    {
+      "page": 23,
+      "family": "UltraTax",
+      "label": "Data_Entry",
+      "auto_label": "Data_Entry",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Data Entry"
+    },
+    {
+      "page": 24,
+      "family": "UltraTax",
+      "label": "Data_Entry",
+      "auto_label": "Data_Entry",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Data Entry"
+    },
+    {
+      "page": 25,
+      "family": "UltraTax",
+      "label": "Data_Entry",
+      "auto_label": "Data_Entry",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Data Entry"
+    },
+    {
+      "page": 26,
+      "family": "UltraTax",
+      "label": "Data_Entry",
+      "auto_label": "Data_Entry",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Data Entry"
+    },
+    {
+      "page": 27,
+      "family": "UltraTax",
+      "label": "Data_Entry",
+      "auto_label": "Data_Entry",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Data Entry"
+    },
+    {
+      "page": 28,
+      "family": "UltraTax",
+      "label": "Data_Entry",
+      "auto_label": "Data_Entry",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Data Entry"
+    },
+    {
+      "page": 29,
+      "family": "UltraTax",
+      "label": "Data_Entry",
+      "auto_label": "Data_Entry",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Data Entry"
+    },
+    {
+      "page": 30,
+      "family": "UltraTax",
+      "label": "Data_Entry",
+      "auto_label": "Data_Entry",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Data Entry"
+    },
+    {
+      "page": 31,
+      "family": "UltraTax",
+      "label": "Data_Entry",
+      "auto_label": "Data_Entry",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Data Entry"
+    },
+    {
+      "page": 32,
+      "family": "UltraTax",
+      "label": "Data_Entry",
+      "auto_label": "Data_Entry",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Data Entry"
+    },
+    {
+      "page": 33,
+      "family": "UltraTax",
+      "label": "Data_Entry",
+      "auto_label": "Data_Entry",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Data Entry"
+    },
+    {
+      "page": 34,
+      "family": "UltraTax",
+      "label": "Data_Entry",
+      "auto_label": "Data_Entry",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Data Entry"
+    },
+    {
+      "page": 35,
+      "family": "UltraTax",
+      "label": "Depreciation_Variance_Report",
+      "auto_label": "Depreciation_Variance_Report",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Depreciation Variance Report"
+    },
+    {
+      "page": 36,
+      "family": "UltraTax",
+      "label": "Form_1040_U.S._Individual_Income_Tax_Return",
+      "auto_label": "Form_1040_U.S._Individual_Income_Tax_Return",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 1040 - U.S. Individual Income Tax Return"
+    },
+    {
+      "page": 37,
+      "family": "UltraTax",
+      "label": "Form_1040_U.S._Individual_Income_Tax_Return",
+      "auto_label": "Form_1040_U.S._Individual_Income_Tax_Return",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 1040 - U.S. Individual Income Tax Return"
+    },
+    {
+      "page": 38,
+      "family": "UltraTax",
+      "label": "Schedule_1_Additional_Income_and_Adjustments_to_Income",
+      "auto_label": "Schedule_1_Additional_Income_and_Adjustments_to_Income",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Schedule 1 - Additional Income and Adjustments to Income"
+    },
+    {
+      "page": 39,
+      "family": "UltraTax",
+      "label": "Schedule_1_Additional_Income_and_Adjustments_to_Income",
+      "auto_label": "Schedule_1_Additional_Income_and_Adjustments_to_Income",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Schedule 1 - Additional Income and Adjustments to Income"
+    },
+    {
+      "page": 40,
+      "family": "UltraTax",
+      "label": "Federal_Schedule_A_Itemized_Deductions",
+      "auto_label": "Federal_Schedule_A_Itemized_Deductions",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Federal Schedule A - Itemized Deductions"
+    },
+    {
+      "page": 41,
+      "family": "UltraTax",
+      "label": "Schedule_A_Charitable_Contributions_Worksheet",
+      "auto_label": "Schedule_A_Charitable_Contributions_Worksheet",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Schedule A - Charitable Contributions Worksheet"
+    },
+    {
+      "page": 42,
+      "family": "UltraTax",
+      "label": "Schedule_A_Charitable_Contributions_Worksheet",
+      "auto_label": "Schedule_A_Charitable_Contributions_Worksheet",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Schedule A - Charitable Contributions Worksheet"
+    },
+    {
+      "page": 43,
+      "family": "UltraTax",
+      "label": "Schedule_A_Charitable_Contributions_Worksheet",
+      "auto_label": "Schedule_A_Charitable_Contributions_Worksheet",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Schedule A - Charitable Contributions Worksheet"
+    },
+    {
+      "page": 44,
+      "family": "UltraTax",
+      "label": "Schedule_A_Charitable_Contributions_Limitation",
+      "auto_label": "Schedule_A_Charitable_Contributions_Limitation",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Schedule A - Charitable Contributions Limitation"
+    },
+    {
+      "page": 45,
+      "family": "UltraTax",
+      "label": "Federal_Schedule_B_Interest_and_Ordinary_Dividends",
+      "auto_label": "Federal_Schedule_B_Interest_and_Ordinary_Dividends",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Federal Schedule B - Interest and Ordinary Dividends"
+    },
+    {
+      "page": 46,
+      "family": "UltraTax",
+      "label": "Combined_Interest_and_Dividend_Statement",
+      "auto_label": "Combined_Interest_and_Dividend_Statement",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Combined Interest and Dividend Statement"
+    },
+    {
+      "page": 47,
+      "family": "UltraTax",
+      "label": "Federal_Schedule_C_Profit_or_Loss_from_Business",
+      "auto_label": "Federal_Schedule_C_Profit_or_Loss_from_Business",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Federal Schedule C - Profit or Loss from Business"
+    },
+    {
+      "page": 48,
+      "family": "UltraTax",
+      "label": "Form_4562_Schedule_C_Depreciation_Detail_1",
+      "auto_label": "Form_4562_Schedule_C_Depreciation_Detail_1",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 4562 - Schedule C Depreciation Detail - 1"
+    },
+    {
+      "page": 49,
+      "family": "UltraTax",
+      "label": "Federal_Schedule_D_Capital_Gains_and_Losses",
+      "auto_label": "Federal_Schedule_D_Capital_Gains_and_Losses",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Federal Schedule D - Capital Gains and Losses"
+    },
+    {
+      "page": 50,
+      "family": "UltraTax",
+      "label": "Federal_Schedule_D_Capital_Gains_and_Losses",
+      "auto_label": "Federal_Schedule_D_Capital_Gains_and_Losses",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Federal Schedule D - Capital Gains and Losses"
+    },
+    {
+      "page": 51,
+      "family": "UltraTax",
+      "label": "Form_8949_Short_Term_A",
+      "auto_label": "Form_8949_Short_Term_A",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8949 Short-Term A"
+    },
+    {
+      "page": 52,
+      "family": "UltraTax",
+      "label": "Form_8949_Long_Term_D",
+      "auto_label": "Form_8949_Long_Term_D",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8949 Long-Term D"
+    },
+    {
+      "page": 53,
+      "family": "UltraTax",
+      "label": "Federal_Schedule_D_AMT_Capital_Gains_and_Losses_(Alternative_Minimum_Tax)",
+      "auto_label": "Federal_Schedule_D_AMT_Capital_Gains_and_Losses_(Alternative_Minimum_Tax)",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Federal Schedule D AMT - Capital Gains and Losses (Alternative Minimum Tax)"
+    },
+    {
+      "page": 54,
+      "family": "UltraTax",
+      "label": "Federal_Schedule_D_AMT_Capital_Gains_and_Losses_(Alternative_Minimum_Tax)",
+      "auto_label": "Federal_Schedule_D_AMT_Capital_Gains_and_Losses_(Alternative_Minimum_Tax)",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Federal Schedule D AMT - Capital Gains and Losses (Alternative Minimum Tax)"
+    },
+    {
+      "page": 55,
+      "family": "UltraTax",
+      "label": "Form_8949_Short_Term_A_(Alternative_Minimum_Tax)",
+      "auto_label": "Form_8949_Short_Term_A_(Alternative_Minimum_Tax)",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8949 Short-Term A (Alternative Minimum Tax)"
+    },
+    {
+      "page": 56,
+      "family": "UltraTax",
+      "label": "Form_8949_Long_Term_D_(Alternative_Minimum_Tax)",
+      "auto_label": "Form_8949_Long_Term_D_(Alternative_Minimum_Tax)",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8949 Long-Term D (Alternative Minimum Tax)"
+    },
+    {
+      "page": 57,
+      "family": "UltraTax",
+      "label": "Federal_Schedule_E_Supplemental_Income_and_Loss_Page_1",
+      "auto_label": "Federal_Schedule_E_Supplemental_Income_and_Loss_Page_1",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Federal Schedule E - Supplemental Income and Loss, Page 1"
+    },
+    {
+      "page": 58,
+      "family": "UltraTax",
+      "label": "Federal_Schedule_E_Supplemental_Income_and_Loss_Page_2",
+      "auto_label": "Federal_Schedule_E_Supplemental_Income_and_Loss_Page_2",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Federal Schedule E - Supplemental Income and Loss, Page 2"
+    },
+    {
+      "page": 59,
+      "family": "UltraTax",
+      "label": "Income_from_Passthrough_Statement_Detailed",
+      "auto_label": "Income_from_Passthrough_Statement_Detailed",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Income from Passthrough Statement - Detailed"
+    },
+    {
+      "page": 60,
+      "family": "UltraTax",
+      "label": "Income_from_Passthrough_Statement_Detailed",
+      "auto_label": "Income_from_Passthrough_Statement_Detailed",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Income from Passthrough Statement - Detailed"
+    },
+    {
+      "page": 61,
+      "family": "UltraTax",
+      "label": "Income_from_Passthrough_Statement_Detailed",
+      "auto_label": "Income_from_Passthrough_Statement_Detailed",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Income from Passthrough Statement - Detailed"
+    },
+    {
+      "page": 62,
+      "family": "UltraTax",
+      "label": "Income_from_Passthrough_Statement_Detailed",
+      "auto_label": "Income_from_Passthrough_Statement_Detailed",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Income from Passthrough Statement - Detailed"
+    },
+    {
+      "page": 63,
+      "family": "UltraTax",
+      "label": "Income_from_Passthrough_Statement_Detailed",
+      "auto_label": "Income_from_Passthrough_Statement_Detailed",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Income from Passthrough Statement - Detailed"
+    },
+    {
+      "page": 64,
+      "family": "UltraTax",
+      "label": "Income_from_Passthrough_Statement_Detailed",
+      "auto_label": "Income_from_Passthrough_Statement_Detailed",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Income from Passthrough Statement - Detailed"
+    },
+    {
+      "page": 65,
+      "family": "UltraTax",
+      "label": "Income_from_Passthrough_Statement_Detailed",
+      "auto_label": "Income_from_Passthrough_Statement_Detailed",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Income from Passthrough Statement - Detailed"
+    },
+    {
+      "page": 66,
+      "family": "UltraTax",
+      "label": "Income_from_Passthrough_Statement_Detailed",
+      "auto_label": "Income_from_Passthrough_Statement_Detailed",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Income from Passthrough Statement - Detailed"
+    },
+    {
+      "page": 67,
+      "family": "UltraTax",
+      "label": "Income_from_Passthrough_Statement_Detailed",
+      "auto_label": "Income_from_Passthrough_Statement_Detailed",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Income from Passthrough Statement - Detailed"
+    },
+    {
+      "page": 68,
+      "family": "UltraTax",
+      "label": "Income_from_Passthrough_Statement_Detailed",
+      "auto_label": "Income_from_Passthrough_Statement_Detailed",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Income from Passthrough Statement - Detailed"
+    },
+    {
+      "page": 69,
+      "family": "UltraTax",
+      "label": "Publicly_Traded_Partnership_Worksheet",
+      "auto_label": "Publicly_Traded_Partnership_Worksheet",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Publicly Traded Partnership Worksheet"
+    },
+    {
+      "page": 70,
+      "family": "UltraTax",
+      "label": "Federal_Schedule_F_Profit_or_Loss_from_Farming",
+      "auto_label": "Federal_Schedule_F_Profit_or_Loss_from_Farming",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Federal Schedule F - Profit or Loss from Farming"
+    },
+    {
+      "page": 71,
+      "family": "UltraTax",
+      "label": "Federal_Schedule_F_Profit_or_Loss_from_Farming",
+      "auto_label": "Federal_Schedule_F_Profit_or_Loss_from_Farming",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Federal Schedule F - Profit or Loss from Farming"
+    },
+    {
+      "page": 72,
+      "family": "UltraTax",
+      "label": "Form_1116_Foreign_Tax_Credit",
+      "auto_label": "Form_1116_Foreign_Tax_Credit",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 1116 - Foreign Tax Credit"
+    },
+    {
+      "page": 73,
+      "family": "UltraTax",
+      "label": "Form_1116_Foreign_Tax_Credit",
+      "auto_label": "Form_1116_Foreign_Tax_Credit",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 1116 - Foreign Tax Credit"
+    },
+    {
+      "page": 74,
+      "family": "UltraTax",
+      "label": "Form_2441_Child_and_Dependent_Care_Expenses",
+      "auto_label": "Form_2441_Child_and_Dependent_Care_Expenses",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 2441 - Child and Dependent Care Expenses"
+    },
+    {
+      "page": 75,
+      "family": "UltraTax",
+      "label": "Form_2441_Child_and_Dependent_Care_Expenses",
+      "auto_label": "Form_2441_Child_and_Dependent_Care_Expenses",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 2441 - Child and Dependent Care Expenses"
+    },
+    {
+      "page": 76,
+      "family": "UltraTax",
+      "label": "Form_3800_General_Business_Credit",
+      "auto_label": "Form_3800_General_Business_Credit",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 3800 - General Business Credit"
+    },
+    {
+      "page": 77,
+      "family": "UltraTax",
+      "label": "Form_3800_General_Business_Credit",
+      "auto_label": "Form_3800_General_Business_Credit",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 3800 - General Business Credit"
+    },
+    {
+      "page": 78,
+      "family": "UltraTax",
+      "label": "Form_3800_Part_IV",
+      "auto_label": "Form_3800_Part_IV",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 3800 - Part IV"
+    },
+    {
+      "page": 79,
+      "family": "UltraTax",
+      "label": "Form_3800_Part_IV",
+      "auto_label": "Form_3800_Part_IV",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 3800 - Part IV"
+    },
+    {
+      "page": 80,
+      "family": "UltraTax",
+      "label": "Form_3800_Part_VI",
+      "auto_label": "Form_3800_Part_VI",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 3800 - Part VI"
+    },
+    {
+      "page": 81,
+      "family": "UltraTax",
+      "label": "Form_4797_Sales_of_Business_Property",
+      "auto_label": "Form_4797_Sales_of_Business_Property",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 4797 - Sales of Business Property"
+    },
+    {
+      "page": 82,
+      "family": "UltraTax",
+      "label": "Form_4797_Sales_of_Business_Property_Page_2",
+      "auto_label": "Form_4797_Sales_of_Business_Property_Page_2",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 4797 - Sales of Business Property, Page 2"
+    },
+    {
+      "page": 83,
+      "family": "UltraTax",
+      "label": "Form_5329_Additional_Taxes_on_Qualified_Plans",
+      "auto_label": "Form_5329_Additional_Taxes_on_Qualified_Plans",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 5329 - Additional Taxes on Qualified Plans"
+    },
+    {
+      "page": 84,
+      "family": "UltraTax",
+      "label": "Form_5329_Additional_Taxes_on_Qualified_Plans",
+      "auto_label": "Form_5329_Additional_Taxes_on_Qualified_Plans",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 5329 - Additional Taxes on Qualified Plans"
+    },
+    {
+      "page": 85,
+      "family": "UltraTax",
+      "label": "Form_5329_Additional_Taxes_on_Qualified_Plans",
+      "auto_label": "Form_5329_Additional_Taxes_on_Qualified_Plans",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 5329 - Additional Taxes on Qualified Plans"
+    },
+    {
+      "page": 86,
+      "family": "UltraTax",
+      "label": "Form_5329_Additional_Taxes_on_Qualified_Plans",
+      "auto_label": "Form_5329_Additional_Taxes_on_Qualified_Plans",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 5329 - Additional Taxes on Qualified Plans"
+    },
+    {
+      "page": 87,
+      "family": "UltraTax",
+      "label": "Form_6251_Alternative_Minimum_Tax",
+      "auto_label": "Form_6251_Alternative_Minimum_Tax",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 6251 - Alternative Minimum Tax"
+    },
+    {
+      "page": 88,
+      "family": "UltraTax",
+      "label": "Form_6251_Alternative_Minimum_Tax",
+      "auto_label": "Form_6251_Alternative_Minimum_Tax",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 6251 - Alternative Minimum Tax"
+    },
+    {
+      "page": 89,
+      "family": "UltraTax",
+      "label": "Form_6251_AMT_Charitable_Contributions_Worksheet",
+      "auto_label": "Form_6251_AMT_Charitable_Contributions_Worksheet",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 6251 - AMT Charitable Contributions Worksheet"
+    },
+    {
+      "page": 90,
+      "family": "UltraTax",
+      "label": "Form_6251_AMT_Charitable_Contributions_Worksheet",
+      "auto_label": "Form_6251_AMT_Charitable_Contributions_Worksheet",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 6251 - AMT Charitable Contributions Worksheet"
+    },
+    {
+      "page": 91,
+      "family": "UltraTax",
+      "label": "Form_6251_AMT_Charitable_Contributions_Worksheet",
+      "auto_label": "Form_6251_AMT_Charitable_Contributions_Worksheet",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 6251 - AMT Charitable Contributions Worksheet"
+    },
+    {
+      "page": 92,
+      "family": "UltraTax",
+      "label": "Alternative_Minimum_Tax_Reconciliation_Report",
+      "auto_label": "Alternative_Minimum_Tax_Reconciliation_Report",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Alternative Minimum Tax Reconciliation Report"
+    },
+    {
+      "page": 93,
+      "family": "UltraTax",
+      "label": "Alternative_Minimum_Tax_Reconciliation_Report",
+      "auto_label": "Alternative_Minimum_Tax_Reconciliation_Report",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Alternative Minimum Tax Reconciliation Report"
+    },
+    {
+      "page": 94,
+      "family": "UltraTax",
+      "label": "Alternative_Minimum_Tax_Depreciation_Report",
+      "auto_label": "Alternative_Minimum_Tax_Depreciation_Report",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Alternative Minimum Tax Depreciation Report"
+    },
+    {
+      "page": 95,
+      "family": "UltraTax",
+      "label": "Schedule_EIC_Earned_Income_Credit",
+      "auto_label": "Schedule_EIC_Earned_Income_Credit",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Schedule EIC - Earned Income Credit"
+    },
+    {
+      "page": 96,
+      "family": "UltraTax",
+      "label": "Schedule_EIC_Worksheet_A",
+      "auto_label": "Schedule_EIC_Worksheet_A",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Schedule EIC - Worksheet A"
+    },
+    {
+      "page": 97,
+      "family": "UltraTax",
+      "label": "Schedule_EIC_Earned_Income_Worksheet",
+      "auto_label": "Schedule_EIC_Earned_Income_Worksheet",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Schedule EIC - Earned Income Worksheet"
+    },
+    {
+      "page": 98,
+      "family": "UltraTax",
+      "label": "Schedule_8812_Credits_for_Qualifying_Children_and_Other_Dependents",
+      "auto_label": "Schedule_8812_Credits_for_Qualifying_Children_and_Other_Dependents",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Schedule 8812 - Credits for Qualifying Children and Other Dependents"
+    },
+    {
+      "page": 99,
+      "family": "UltraTax",
+      "label": "Schedule_8812_Credits_for_Qualifying_Children_and_Other_Dependents",
+      "auto_label": "Schedule_8812_Credits_for_Qualifying_Children_and_Other_Dependents",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Schedule 8812 - Credits for Qualifying Children and Other Dependents"
+    },
+    {
+      "page": 100,
+      "family": "UltraTax",
+      "label": "Form_4952_Investment_Interest_Expense_Deduction",
+      "auto_label": "Form_4952_Investment_Interest_Expense_Deduction",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 4952 - Investment Interest Expense Deduction"
+    },
+    {
+      "page": 101,
+      "family": "UltraTax",
+      "label": "Form_8867_Paid_Preparer's_Due_Diligence_Checklist",
+      "auto_label": "Form_8867_Paid_Preparer's_Due_Diligence_Checklist",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8867 - Paid Preparer's Due Diligence Checklist"
+    },
+    {
+      "page": 102,
+      "family": "UltraTax",
+      "label": "Form_8867_Paid_Preparer's_Due_Diligence_Checklist",
+      "auto_label": "Form_8867_Paid_Preparer's_Due_Diligence_Checklist",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8867 - Paid Preparer's Due Diligence Checklist"
+    },
+    {
+      "page": 103,
+      "family": "UltraTax",
+      "label": "Form_8582_Passive_Activity_Loss_Limitations",
+      "auto_label": "Form_8582_Passive_Activity_Loss_Limitations",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8582 - Passive Activity Loss Limitations"
+    },
+    {
+      "page": 104,
+      "family": "UltraTax",
+      "label": "Form_8582_Passive_Activity_Loss_Limitations_page_2",
+      "auto_label": "Form_8582_Passive_Activity_Loss_Limitations_page_2",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8582 - Passive Activity Loss Limitations, page 2"
+    },
+    {
+      "page": 105,
+      "family": "UltraTax",
+      "label": "Form_8582_Passive_Activity_Loss_Limitations_page_3",
+      "auto_label": "Form_8582_Passive_Activity_Loss_Limitations_page_3",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8582 - Passive Activity Loss Limitations, page 3"
+    },
+    {
+      "page": 106,
+      "family": "UltraTax",
+      "label": "Form_8582_CR_Passive_Activity_Credit_Limitations",
+      "auto_label": "Form_8582_CR_Passive_Activity_Credit_Limitations",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8582-CR - Passive Activity Credit Limitations"
+    },
+    {
+      "page": 107,
+      "family": "UltraTax",
+      "label": "Form_8582_CR_Passive_Activity_Credit_Limitations",
+      "auto_label": "Form_8582_CR_Passive_Activity_Credit_Limitations",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8582-CR - Passive Activity Credit Limitations"
+    },
+    {
+      "page": 108,
+      "family": "UltraTax",
+      "label": "Form_8582_AMT_Passive_Activity_Loss_Limitations_(Alternative_Minimum_Tax)",
+      "auto_label": "Form_8582_AMT_Passive_Activity_Loss_Limitations_(Alternative_Minimum_Tax)",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8582 AMT - Passive Activity Loss Limitations (Alternative Minimum Tax)"
+    },
+    {
+      "page": 109,
+      "family": "UltraTax",
+      "label": "Form_8582_AMT_Passive_Activity_Loss_Limitations_page_2",
+      "auto_label": "Form_8582_AMT_Passive_Activity_Loss_Limitations_page_2",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8582 AMT - Passive Activity Loss Limitations, page 2"
+    },
+    {
+      "page": 110,
+      "family": "UltraTax",
+      "label": "Form_8582_AMT_Passive_Activity_Loss_Limitations_page_3",
+      "auto_label": "Form_8582_AMT_Passive_Activity_Loss_Limitations_page_3",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8582 AMT - Passive Activity Loss Limitations, page 3"
+    },
+    {
+      "page": 111,
+      "family": "UltraTax",
+      "label": "Form_8332_Release/Revocation_of_Release_of_Claim_to_Exemption_for_Child",
+      "auto_label": "Form_8332_Release/Revocation_of_Release_of_Claim_to_Exemption_for_Child",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8332 - Release/Revocation of Release of Claim to Exemption for Child"
+    },
+    {
+      "page": 112,
+      "family": "UltraTax",
+      "label": "Form_8332_Release/Revocation_of_Release_of_Claim_to_Exemption_for_Child",
+      "auto_label": "Form_8332_Release/Revocation_of_Release_of_Claim_to_Exemption_for_Child",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8332 - Release/Revocation of Release of Claim to Exemption for Child"
+    },
+    {
+      "page": 113,
+      "family": "UltraTax",
+      "label": "Form_8332_Release/Revocation_of_Release_of_Claim_to_Exemption_for_Child",
+      "auto_label": "Form_8332_Release/Revocation_of_Release_of_Claim_to_Exemption_for_Child",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8332 - Release/Revocation of Release of Claim to Exemption for Child"
+    },
+    {
+      "page": 114,
+      "family": "UltraTax",
+      "label": "Form_4562_Depreciation_and_Amortization_Summary",
+      "auto_label": "Form_4562_Depreciation_and_Amortization_Summary",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 4562 - Depreciation and Amortization Summary"
+    },
+    {
+      "page": 115,
+      "family": "UltraTax",
+      "label": "Form_4562_Depreciation_and_Amortization",
+      "auto_label": "Form_4562_Depreciation_and_Amortization",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 4562 - Depreciation and Amortization"
+    },
+    {
+      "page": 116,
+      "family": "UltraTax",
+      "label": "Form_4562_Depreciation_and_Amortization",
+      "auto_label": "Form_4562_Depreciation_and_Amortization",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 4562 - Depreciation and Amortization"
+    },
+    {
+      "page": 117,
+      "family": "UltraTax",
+      "label": "Form_4562_Depreciation_and_Amortization",
+      "auto_label": "Form_4562_Depreciation_and_Amortization",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 4562 - Depreciation and Amortization"
+    },
+    {
+      "page": 118,
+      "family": "UltraTax",
+      "label": "Form_4562_Depreciation_and_Amortization",
+      "auto_label": "Form_4562_Depreciation_and_Amortization",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 4562 - Depreciation and Amortization"
+    },
+    {
+      "page": 119,
+      "family": "UltraTax",
+      "label": "Form_4562_Depreciation_and_Amortization",
+      "auto_label": "Form_4562_Depreciation_and_Amortization",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 4562 - Depreciation and Amortization"
+    },
+    {
+      "page": 120,
+      "family": "UltraTax",
+      "label": "Form_4562_Depreciation_and_Amortization",
+      "auto_label": "Form_4562_Depreciation_and_Amortization",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 4562 - Depreciation and Amortization"
+    },
+    {
+      "page": 121,
+      "family": "UltraTax",
+      "label": "Form_1116_Allocation_of_Itemized_Deductions",
+      "auto_label": "Form_1116_Allocation_of_Itemized_Deductions",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 1116 - Allocation of Itemized Deductions"
+    },
+    {
+      "page": 122,
+      "family": "UltraTax",
+      "label": "Worksheet_for_NOL_Deduction",
+      "auto_label": "Worksheet_for_NOL_Deduction",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Worksheet for NOL Deduction"
+    },
+    {
+      "page": 123,
+      "family": "UltraTax",
+      "label": "Worksheet_for_NOL_Carryover",
+      "auto_label": "Worksheet_for_NOL_Carryover",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Worksheet for NOL Carryover"
+    },
+    {
+      "page": 124,
+      "family": "UltraTax",
+      "label": "Detail_NOL_Carryover/Carryback_Worksheet",
+      "auto_label": "Detail_NOL_Carryover/Carryback_Worksheet",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Detail NOL Carryover/Carryback Worksheet"
+    },
+    {
+      "page": 125,
+      "family": "UltraTax",
+      "label": "Worksheet_for_Alternative_Tax_NOL_Carryover",
+      "auto_label": "Worksheet_for_Alternative_Tax_NOL_Carryover",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Worksheet for Alternative Tax NOL Carryover"
+    },
+    {
+      "page": 126,
+      "family": "UltraTax",
+      "label": "Detail_AMT_NOL_Carryover_Worksheet",
+      "auto_label": "Detail_AMT_NOL_Carryover_Worksheet",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Detail AMT NOL Carryover Worksheet"
+    },
+    {
+      "page": 127,
+      "family": "UltraTax",
+      "label": "Detail_General_Business_Credit_Carryforward_Worksheet",
+      "auto_label": "Detail_General_Business_Credit_Carryforward_Worksheet",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Detail General Business Credit Carryforward Worksheet"
+    },
+    {
+      "page": 128,
+      "family": "UltraTax",
+      "label": "FD_Statement(s)_1_2_3",
+      "auto_label": "FD_Statement(s)_1_2_3",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FD Statement(s) 1, 2, 3"
+    },
+    {
+      "page": 129,
+      "family": "UltraTax",
+      "label": "FD_Statement(s)_4",
+      "auto_label": "FD_Statement(s)_4",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FD Statement(s) 4"
+    },
+    {
+      "page": 130,
+      "family": "UltraTax",
+      "label": "FD_Statement(s)_5",
+      "auto_label": "FD_Statement(s)_5",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FD Statement(s) 5"
+    },
+    {
+      "page": 131,
+      "family": "UltraTax",
+      "label": "FD_Statement(s)_6_7",
+      "auto_label": "FD_Statement(s)_6_7",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FD Statement(s) 6, 7"
+    },
+    {
+      "page": 132,
+      "family": "UltraTax",
+      "label": "FD_Statement(s)_8_9_10",
+      "auto_label": "FD_Statement(s)_8_9_10",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FD Statement(s) 8, 9, 10"
+    },
+    {
+      "page": 133,
+      "family": "UltraTax",
+      "label": "FD_Statement(s)_10",
+      "auto_label": "FD_Statement(s)_10",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FD Statement(s) 10"
+    },
+    {
+      "page": 134,
+      "family": "UltraTax",
+      "label": "FD_Statement(s)_11_12",
+      "auto_label": "FD_Statement(s)_11_12",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FD Statement(s) 11, 12"
+    },
+    {
+      "page": 135,
+      "family": "UltraTax",
+      "label": "FD_Statement(s)_13",
+      "auto_label": "FD_Statement(s)_13",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FD Statement(s) 13"
+    },
+    {
+      "page": 136,
+      "family": "UltraTax",
+      "label": "FD_Statement(s)_14_15",
+      "auto_label": "FD_Statement(s)_14_15",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FD Statement(s) 14, 15"
+    },
+    {
+      "page": 137,
+      "family": "UltraTax",
+      "label": "FD_Statement(s)_16_17_18",
+      "auto_label": "FD_Statement(s)_16_17_18",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FD Statement(s) 16, 17, 18"
+    },
+    {
+      "page": 138,
+      "family": "UltraTax",
+      "label": "FD_Statement(s)_19",
+      "auto_label": "FD_Statement(s)_19",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FD Statement(s) 19"
+    },
+    {
+      "page": 139,
+      "family": "UltraTax",
+      "label": "FD_Statement(s)_19_20",
+      "auto_label": "FD_Statement(s)_19_20",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FD Statement(s) 19, 20"
+    },
+    {
+      "page": 140,
+      "family": "UltraTax",
+      "label": "FD_Statement(s)_20_21",
+      "auto_label": "FD_Statement(s)_20_21",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FD Statement(s) 20, 21"
+    },
+    {
+      "page": 141,
+      "family": "UltraTax",
+      "label": "FD_Statement(s)_22",
+      "auto_label": "FD_Statement(s)_22",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FD Statement(s) 22"
+    },
+    {
+      "page": 142,
+      "family": "UltraTax",
+      "label": "FD_Statement(s)_23",
+      "auto_label": "FD_Statement(s)_23",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FD Statement(s) 23"
+    },
+    {
+      "page": 143,
+      "family": "UltraTax",
+      "label": "FD_Statement(s)_24_25_26",
+      "auto_label": "FD_Statement(s)_24_25_26",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FD Statement(s) 24, 25, 26"
+    },
+    {
+      "page": 144,
+      "family": "UltraTax",
+      "label": "FD_Statement(s)_26_27",
+      "auto_label": "FD_Statement(s)_26_27",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FD Statement(s) 26, 27"
+    },
+    {
+      "page": 145,
+      "family": "UltraTax",
+      "label": "FD_Statement(s)_27",
+      "auto_label": "FD_Statement(s)_27",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FD Statement(s) 27"
+    },
+    {
+      "page": 146,
+      "family": "UltraTax",
+      "label": "1_PG_1_Resident_Tax_Return",
+      "auto_label": "1_PG_1_Resident_Tax_Return",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "1 PG 1 - Resident Tax Return"
+    },
+    {
+      "page": 147,
+      "family": "UltraTax",
+      "label": "1_PG_2_Resident_Tax_Return",
+      "auto_label": "1_PG_2_Resident_Tax_Return",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "1 PG 2 - Resident Tax Return"
+    },
+    {
+      "page": 148,
+      "family": "UltraTax",
+      "label": "1_PG_3_Resident_Tax_Return",
+      "auto_label": "1_PG_3_Resident_Tax_Return",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "1 PG 3 - Resident Tax Return"
+    },
+    {
+      "page": 149,
+      "family": "UltraTax",
+      "label": "1_PG_4_Resident_Tax_Return",
+      "auto_label": "1_PG_4_Resident_Tax_Return",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "1 PG 4 - Resident Tax Return"
+    },
+    {
+      "page": 150,
+      "family": "UltraTax",
+      "label": "SCH_SB_Subtractions_from_Income",
+      "auto_label": "SCH_SB_Subtractions_from_Income",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "SCH SB - Subtractions from Income"
+    },
+    {
+      "page": 151,
+      "family": "UltraTax",
+      "label": "SCH_SB_Subtractions_from_Income",
+      "auto_label": "SCH_SB_Subtractions_from_Income",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "SCH SB - Subtractions from Income"
+    },
+    {
+      "page": 152,
+      "family": "UltraTax",
+      "label": "SCH_SB_Subtractions_from_Income",
+      "auto_label": "SCH_SB_Subtractions_from_Income",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "SCH SB - Subtractions from Income"
+    },
+    {
+      "page": 153,
+      "family": "UltraTax",
+      "label": "SCH_I_I.R.C._Adj",
+      "auto_label": "SCH_I_I.R.C._Adj",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "SCH I      - I.R.C. Adj"
+    },
+    {
+      "page": 154,
+      "family": "UltraTax",
+      "label": "SCH_I_I.R.C._Adj",
+      "auto_label": "SCH_I_I.R.C._Adj",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "SCH I      - I.R.C. Adj"
+    },
+    {
+      "page": 155,
+      "family": "UltraTax",
+      "label": "SCH_WD_Capital_Gain_&_Loss",
+      "auto_label": "SCH_WD_Capital_Gain_&_Loss",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "SCH WD     - Capital Gain & Loss"
+    },
+    {
+      "page": 156,
+      "family": "UltraTax",
+      "label": "SCH_WD_Capital_Gain_&_Loss",
+      "auto_label": "SCH_WD_Capital_Gain_&_Loss",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "SCH WD     - Capital Gain & Loss"
+    },
+    {
+      "page": 157,
+      "family": "UltraTax",
+      "label": "State_Nonconforming_Schedule_C_Profit_or_Loss_from_Business",
+      "auto_label": "State_Nonconforming_Schedule_C_Profit_or_Loss_from_Business",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "State Nonconforming Schedule C - Profit or Loss from Business"
+    },
+    {
+      "page": 158,
+      "family": "UltraTax",
+      "label": "State_Schedule_F_Profit_or_Loss_from_Farming",
+      "auto_label": "State_Schedule_F_Profit_or_Loss_from_Farming",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "State Schedule F - Profit or Loss from Farming"
+    },
+    {
+      "page": 159,
+      "family": "UltraTax",
+      "label": "State_Schedule_F_Profit_or_Loss_from_Farming",
+      "auto_label": "State_Schedule_F_Profit_or_Loss_from_Farming",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "State Schedule F - Profit or Loss from Farming"
+    },
+    {
+      "page": 160,
+      "family": "UltraTax",
+      "label": "State_Schedule_F_Profit_or_Loss_from_Farming",
+      "auto_label": "State_Schedule_F_Profit_or_Loss_from_Farming",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "State Schedule F - Profit or Loss from Farming"
+    },
+    {
+      "page": 161,
+      "family": "UltraTax",
+      "label": "State_Schedule_F_Profit_or_Loss_from_Farming",
+      "auto_label": "State_Schedule_F_Profit_or_Loss_from_Farming",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "State Schedule F - Profit or Loss from Farming"
+    },
+    {
+      "page": 162,
+      "family": "UltraTax",
+      "label": "8582_Passive_Act_Loss_Lim",
+      "auto_label": "8582_Passive_Act_Loss_Lim",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "8582        - Passive Act Loss Lim"
+    },
+    {
+      "page": 163,
+      "family": "UltraTax",
+      "label": "WI_Statement(s)_1",
+      "auto_label": "WI_Statement(s)_1",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "WI Statement(s) 1"
+    },
+    {
+      "page": 164,
+      "family": "UltraTax",
+      "label": "WI_Statement(s)_2_3_4",
+      "auto_label": "WI_Statement(s)_2_3_4",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "WI Statement(s) 2, 3, 4"
+    },
+    {
+      "page": 165,
+      "family": "UltraTax",
+      "label": "WI_Statement(s)_5_6",
+      "auto_label": "WI_Statement(s)_5_6",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "WI Statement(s) 5, 6"
+    },
+    {
+      "page": 166,
+      "family": "UltraTax",
+      "label": "WI_Statement(s)_6",
+      "auto_label": "WI_Statement(s)_6",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "WI Statement(s) 6"
+    },
+    {
+      "page": 167,
+      "family": "UltraTax",
+      "label": "NOL2_Modified_Taxable_Income_and_NOL_Deduction",
+      "auto_label": "NOL2_Modified_Taxable_Income_and_NOL_Deduction",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "NOL2                  - Modified Taxable Income and NOL Deduction"
+    },
+    {
+      "page": 168,
+      "family": "UltraTax",
+      "label": "NOL3_Carryforward_of_Losses",
+      "auto_label": "NOL3_Carryforward_of_Losses",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "NOL3 - Carryforward of Losses"
+    },
+    {
+      "page": 169,
+      "family": "UltraTax",
+      "label": "NOL3_Carryforward_of_Losses",
+      "auto_label": "NOL3_Carryforward_of_Losses",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "NOL3 - Carryforward of Losses"
+    },
+    {
+      "page": 170,
+      "family": "UltraTax",
+      "label": "NOL3_Carryforward_of_Losses",
+      "auto_label": "NOL3_Carryforward_of_Losses",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "NOL3 - Carryforward of Losses"
+    },
+    {
+      "page": 171,
+      "family": "UltraTax",
+      "label": "NOL3_Carryforward_of_Losses",
+      "auto_label": "NOL3_Carryforward_of_Losses",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "NOL3 - Carryforward of Losses"
+    }
+  ],
+  "bookmarks": [
+    {
+      "page": 1,
+      "family": "UltraTax",
+      "label": "Cover Sheet"
+    },
+    {
+      "page": 2,
+      "family": "UltraTax",
+      "label": "Diagnostics"
+    },
+    {
+      "page": 3,
+      "family": "UltraTax",
+      "label": "Diagnostics"
+    },
+    {
+      "page": 4,
+      "family": "UltraTax",
+      "label": "Diagnostics"
+    },
+    {
+      "page": 5,
+      "family": "UltraTax",
+      "label": "Diagnostics"
+    },
+    {
+      "page": 6,
+      "family": "UltraTax",
+      "label": "Diagnostics"
+    },
+    {
+      "page": 7,
+      "family": "UltraTax",
+      "label": "Diagnostics"
+    },
+    {
+      "page": 8,
+      "family": "UltraTax",
+      "label": "Diagnostics"
+    },
+    {
+      "page": 9,
+      "family": "UltraTax",
+      "label": "Diagnostics"
+    },
+    {
+      "page": 10,
+      "family": "UltraTax",
+      "label": "Diagnostics"
+    },
+    {
+      "page": 11,
+      "family": "UltraTax",
+      "label": "Diagnostics"
+    },
+    {
+      "page": 12,
+      "family": "UltraTax",
+      "label": "Tax Return Carryovers to 2024"
+    },
+    {
+      "page": 13,
+      "family": "UltraTax",
+      "label": "Tax Return Carryovers to 2024"
+    },
+    {
+      "page": 14,
+      "family": "UltraTax",
+      "label": "Tax Return Carryovers to 2024"
+    },
+    {
+      "page": 15,
+      "family": "UltraTax",
+      "label": "Tax Return Carryovers to 2024"
+    },
+    {
+      "page": 16,
+      "family": "UltraTax",
+      "label": "Tax Return Carryovers to 2024"
+    },
+    {
+      "page": 17,
+      "family": "UltraTax",
+      "label": "Tax Return Carryovers to 2024"
+    },
+    {
+      "page": 18,
+      "family": "UltraTax",
+      "label": "Tax Return Carryovers to 2024"
+    },
+    {
+      "page": 19,
+      "family": "UltraTax",
+      "label": "Return Summary, Page 1"
+    },
+    {
+      "page": 20,
+      "family": "UltraTax",
+      "label": "Return Summary, Page 2"
+    },
+    {
+      "page": 21,
+      "family": "UltraTax",
+      "label": "Data Entry"
+    },
+    {
+      "page": 22,
+      "family": "UltraTax",
+      "label": "Data Entry"
+    },
+    {
+      "page": 23,
+      "family": "UltraTax",
+      "label": "Data Entry"
+    },
+    {
+      "page": 24,
+      "family": "UltraTax",
+      "label": "Data Entry"
+    },
+    {
+      "page": 25,
+      "family": "UltraTax",
+      "label": "Data Entry"
+    },
+    {
+      "page": 26,
+      "family": "UltraTax",
+      "label": "Data Entry"
+    },
+    {
+      "page": 27,
+      "family": "UltraTax",
+      "label": "Data Entry"
+    },
+    {
+      "page": 28,
+      "family": "UltraTax",
+      "label": "Data Entry"
+    },
+    {
+      "page": 29,
+      "family": "UltraTax",
+      "label": "Data Entry"
+    },
+    {
+      "page": 30,
+      "family": "UltraTax",
+      "label": "Data Entry"
+    },
+    {
+      "page": 31,
+      "family": "UltraTax",
+      "label": "Data Entry"
+    },
+    {
+      "page": 32,
+      "family": "UltraTax",
+      "label": "Data Entry"
+    },
+    {
+      "page": 33,
+      "family": "UltraTax",
+      "label": "Data Entry"
+    },
+    {
+      "page": 34,
+      "family": "UltraTax",
+      "label": "Data Entry"
+    },
+    {
+      "page": 35,
+      "family": "UltraTax",
+      "label": "Depreciation Variance Report"
+    },
+    {
+      "page": 36,
+      "family": "UltraTax",
+      "label": "Form 1040 - U.S. Individual Income Tax Return"
+    },
+    {
+      "page": 37,
+      "family": "UltraTax",
+      "label": "Form 1040 - U.S. Individual Income Tax Return"
+    },
+    {
+      "page": 38,
+      "family": "UltraTax",
+      "label": "Schedule 1 - Additional Income and Adjustments to Income"
+    },
+    {
+      "page": 39,
+      "family": "UltraTax",
+      "label": "Schedule 1 - Additional Income and Adjustments to Income"
+    },
+    {
+      "page": 40,
+      "family": "UltraTax",
+      "label": "Federal Schedule A - Itemized Deductions"
+    },
+    {
+      "page": 41,
+      "family": "UltraTax",
+      "label": "Schedule A - Charitable Contributions Worksheet"
+    },
+    {
+      "page": 42,
+      "family": "UltraTax",
+      "label": "Schedule A - Charitable Contributions Worksheet"
+    },
+    {
+      "page": 43,
+      "family": "UltraTax",
+      "label": "Schedule A - Charitable Contributions Worksheet"
+    },
+    {
+      "page": 44,
+      "family": "UltraTax",
+      "label": "Schedule A - Charitable Contributions Limitation"
+    },
+    {
+      "page": 45,
+      "family": "UltraTax",
+      "label": "Federal Schedule B - Interest and Ordinary Dividends"
+    },
+    {
+      "page": 46,
+      "family": "UltraTax",
+      "label": "Combined Interest and Dividend Statement"
+    },
+    {
+      "page": 47,
+      "family": "UltraTax",
+      "label": "Federal Schedule C - Profit or Loss from Business"
+    },
+    {
+      "page": 48,
+      "family": "UltraTax",
+      "label": "Form 4562 - Schedule C Depreciation Detail - 1"
+    },
+    {
+      "page": 49,
+      "family": "UltraTax",
+      "label": "Federal Schedule D - Capital Gains and Losses"
+    },
+    {
+      "page": 50,
+      "family": "UltraTax",
+      "label": "Federal Schedule D - Capital Gains and Losses"
+    },
+    {
+      "page": 51,
+      "family": "UltraTax",
+      "label": "Form 8949 Short-Term A"
+    },
+    {
+      "page": 52,
+      "family": "UltraTax",
+      "label": "Form 8949 Long-Term D"
+    },
+    {
+      "page": 53,
+      "family": "UltraTax",
+      "label": "Federal Schedule D AMT - Capital Gains and Losses (Alternative Minimum Tax)"
+    },
+    {
+      "page": 54,
+      "family": "UltraTax",
+      "label": "Federal Schedule D AMT - Capital Gains and Losses (Alternative Minimum Tax)"
+    },
+    {
+      "page": 55,
+      "family": "UltraTax",
+      "label": "Form 8949 Short-Term A (Alternative Minimum Tax)"
+    },
+    {
+      "page": 56,
+      "family": "UltraTax",
+      "label": "Form 8949 Long-Term D (Alternative Minimum Tax)"
+    },
+    {
+      "page": 57,
+      "family": "UltraTax",
+      "label": "Federal Schedule E - Supplemental Income and Loss, Page 1"
+    },
+    {
+      "page": 58,
+      "family": "UltraTax",
+      "label": "Federal Schedule E - Supplemental Income and Loss, Page 2"
+    },
+    {
+      "page": 59,
+      "family": "UltraTax",
+      "label": "Income from Passthrough Statement - Detailed"
+    },
+    {
+      "page": 60,
+      "family": "UltraTax",
+      "label": "Income from Passthrough Statement - Detailed"
+    },
+    {
+      "page": 61,
+      "family": "UltraTax",
+      "label": "Income from Passthrough Statement - Detailed"
+    },
+    {
+      "page": 62,
+      "family": "UltraTax",
+      "label": "Income from Passthrough Statement - Detailed"
+    },
+    {
+      "page": 63,
+      "family": "UltraTax",
+      "label": "Income from Passthrough Statement - Detailed"
+    },
+    {
+      "page": 64,
+      "family": "UltraTax",
+      "label": "Income from Passthrough Statement - Detailed"
+    },
+    {
+      "page": 65,
+      "family": "UltraTax",
+      "label": "Income from Passthrough Statement - Detailed"
+    },
+    {
+      "page": 66,
+      "family": "UltraTax",
+      "label": "Income from Passthrough Statement - Detailed"
+    },
+    {
+      "page": 67,
+      "family": "UltraTax",
+      "label": "Income from Passthrough Statement - Detailed"
+    },
+    {
+      "page": 68,
+      "family": "UltraTax",
+      "label": "Income from Passthrough Statement - Detailed"
+    },
+    {
+      "page": 69,
+      "family": "UltraTax",
+      "label": "Publicly Traded Partnership Worksheet"
+    },
+    {
+      "page": 70,
+      "family": "UltraTax",
+      "label": "Federal Schedule F - Profit or Loss from Farming"
+    },
+    {
+      "page": 71,
+      "family": "UltraTax",
+      "label": "Federal Schedule F - Profit or Loss from Farming"
+    },
+    {
+      "page": 72,
+      "family": "UltraTax",
+      "label": "Form 1116 - Foreign Tax Credit"
+    },
+    {
+      "page": 73,
+      "family": "UltraTax",
+      "label": "Form 1116 - Foreign Tax Credit"
+    },
+    {
+      "page": 74,
+      "family": "UltraTax",
+      "label": "Form 2441 - Child and Dependent Care Expenses"
+    },
+    {
+      "page": 75,
+      "family": "UltraTax",
+      "label": "Form 2441 - Child and Dependent Care Expenses"
+    },
+    {
+      "page": 76,
+      "family": "UltraTax",
+      "label": "Form 3800 - General Business Credit"
+    },
+    {
+      "page": 77,
+      "family": "UltraTax",
+      "label": "Form 3800 - General Business Credit"
+    },
+    {
+      "page": 78,
+      "family": "UltraTax",
+      "label": "Form 3800 - Part IV"
+    },
+    {
+      "page": 79,
+      "family": "UltraTax",
+      "label": "Form 3800 - Part IV"
+    },
+    {
+      "page": 80,
+      "family": "UltraTax",
+      "label": "Form 3800 - Part VI"
+    },
+    {
+      "page": 81,
+      "family": "UltraTax",
+      "label": "Form 4797 - Sales of Business Property"
+    },
+    {
+      "page": 82,
+      "family": "UltraTax",
+      "label": "Form 4797 - Sales of Business Property, Page 2"
+    },
+    {
+      "page": 83,
+      "family": "UltraTax",
+      "label": "Form 5329 - Additional Taxes on Qualified Plans"
+    },
+    {
+      "page": 84,
+      "family": "UltraTax",
+      "label": "Form 5329 - Additional Taxes on Qualified Plans"
+    },
+    {
+      "page": 85,
+      "family": "UltraTax",
+      "label": "Form 5329 - Additional Taxes on Qualified Plans"
+    },
+    {
+      "page": 86,
+      "family": "UltraTax",
+      "label": "Form 5329 - Additional Taxes on Qualified Plans"
+    },
+    {
+      "page": 87,
+      "family": "UltraTax",
+      "label": "Form 6251 - Alternative Minimum Tax"
+    },
+    {
+      "page": 88,
+      "family": "UltraTax",
+      "label": "Form 6251 - Alternative Minimum Tax"
+    },
+    {
+      "page": 89,
+      "family": "UltraTax",
+      "label": "Form 6251 - AMT Charitable Contributions Worksheet"
+    },
+    {
+      "page": 90,
+      "family": "UltraTax",
+      "label": "Form 6251 - AMT Charitable Contributions Worksheet"
+    },
+    {
+      "page": 91,
+      "family": "UltraTax",
+      "label": "Form 6251 - AMT Charitable Contributions Worksheet"
+    },
+    {
+      "page": 92,
+      "family": "UltraTax",
+      "label": "Alternative Minimum Tax Reconciliation Report"
+    },
+    {
+      "page": 93,
+      "family": "UltraTax",
+      "label": "Alternative Minimum Tax Reconciliation Report"
+    },
+    {
+      "page": 94,
+      "family": "UltraTax",
+      "label": "Alternative Minimum Tax Depreciation Report"
+    },
+    {
+      "page": 95,
+      "family": "UltraTax",
+      "label": "Schedule EIC - Earned Income Credit"
+    },
+    {
+      "page": 96,
+      "family": "UltraTax",
+      "label": "Schedule EIC - Worksheet A"
+    },
+    {
+      "page": 97,
+      "family": "UltraTax",
+      "label": "Schedule EIC - Earned Income Worksheet"
+    },
+    {
+      "page": 98,
+      "family": "UltraTax",
+      "label": "Schedule 8812 - Credits for Qualifying Children and Other Dependents"
+    },
+    {
+      "page": 99,
+      "family": "UltraTax",
+      "label": "Schedule 8812 - Credits for Qualifying Children and Other Dependents"
+    },
+    {
+      "page": 100,
+      "family": "UltraTax",
+      "label": "Form 4952 - Investment Interest Expense Deduction"
+    },
+    {
+      "page": 101,
+      "family": "UltraTax",
+      "label": "Form 8867 - Paid Preparer's Due Diligence Checklist"
+    },
+    {
+      "page": 102,
+      "family": "UltraTax",
+      "label": "Form 8867 - Paid Preparer's Due Diligence Checklist"
+    },
+    {
+      "page": 103,
+      "family": "UltraTax",
+      "label": "Form 8582 - Passive Activity Loss Limitations"
+    },
+    {
+      "page": 104,
+      "family": "UltraTax",
+      "label": "Form 8582 - Passive Activity Loss Limitations, page 2"
+    },
+    {
+      "page": 105,
+      "family": "UltraTax",
+      "label": "Form 8582 - Passive Activity Loss Limitations, page 3"
+    },
+    {
+      "page": 106,
+      "family": "UltraTax",
+      "label": "Form 8582-CR - Passive Activity Credit Limitations"
+    },
+    {
+      "page": 107,
+      "family": "UltraTax",
+      "label": "Form 8582-CR - Passive Activity Credit Limitations"
+    },
+    {
+      "page": 108,
+      "family": "UltraTax",
+      "label": "Form 8582 AMT - Passive Activity Loss Limitations (Alternative Minimum Tax)"
+    },
+    {
+      "page": 109,
+      "family": "UltraTax",
+      "label": "Form 8582 AMT - Passive Activity Loss Limitations, page 2"
+    },
+    {
+      "page": 110,
+      "family": "UltraTax",
+      "label": "Form 8582 AMT - Passive Activity Loss Limitations, page 3"
+    },
+    {
+      "page": 111,
+      "family": "UltraTax",
+      "label": "Form 8332 - Release/Revocation of Release of Claim to Exemption for Child"
+    },
+    {
+      "page": 112,
+      "family": "UltraTax",
+      "label": "Form 8332 - Release/Revocation of Release of Claim to Exemption for Child"
+    },
+    {
+      "page": 113,
+      "family": "UltraTax",
+      "label": "Form 8332 - Release/Revocation of Release of Claim to Exemption for Child"
+    },
+    {
+      "page": 114,
+      "family": "UltraTax",
+      "label": "Form 4562 - Depreciation and Amortization Summary"
+    },
+    {
+      "page": 115,
+      "family": "UltraTax",
+      "label": "Form 4562 - Depreciation and Amortization"
+    },
+    {
+      "page": 116,
+      "family": "UltraTax",
+      "label": "Form 4562 - Depreciation and Amortization"
+    },
+    {
+      "page": 117,
+      "family": "UltraTax",
+      "label": "Form 4562 - Depreciation and Amortization"
+    },
+    {
+      "page": 118,
+      "family": "UltraTax",
+      "label": "Form 4562 - Depreciation and Amortization"
+    },
+    {
+      "page": 119,
+      "family": "UltraTax",
+      "label": "Form 4562 - Depreciation and Amortization"
+    },
+    {
+      "page": 120,
+      "family": "UltraTax",
+      "label": "Form 4562 - Depreciation and Amortization"
+    },
+    {
+      "page": 121,
+      "family": "UltraTax",
+      "label": "Form 1116 - Allocation of Itemized Deductions"
+    },
+    {
+      "page": 122,
+      "family": "UltraTax",
+      "label": "Worksheet for NOL Deduction"
+    },
+    {
+      "page": 123,
+      "family": "UltraTax",
+      "label": "Worksheet for NOL Carryover"
+    },
+    {
+      "page": 124,
+      "family": "UltraTax",
+      "label": "Detail NOL Carryover/Carryback Worksheet"
+    },
+    {
+      "page": 125,
+      "family": "UltraTax",
+      "label": "Worksheet for Alternative Tax NOL Carryover"
+    },
+    {
+      "page": 126,
+      "family": "UltraTax",
+      "label": "Detail AMT NOL Carryover Worksheet"
+    },
+    {
+      "page": 127,
+      "family": "UltraTax",
+      "label": "Detail General Business Credit Carryforward Worksheet"
+    },
+    {
+      "page": 128,
+      "family": "UltraTax",
+      "label": "FD Statement(s) 1, 2, 3"
+    },
+    {
+      "page": 129,
+      "family": "UltraTax",
+      "label": "FD Statement(s) 4"
+    },
+    {
+      "page": 130,
+      "family": "UltraTax",
+      "label": "FD Statement(s) 5"
+    },
+    {
+      "page": 131,
+      "family": "UltraTax",
+      "label": "FD Statement(s) 6, 7"
+    },
+    {
+      "page": 132,
+      "family": "UltraTax",
+      "label": "FD Statement(s) 8, 9, 10"
+    },
+    {
+      "page": 133,
+      "family": "UltraTax",
+      "label": "FD Statement(s) 10"
+    },
+    {
+      "page": 134,
+      "family": "UltraTax",
+      "label": "FD Statement(s) 11, 12"
+    },
+    {
+      "page": 135,
+      "family": "UltraTax",
+      "label": "FD Statement(s) 13"
+    },
+    {
+      "page": 136,
+      "family": "UltraTax",
+      "label": "FD Statement(s) 14, 15"
+    },
+    {
+      "page": 137,
+      "family": "UltraTax",
+      "label": "FD Statement(s) 16, 17, 18"
+    },
+    {
+      "page": 138,
+      "family": "UltraTax",
+      "label": "FD Statement(s) 19"
+    },
+    {
+      "page": 139,
+      "family": "UltraTax",
+      "label": "FD Statement(s) 19, 20"
+    },
+    {
+      "page": 140,
+      "family": "UltraTax",
+      "label": "FD Statement(s) 20, 21"
+    },
+    {
+      "page": 141,
+      "family": "UltraTax",
+      "label": "FD Statement(s) 22"
+    },
+    {
+      "page": 142,
+      "family": "UltraTax",
+      "label": "FD Statement(s) 23"
+    },
+    {
+      "page": 143,
+      "family": "UltraTax",
+      "label": "FD Statement(s) 24, 25, 26"
+    },
+    {
+      "page": 144,
+      "family": "UltraTax",
+      "label": "FD Statement(s) 26, 27"
+    },
+    {
+      "page": 145,
+      "family": "UltraTax",
+      "label": "FD Statement(s) 27"
+    },
+    {
+      "page": 146,
+      "family": "UltraTax",
+      "label": "1 PG 1 - Resident Tax Return"
+    },
+    {
+      "page": 147,
+      "family": "UltraTax",
+      "label": "1 PG 2 - Resident Tax Return"
+    },
+    {
+      "page": 148,
+      "family": "UltraTax",
+      "label": "1 PG 3 - Resident Tax Return"
+    },
+    {
+      "page": 149,
+      "family": "UltraTax",
+      "label": "1 PG 4 - Resident Tax Return"
+    },
+    {
+      "page": 150,
+      "family": "UltraTax",
+      "label": "SCH SB - Subtractions from Income"
+    },
+    {
+      "page": 151,
+      "family": "UltraTax",
+      "label": "SCH SB - Subtractions from Income"
+    },
+    {
+      "page": 152,
+      "family": "UltraTax",
+      "label": "SCH SB - Subtractions from Income"
+    },
+    {
+      "page": 153,
+      "family": "UltraTax",
+      "label": "SCH I      - I.R.C. Adj"
+    },
+    {
+      "page": 154,
+      "family": "UltraTax",
+      "label": "SCH I      - I.R.C. Adj"
+    },
+    {
+      "page": 155,
+      "family": "UltraTax",
+      "label": "SCH WD     - Capital Gain & Loss"
+    },
+    {
+      "page": 156,
+      "family": "UltraTax",
+      "label": "SCH WD     - Capital Gain & Loss"
+    },
+    {
+      "page": 157,
+      "family": "UltraTax",
+      "label": "State Nonconforming Schedule C - Profit or Loss from Business"
+    },
+    {
+      "page": 158,
+      "family": "UltraTax",
+      "label": "State Schedule F - Profit or Loss from Farming"
+    },
+    {
+      "page": 159,
+      "family": "UltraTax",
+      "label": "State Schedule F - Profit or Loss from Farming"
+    },
+    {
+      "page": 160,
+      "family": "UltraTax",
+      "label": "State Schedule F - Profit or Loss from Farming"
+    },
+    {
+      "page": 161,
+      "family": "UltraTax",
+      "label": "State Schedule F - Profit or Loss from Farming"
+    },
+    {
+      "page": 162,
+      "family": "UltraTax",
+      "label": "8582        - Passive Act Loss Lim"
+    },
+    {
+      "page": 163,
+      "family": "UltraTax",
+      "label": "WI Statement(s) 1"
+    },
+    {
+      "page": 164,
+      "family": "UltraTax",
+      "label": "WI Statement(s) 2, 3, 4"
+    },
+    {
+      "page": 165,
+      "family": "UltraTax",
+      "label": "WI Statement(s) 5, 6"
+    },
+    {
+      "page": 166,
+      "family": "UltraTax",
+      "label": "WI Statement(s) 6"
+    },
+    {
+      "page": 167,
+      "family": "UltraTax",
+      "label": "NOL2                  - Modified Taxable Income and NOL Deduction"
+    },
+    {
+      "page": 168,
+      "family": "UltraTax",
+      "label": "NOL3 - Carryforward of Losses"
+    },
+    {
+      "page": 169,
+      "family": "UltraTax",
+      "label": "NOL3 - Carryforward of Losses"
+    },
+    {
+      "page": 170,
+      "family": "UltraTax",
+      "label": "NOL3 - Carryforward of Losses"
+    },
+    {
+      "page": 171,
+      "family": "UltraTax",
+      "label": "NOL3 - Carryforward of Losses"
+    }
+  ],
+  "ultratax_mode": false
+}

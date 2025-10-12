@@ -1,0 +1,627 @@
+{
+  "document": "sample_multiple.pdf",
+  "config": "bookmarks_v2",
+  "source": "UltraTax",
+  "total_pages": 44,
+  "pages": [
+    {
+      "page": 1,
+      "family": "UltraTax",
+      "label": "Client_Mailing_Slip",
+      "auto_label": "Client_Mailing_Slip",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Client Mailing Slip"
+    },
+    {
+      "page": 2,
+      "family": "UltraTax",
+      "label": "Filing_Instructions_(FinCEN_114)_Act_1",
+      "auto_label": "Filing_Instructions_(FinCEN_114)_Act_1",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Filing Instructions (FinCEN 114) - Act 1"
+    },
+    {
+      "page": 3,
+      "family": "UltraTax",
+      "label": "FinCEN_Form_114a_Act_1",
+      "auto_label": "FinCEN_Form_114a_Act_1",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FinCEN Form 114a - Act 1"
+    },
+    {
+      "page": 4,
+      "family": "UltraTax",
+      "label": "Filing_Instructions_(FinCEN_114)_Act_2",
+      "auto_label": "Filing_Instructions_(FinCEN_114)_Act_2",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Filing Instructions (FinCEN 114) - Act 2"
+    },
+    {
+      "page": 5,
+      "family": "UltraTax",
+      "label": "FinCEN_Form_114a_Act_2",
+      "auto_label": "FinCEN_Form_114a_Act_2",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FinCEN Form 114a - Act 2"
+    },
+    {
+      "page": 6,
+      "family": "UltraTax",
+      "label": "FinCEN_Form_114_Page_1_Act_1",
+      "auto_label": "FinCEN_Form_114_Page_1_Act_1",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FinCEN Form 114 Page 1 - Act 1"
+    },
+    {
+      "page": 7,
+      "family": "UltraTax",
+      "label": "FinCEN_Form_114_Page_2_Act_1",
+      "auto_label": "FinCEN_Form_114_Page_2_Act_1",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FinCEN Form 114 Page 2 - Act 1"
+    },
+    {
+      "page": 8,
+      "family": "UltraTax",
+      "label": "FinCEN_Form_114_Page_3_Act_1",
+      "auto_label": "FinCEN_Form_114_Page_3_Act_1",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FinCEN Form 114 Page 3 - Act 1"
+    },
+    {
+      "page": 9,
+      "family": "UltraTax",
+      "label": "FinCEN_Form_114_Page_5",
+      "auto_label": "FinCEN_Form_114_Page_5",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FinCEN Form 114 Page 5"
+    },
+    {
+      "page": 10,
+      "family": "UltraTax",
+      "label": "FinCEN_Form_114_Page_1_Act_2",
+      "auto_label": "FinCEN_Form_114_Page_1_Act_2",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FinCEN Form 114 Page 1 - Act 2"
+    },
+    {
+      "page": 11,
+      "family": "UltraTax",
+      "label": "FinCEN_Form_114_Page_2_Act_2",
+      "auto_label": "FinCEN_Form_114_Page_2_Act_2",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FinCEN Form 114 Page 2 - Act 2"
+    },
+    {
+      "page": 12,
+      "family": "UltraTax",
+      "label": "FinCEN_Form_114_Page_3_Act_2",
+      "auto_label": "FinCEN_Form_114_Page_3_Act_2",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FinCEN Form 114 Page 3 - Act 2"
+    },
+    {
+      "page": 13,
+      "family": "UltraTax",
+      "label": "FinCEN_Form_114_Page_5",
+      "auto_label": "FinCEN_Form_114_Page_5",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "FinCEN Form 114 Page 5"
+    },
+    {
+      "page": 14,
+      "family": "UltraTax",
+      "label": "Transmittal_Letter",
+      "auto_label": "Transmittal_Letter",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Transmittal Letter"
+    },
+    {
+      "page": 15,
+      "family": "UltraTax",
+      "label": "Invoice",
+      "auto_label": "Invoice",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Invoice"
+    },
+    {
+      "page": 16,
+      "family": "UltraTax",
+      "label": "Filing_Instructions",
+      "auto_label": "Filing_Instructions",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Filing Instructions"
+    },
+    {
+      "page": 17,
+      "family": "UltraTax",
+      "label": "Tax_Authority_Slipsheet",
+      "auto_label": "Tax_Authority_Slipsheet",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Tax Authority Slipsheet"
+    },
+    {
+      "page": 18,
+      "family": "UltraTax",
+      "label": "Form_1040_Page_1",
+      "auto_label": "Form_1040_Page_1",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 1040 Page 1"
+    },
+    {
+      "page": 19,
+      "family": "UltraTax",
+      "label": "Form_1040_Page_2",
+      "auto_label": "Form_1040_Page_2",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 1040 Page 2"
+    },
+    {
+      "page": 20,
+      "family": "UltraTax",
+      "label": "Form_1040/SR/NR_Schedule_1_P1",
+      "auto_label": "Form_1040/SR/NR_Schedule_1_P1",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 1040/SR/NR Schedule 1 P1"
+    },
+    {
+      "page": 21,
+      "family": "UltraTax",
+      "label": "Schedule_A",
+      "auto_label": "Schedule_A",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Schedule A"
+    },
+    {
+      "page": 22,
+      "family": "UltraTax",
+      "label": "Schedule_C_Page_1_asdf",
+      "auto_label": "Schedule_C_Page_1_asdf",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Schedule C Page 1 - asdf"
+    },
+    {
+      "page": 23,
+      "family": "UltraTax",
+      "label": "Schedule_E_Page_1_rent",
+      "auto_label": "Schedule_E_Page_1_rent",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Schedule E Page 1 - rent"
+    },
+    {
+      "page": 24,
+      "family": "UltraTax",
+      "label": "Schedule_E_Page_2",
+      "auto_label": "Schedule_E_Page_2",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Schedule E Page 2"
+    },
+    {
+      "page": 25,
+      "family": "UltraTax",
+      "label": "Schedule_F_Page_1_farmer",
+      "auto_label": "Schedule_F_Page_1_farmer",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Schedule F Page 1 - farmer"
+    },
+    {
+      "page": 26,
+      "family": "UltraTax",
+      "label": "Form_5329_Page_1_Taxpayer",
+      "auto_label": "Form_5329_Page_1_Taxpayer",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 5329 Page 1 - Taxpayer"
+    },
+    {
+      "page": 27,
+      "family": "UltraTax",
+      "label": "Form_5329_Page_2_Taxpayer",
+      "auto_label": "Form_5329_Page_2_Taxpayer",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 5329 Page 2 - Taxpayer"
+    },
+    {
+      "page": 28,
+      "family": "UltraTax",
+      "label": "Form_5329_Page_3_Taxpayer",
+      "auto_label": "Form_5329_Page_3_Taxpayer",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 5329 Page 3 - Taxpayer"
+    },
+    {
+      "page": 29,
+      "family": "UltraTax",
+      "label": "Form_6251_Page_1",
+      "auto_label": "Form_6251_Page_1",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 6251 Page 1"
+    },
+    {
+      "page": 30,
+      "family": "UltraTax",
+      "label": "Form_6252_CY_INstall_1255",
+      "auto_label": "Form_6252_CY_INstall_1255",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 6252 - CY INstall 1255"
+    },
+    {
+      "page": 31,
+      "family": "UltraTax",
+      "label": "Form_6252_Long_term",
+      "auto_label": "Form_6252_Long_term",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 6252 - Long term"
+    },
+    {
+      "page": 32,
+      "family": "UltraTax",
+      "label": "Form_6252_1231_sale",
+      "auto_label": "Form_6252_1231_sale",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 6252 - 1231 sale"
+    },
+    {
+      "page": 33,
+      "family": "UltraTax",
+      "label": "Form_6252_1245_sale",
+      "auto_label": "Form_6252_1245_sale",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 6252 - 1245 sale"
+    },
+    {
+      "page": 34,
+      "family": "UltraTax",
+      "label": "Form_6252_1250_sale",
+      "auto_label": "Form_6252_1250_sale",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 6252 - 1250 sale"
+    },
+    {
+      "page": 35,
+      "family": "UltraTax",
+      "label": "Form_6252_22",
+      "auto_label": "Form_6252_22",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 6252 - 22"
+    },
+    {
+      "page": 36,
+      "family": "UltraTax",
+      "label": "Form_6252_22_sale",
+      "auto_label": "Form_6252_22_sale",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 6252 - 22 sale"
+    },
+    {
+      "page": 37,
+      "family": "UltraTax",
+      "label": "Form_8801_Page_1",
+      "auto_label": "Form_8801_Page_1",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8801 Page 1"
+    },
+    {
+      "page": 38,
+      "family": "UltraTax",
+      "label": "Form_8801_Page_2",
+      "auto_label": "Form_8801_Page_2",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8801 Page 2"
+    },
+    {
+      "page": 39,
+      "family": "UltraTax",
+      "label": "Form_8582_Page_1",
+      "auto_label": "Form_8582_Page_1",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8582 Page 1"
+    },
+    {
+      "page": 40,
+      "family": "UltraTax",
+      "label": "Form_8582_Page_2",
+      "auto_label": "Form_8582_Page_2",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8582 Page 2"
+    },
+    {
+      "page": 41,
+      "family": "UltraTax",
+      "label": "Form_8582_Page_1_AMT",
+      "auto_label": "Form_8582_Page_1_AMT",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8582 Page 1 AMT"
+    },
+    {
+      "page": 42,
+      "family": "UltraTax",
+      "label": "Form_8582_Page_2_AMT",
+      "auto_label": "Form_8582_Page_2_AMT",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Form 8582 Page 2 AMT"
+    },
+    {
+      "page": 43,
+      "family": "UltraTax",
+      "label": "Required_Statements",
+      "auto_label": "Required_Statements",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Required Statements"
+    },
+    {
+      "page": 44,
+      "family": "UltraTax",
+      "label": "Required_Statements",
+      "auto_label": "Required_Statements",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Required Statements"
+    }
+  ],
+  "bookmarks": [
+    {
+      "page": 1,
+      "family": "UltraTax",
+      "label": "Client Mailing Slip"
+    },
+    {
+      "page": 2,
+      "family": "UltraTax",
+      "label": "Filing Instructions (FinCEN 114) - Act 1"
+    },
+    {
+      "page": 3,
+      "family": "UltraTax",
+      "label": "FinCEN Form 114a - Act 1"
+    },
+    {
+      "page": 4,
+      "family": "UltraTax",
+      "label": "Filing Instructions (FinCEN 114) - Act 2"
+    },
+    {
+      "page": 5,
+      "family": "UltraTax",
+      "label": "FinCEN Form 114a - Act 2"
+    },
+    {
+      "page": 6,
+      "family": "UltraTax",
+      "label": "FinCEN Form 114 Page 1 - Act 1"
+    },
+    {
+      "page": 7,
+      "family": "UltraTax",
+      "label": "FinCEN Form 114 Page 2 - Act 1"
+    },
+    {
+      "page": 8,
+      "family": "UltraTax",
+      "label": "FinCEN Form 114 Page 3 - Act 1"
+    },
+    {
+      "page": 9,
+      "family": "UltraTax",
+      "label": "FinCEN Form 114 Page 5"
+    },
+    {
+      "page": 10,
+      "family": "UltraTax",
+      "label": "FinCEN Form 114 Page 1 - Act 2"
+    },
+    {
+      "page": 11,
+      "family": "UltraTax",
+      "label": "FinCEN Form 114 Page 2 - Act 2"
+    },
+    {
+      "page": 12,
+      "family": "UltraTax",
+      "label": "FinCEN Form 114 Page 3 - Act 2"
+    },
+    {
+      "page": 13,
+      "family": "UltraTax",
+      "label": "FinCEN Form 114 Page 5"
+    },
+    {
+      "page": 14,
+      "family": "UltraTax",
+      "label": "Transmittal Letter"
+    },
+    {
+      "page": 15,
+      "family": "UltraTax",
+      "label": "Invoice"
+    },
+    {
+      "page": 16,
+      "family": "UltraTax",
+      "label": "Filing Instructions"
+    },
+    {
+      "page": 17,
+      "family": "UltraTax",
+      "label": "Tax Authority Slipsheet"
+    },
+    {
+      "page": 18,
+      "family": "UltraTax",
+      "label": "Form 1040 Page 1"
+    },
+    {
+      "page": 19,
+      "family": "UltraTax",
+      "label": "Form 1040 Page 2"
+    },
+    {
+      "page": 20,
+      "family": "UltraTax",
+      "label": "Form 1040/SR/NR Schedule 1 P1"
+    },
+    {
+      "page": 21,
+      "family": "UltraTax",
+      "label": "Schedule A"
+    },
+    {
+      "page": 22,
+      "family": "UltraTax",
+      "label": "Schedule C Page 1 - asdf"
+    },
+    {
+      "page": 23,
+      "family": "UltraTax",
+      "label": "Schedule E Page 1 - rent"
+    },
+    {
+      "page": 24,
+      "family": "UltraTax",
+      "label": "Schedule E Page 2"
+    },
+    {
+      "page": 25,
+      "family": "UltraTax",
+      "label": "Schedule F Page 1 - farmer"
+    },
+    {
+      "page": 26,
+      "family": "UltraTax",
+      "label": "Form 5329 Page 1 - Taxpayer"
+    },
+    {
+      "page": 27,
+      "family": "UltraTax",
+      "label": "Form 5329 Page 2 - Taxpayer"
+    },
+    {
+      "page": 28,
+      "family": "UltraTax",
+      "label": "Form 5329 Page 3 - Taxpayer"
+    },
+    {
+      "page": 29,
+      "family": "UltraTax",
+      "label": "Form 6251 Page 1"
+    },
+    {
+      "page": 30,
+      "family": "UltraTax",
+      "label": "Form 6252 - CY INstall 1255"
+    },
+    {
+      "page": 31,
+      "family": "UltraTax",
+      "label": "Form 6252 - Long term"
+    },
+    {
+      "page": 32,
+      "family": "UltraTax",
+      "label": "Form 6252 - 1231 sale"
+    },
+    {
+      "page": 33,
+      "family": "UltraTax",
+      "label": "Form 6252 - 1245 sale"
+    },
+    {
+      "page": 34,
+      "family": "UltraTax",
+      "label": "Form 6252 - 1250 sale"
+    },
+    {
+      "page": 35,
+      "family": "UltraTax",
+      "label": "Form 6252 - 22"
+    },
+    {
+      "page": 36,
+      "family": "UltraTax",
+      "label": "Form 6252 - 22 sale"
+    },
+    {
+      "page": 37,
+      "family": "UltraTax",
+      "label": "Form 8801 Page 1"
+    },
+    {
+      "page": 38,
+      "family": "UltraTax",
+      "label": "Form 8801 Page 2"
+    },
+    {
+      "page": 39,
+      "family": "UltraTax",
+      "label": "Form 8582 Page 1"
+    },
+    {
+      "page": 40,
+      "family": "UltraTax",
+      "label": "Form 8582 Page 2"
+    },
+    {
+      "page": 41,
+      "family": "UltraTax",
+      "label": "Form 8582 Page 1 AMT"
+    },
+    {
+      "page": 42,
+      "family": "UltraTax",
+      "label": "Form 8582 Page 2 AMT"
+    },
+    {
+      "page": 43,
+      "family": "UltraTax",
+      "label": "Required Statements"
+    },
+    {
+      "page": 44,
+      "family": "UltraTax",
+      "label": "Required Statements"
+    }
+  ],
+  "ultratax_mode": false
+}
