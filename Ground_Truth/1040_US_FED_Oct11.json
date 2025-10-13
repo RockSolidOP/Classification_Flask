@@ -7585,18 +7585,18 @@
     {
       "page": 843,
       "family": "UltraTax",
-      "label": "Form_1040_P1",
+      "label": "Stmt_Form_1040/SR_P1",
       "auto_label": "Stmt_Form_1040/SR_P1",
-      "updated_label": true,
+      "updated_label": false,
       "multipage": true,
       "raw_label": "Stmt Form 1040/SR"
     },
     {
       "page": 844,
       "family": "UltraTax",
-      "label": "Form_1040_P2",
+      "label": "Stmt_Form_1040/SR_P2",
       "auto_label": "Stmt_Form_1040/SR_P2",
-      "updated_label": true,
+      "updated_label": false,
       "multipage": true,
       "raw_label": "P2"
     },

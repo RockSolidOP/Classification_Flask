@@ -17,6 +17,10 @@
       .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
       .actions { position: sticky; top: 48px; background: #ffffff; border-bottom: 1px solid #e5e7eb; padding: .5rem; z-index: 9; display:flex; gap:.75rem; align-items:center; }
       .actions button { padding: .4rem .75rem; }
+      .busy { display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:2000; align-items:center; justify-content:center; }
+      .busy .box { background:#111827; color:#e5e7eb; padding:1rem 1.25rem; border-radius:10px; min-width:280px; text-align:center; box-shadow:0 10px 25px rgba(0,0,0,.3); }
+      .spinner { width:28px; height:28px; border:3px solid #93c5fd; border-top-color:transparent; border-radius:50%; animation:spin 1s linear infinite; margin:0 auto .5rem auto; }
+      @keyframes spin{to{transform:rotate(360deg)}}
     </style>
   </head>
   <body>
@@ -92,7 +96,15 @@
     </form>
 
     <script>
+      // Busy overlay
+      const busy = document.createElement('div');
+      busy.className = 'busy';
+      busy.innerHTML = '<div class="box"><div class="spinner"></div><div id="busyMsg">Working...</div></div>';
+      document.body.appendChild(busy);
+      function showBusy(msg){ const m=document.getElementById('busyMsg'); if(m) m.textContent = msg||'Working...'; busy.style.display='flex'; }
+      function hideBusy(){ busy.style.display='none'; }
       async function saveRow(page) {
+        showBusy('Saving...');
         const input = document.getElementById('label_' + page);
         const label = input ? input.value : '';
         try {
@@ -110,12 +122,12 @@
             setTimeout(() => input.style.backgroundColor = '', 500);
             // Optionally, refresh to update multipage flags; keeping light here
           }
-        } catch (e) {
-          alert('Save error');
-        }
+        } catch (e) { alert('Save error'); }
+        finally { hideBusy(); }
       }
 
       async function restoreRow(page) {
+        showBusy('Restoring...');
         const input = document.getElementById('label_' + page);
         try {
           const res = await fetch('{{ url_for('api_restore_label', stem=stem, page=0) }}?name={{ download_name }}'.replace('/0','/' + page), {
@@ -128,12 +140,12 @@
             if (input) input.value = data.label;
             location.reload();
           }
-        } catch (e) {
-          alert('Restore error');
-        }
+        } catch (e) { alert('Restore error'); }
+        finally { hideBusy(); }
       }
 
       async function restoreAll() {
+        showBusy('Restoring defaults...');
         try {
           const res = await fetch('{{ url_for('api_restore_all', stem=stem) }}?name={{ download_name }}', { method: 'POST' });
           const data = await res.json();
@@ -142,12 +154,12 @@
           } else {
             location.reload();
           }
-        } catch (e) {
-          alert('Restore all error');
-        }
+        } catch (e) { alert('Restore all error'); }
+        finally { hideBusy(); }
       }
 
       async function curateRow(page) {
+        showBusy('Curating...');
         try {
           const res = await fetch('{{ url_for('api_curate_page', stem=stem, page=0) }}?name={{ download_name }}'.replace('/0','/' + page), { method: 'POST' });
           const data = await res.json();
@@ -156,12 +168,12 @@
           } else {
             alert('Curated page ' + page);
           }
-        } catch (e) {
-          alert('Curate error');
-        }
+        } catch (e) { alert('Curate error'); }
+        finally { hideBusy(); }
       }
 
       async function curateAll() {
+        showBusy('Curating all pages...');
         try {
           const res = await fetch('{{ url_for('api_curate_all', stem=stem) }}?name={{ download_name }}', { method: 'POST' });
           const data = await res.json();
@@ -170,9 +182,8 @@
           } else {
             alert('Curated ' + (data.count || 0) + ' pages');
           }
-        } catch (e) {
-          alert('Curate all error');
-        }
+        } catch (e) { alert('Curate all error'); }
+        finally { hideBusy(); }
       }
 
       // Suggest modal UI
@@ -211,6 +222,7 @@
         return { pick: pick ? parseInt(pick.value,10) : 0, page };
       }
       function applySuggestion() {
+        showBusy('Applying...');
         const { pick, page } = getSelectedSuggestion();
         const rowInput = document.getElementById('label_' + page);
         const labels = Array.from(document.querySelectorAll('#suggList label'));
@@ -218,9 +230,10 @@
         const text = labels[pick].innerText;
         const cand = text.split(' (score')[0];
         if (rowInput) rowInput.value = cand;
-        closeSuggest();
+        closeSuggest(); hideBusy();
       }
       async function saveSuggestion() {
+        showBusy('Saving...');
         const { pick, page } = getSelectedSuggestion();
         const labels = Array.from(document.querySelectorAll('#suggList label'));
         if (!labels[pick]) return;
@@ -231,10 +244,11 @@
         const data = await res.json();
         if (!data.ok) return alert('Save failed: ' + (data.error||''));
         const rowInput = document.getElementById('label_' + page); if (rowInput) rowInput.value = cand;
-        closeSuggest();
+        closeSuggest(); hideBusy();
         location.reload();
       }
       async function curateSuggestion() {
+        showBusy('Saving and curating...');
         const { pick, page } = getSelectedSuggestion();
         const labels = Array.from(document.querySelectorAll('#suggList label'));
         if (!labels[pick]) return;
@@ -247,10 +261,11 @@
         const res2 = await fetch('{{ url_for('api_curate_page', stem=stem, page=0) }}?name={{ download_name }}'.replace('/0','/' + page), { method: 'POST' });
         const data2 = await res2.json(); if (!data2.ok) return alert('Curate failed: ' + (data2.error||''));
         const rowInput = document.getElementById('label_' + page); if (rowInput) rowInput.value = cand;
-        closeSuggest();
+        closeSuggest(); hideBusy();
         alert('Saved and curated');
       }
       async function mergeAndCurate() {
+        showBusy('Merging, saving and curating...');
         const { pick, page } = getSelectedSuggestion();
         const labels = Array.from(document.querySelectorAll('#suggList label'));
         if (!labels[pick]) return;
@@ -268,10 +283,11 @@
         const res2 = await fetch('{{ url_for('api_curate_page', stem=stem, page=0) }}?name={{ download_name }}'.replace('/0','/' + page), { method: 'POST' });
         const data2 = await res2.json(); if (!data2.ok) return alert('Curate failed: ' + (data2.error||''));
         document.getElementById('label_' + page).value = cand;
-        closeSuggest();
+        closeSuggest(); hideBusy();
         alert('Merged alias, saved, and curated');
       }
     </script>
+    <div class="busy"><div class="box"><div class="spinner"></div><div id="busyMsg">Working...</div></div></div>
 
     <!-- Suggest Modal -->
     <div id="suggOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;"></div>

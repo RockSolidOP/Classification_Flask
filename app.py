@@ -521,6 +521,26 @@ def api_set_active_version():
     return jsonify({"ok": True, "version": ver})
 
 
+@app.post("/api/build_manifest_splits")
+def api_build_manifest_splits():
+    # Compute next vN
+    man_dir = ROOT / "dataset" / "v2" / "manifests"
+    man_dir.mkdir(parents=True, exist_ok=True)
+    import re, subprocess
+    max_n = 0
+    for p in man_dir.glob("v*.json"):
+        m = re.match(r"v(\d+)\.json$", p.name)
+        if m:
+            max_n = max(max_n, int(m.group(1)))
+    ver = f"v{max_n+1}"
+    cmd = [sys.executable, str((ROOT / "curation" / "build_manifest_splits.py")), "--version", ver]
+    try:
+        subprocess.run(cmd, check=True)
+        return jsonify({"ok": True, "version": ver})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
 def _delete_all_curated(delete_images: bool = True) -> dict:
     """Delete all curated records (and optionally all curated images)."""
     total = 0

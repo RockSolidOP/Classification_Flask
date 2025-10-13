@@ -11,6 +11,10 @@
       th, td { border: 1px solid #e5e7eb; padding: .4rem .5rem; font-size: 14px; }
       th { background: #f9fafb; text-align: left; }
       .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+      .busy { display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:2000; align-items:center; justify-content:center; }
+      .busy .box { background:#111827; color:#e5e7eb; padding:1rem 1.25rem; border-radius:10px; min-width:280px; text-align:center; box-shadow:0 10px 25px rgba(0,0,0,.3); }
+      .spinner { width:28px; height:28px; border:3px solid #93c5fd; border-top-color:transparent; border-radius:50%; animation:spin 1s linear infinite; margin:0 auto .5rem auto; }
+      @keyframes spin{to{transform:rotate(360deg)}}
     </style>
   </head>
   <body>
@@ -43,6 +47,7 @@
       </div>
       <div>
         <button type="button" onclick="dedupe()" title="Remove duplicate curated entries by document and page">Dedupe</button>
+        <button type="button" onclick="buildManifestSplits()" title="Create a versioned manifest and doc-level train/val/test splits">Build Manifest + Splits</button>
         <button type="button" onclick="deleteAll()" style="background:#fee2e2;border:1px solid #fecaca;padding:.4rem .6rem;" title="Delete ALL curated records and images (irreversible)">Delete All</button>
       </div>
     </div>
@@ -76,7 +81,14 @@
         </tbody>
       </table>
       <script>
+        const busy = document.createElement('div');
+        busy.className = 'busy';
+        busy.innerHTML = '<div class="box"><div class="spinner"></div><div id="busyMsg">Working...</div></div>';
+        document.body.appendChild(busy);
+        function showBusy(msg){ const msgEl = document.getElementById('busyMsg'); if(msgEl) msgEl.textContent = msg||'Working...'; busy.style.display='flex'; }
+        function hideBusy(){ busy.style.display='none'; }
         async function buildEmb() {
+          showBusy('Building embeddings...');
           try {
             const res = await fetch('{{ url_for('api_build_embeddings') }}', { method: 'POST' });
             const data = await res.json();
@@ -84,9 +96,11 @@
             alert('Embeddings built: ' + data.version);
             location.reload();
           } catch (e) { alert('Build embeddings error'); }
+          finally { hideBusy(); }
         }
         async function dedupe() {
           if (!confirm('Deduplicate curated index (keep last per page)?')) return;
+          showBusy('Deduplicating...');
           try {
             const res = await fetch('{{ url_for('api_curated_dedupe') }}', { method:'POST' });
             const data = await res.json();
@@ -94,8 +108,10 @@
             alert(`Dedupe complete. Deleted ${data.deleted}, kept ${data.kept}.`);
             location.reload();
           } catch (e) { alert('Dedupe error'); }
+          finally { hideBusy(); }
         }
         async function buildIndex() {
+          showBusy('Building FAISS index...');
           const ver = document.getElementById('embVer').value;
           try {
             const res = await fetch('{{ url_for('api_build_index') }}', { method: 'POST', headers: {'Content-Type':'application/x-www-form-urlencoded'}, body: 'version=' + encodeURIComponent(ver) });
@@ -103,6 +119,7 @@
             if (!data.ok) return alert('Build index failed: ' + (data.error || ''));
             alert('Index built for ' + ver);
           } catch (e) { alert('Build index error'); }
+          finally { hideBusy(); }
         }
         async function setActive() {
           const ver = document.getElementById('embVer').value;
@@ -114,8 +131,19 @@
             location.reload();
           } catch (e) { alert('Set active error'); }
         }
+        async function buildManifestSplits() {
+          showBusy('Building manifest and splits...');
+          try {
+            const res = await fetch('{{ url_for('api_build_manifest_splits') }}', { method:'POST' });
+            const data = await res.json();
+            if (!data.ok) return alert('Build manifest/splits failed: ' + (data.error || ''));
+            alert('Manifest and splits built: ' + data.version);
+          } catch (e) { alert('Build manifest/splits error'); }
+          finally { hideBusy(); }
+        }
         async function deleteAll() {
           if (!confirm('Delete ALL curated records and images? This cannot be undone.')) return;
+          showBusy('Deleting all curated records...');
           try {
             const res = await fetch('{{ url_for('api_curated_delete_all') }}', { method: 'POST' });
             const data = await res.json();
@@ -125,12 +153,12 @@
               alert(`Deleted ${data.deleted} records, removed ${data.images_deleted} files`);
               location.reload();
             }
-          } catch (e) {
-            alert('Delete all error');
-          }
+          } catch (e) { alert('Delete all error'); }
+          finally { hideBusy(); }
         }
         async function deleteCurated(doc, page) {
           if (!confirm(`Delete curated record for ${doc}#${page}?`)) return;
+          showBusy('Deleting record...');
           try {
             const res = await fetch('{{ url_for('api_curated_delete') }}', {
               method: 'POST',
@@ -143,9 +171,8 @@
             } else {
               location.reload();
             }
-          } catch (e) {
-            alert('Delete error');
-          }
+          } catch (e) { alert('Delete error'); }
+          finally { hideBusy(); }
         }
       </script>
     {% endif %}

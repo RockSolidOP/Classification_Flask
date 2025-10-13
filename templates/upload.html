@@ -11,6 +11,10 @@
       .card { border: 1px solid #ddd; padding: 1rem; border-radius: 6px; max-width: 640px; }
       .list { margin-top: 1rem; }
       a { text-decoration: none; color: #2563eb; }
+      .busy { display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:2000; align-items:center; justify-content:center; }
+      .busy .box { background:#111827; color:#e5e7eb; padding:1rem 1.25rem; border-radius:10px; min-width:280px; text-align:center; box-shadow:0 10px 25px rgba(0,0,0,.3); }
+      .spinner { width:28px; height:28px; border:3px solid #93c5fd; border-top-color:transparent; border-radius:50%; animation:spin 1s linear infinite; margin:0 auto .5rem auto; }
+      @keyframes spin{to{transform:rotate(360deg)}}
     </style>
   </head>
   <body>
@@ -37,6 +41,12 @@
         </label>
         <button type="submit">Generate Mapping</button>
       </form>
+      <div id="busy" class="busy">
+        <div class="box">
+          <div class="spinner"></div>
+          <div id="busyMsg">Working...</div>
+        </div>
+      </div>
 
       {% if existing %}
         <div class="list">
@@ -52,5 +62,16 @@
         </div>
       {% endif %}
     </div>
+    <script>
+      const busy = document.getElementById('busy');
+      const busyMsg = document.getElementById('busyMsg');
+      function showBusy(msg){ if(busy){ busyMsg.textContent = msg||'Working...'; busy.style.display='flex'; } }
+      function hideBusy(){ if(busy){ busy.style.display='none'; } }
+      const form = document.querySelector('form[action="{{ url_for('upload') }}"]');
+      if (form) {
+        form.addEventListener('submit', ()=>{ showBusy('Generating mapping...'); });
+      }
+      window.addEventListener('pageshow', hideBusy);
+    </script>
   </body>
   </html>

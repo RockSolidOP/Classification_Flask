@@ -68,6 +68,17 @@
       <li>If embeddings say “0 vectors”, recurate pages after rendering is enabled so images are saved.</li>
     </ul>
 
+    <h2>7) Manifests & Splits (Dataset Release)</h2>
+    <ul>
+      <li>Click <em>Build Manifest + Splits</em> on the Curated page to create:
+        <ul>
+          <li>A versioned manifest (e.g., <code>dataset/v2/manifests/v3.json</code>) with counts per label, total pages, and metadata.</li>
+          <li>Doc-level train/val/test splits (e.g., <code>dataset/v2/splits/v3_splits.json</code>) so pages from the same PDF don’t leak across splits.</li>
+        </ul>
+      </li>
+      <li>Use these files to freeze a training/evaluation snapshot and keep experiments reproducible.</li>
+    </ul>
+
     <h2>FAQ</h2>
     <ul>
       <li><strong>Why don’t I see suggestions?</strong> Build embeddings and an index, then set it as active. Also ensure curated entries have images.</li>
