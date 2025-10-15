@@ -9,7 +9,12 @@ WORKDIR /app
 
 # Copy dependency list first (leverages Docker layer cache)
 COPY requirements.txt requirements-ml.txt ./
-RUN pip install --no-cache-dir -r requirements.txt -r requirements-ml.txt
+# Install CPU-only PyTorch wheels first to avoid CUDA payloads,
+# then install the rest. Keep cache off to minimize layer size.
+RUN python -m pip install --no-cache-dir --upgrade pip \
+    && python -m pip install --no-cache-dir --index-url https://download.pytorch.org/whl/cpu \
+        torch==2.8.0 torchvision==0.23.0 \
+    && python -m pip install --no-cache-dir -r requirements.txt -r requirements-ml.txt
 
 # Copy app code
 COPY . .

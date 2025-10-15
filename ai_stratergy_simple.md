@@ -102,9 +102,27 @@ Use this as a quick guide to how we’ll label pages, save examples, and train a
 - Create doc-level stratified train/val/test split and save under `dataset/splits/v1_splits.json`.
 
 7) Train Baseline, Then LayoutLMv3
-- Quick baseline: TF‑IDF + Linear classifier (fast sanity check).
-- Primary: LayoutLMv3-base fine-tune with image + words + boxes_norm.
-- Track metrics (macro‑F1) and save model artifacts.
+- Data readiness
+  - Inputs: `dataset/v2/index/v2.jsonl` (deduped), `dataset/v2/splits/vN_splits.json` (doc-level splits)
+  - Labels: start with fine‑grained `label` (e.g., `Form_1040_SR_P1`). Optionally switch to `base_label` later.
+  - Filter for LayoutLMv3: keep only pages that have `image_path` + `words` + `boxes_norm`.
+
+- Quick baseline (TF‑IDF + Linear)
+  - Text features: header words + first N tokens from curated `words`; TF‑IDF (1–2‑grams), sublinear TF
+  - Model: LinearSVC (or LogisticRegression)
+  - Scripts: `training/train_tfidf.py` (train/eval/save), `training/predict_tfidf.py` (optional)
+  - Artifacts: `models/baseline_vN/{model.joblib, vectorizer.joblib, label2id.json, metrics.json}`
+
+- Primary (LayoutLMv3 fine‑tune)
+  - Model: `microsoft/layoutlmv3-base` (HF Transformers)
+  - Inputs: page `image_path`, `words`, `boxes_norm` (0–1000 ints), label → id
+  - Scripts: `training/train_layoutlmv3.py` (processor+trainer, early stop, metrics)
+  - Artifacts: `models/layoutlmv3_vN/` (model + processor + `label2id.json` + `metrics.json`)
+  - Compute: prefer GPU (Colab/Azure). On CPU, run a tiny subset for sanity only.
+
+- Metrics & tracking
+  - Report macro‑F1, per‑label F1, confusion matrix on val/test
+  - Save `run.json` with dataset version (vN), tool versions, and code commit for reproducibility
 
 8) Inference Pipeline (For New PDFs)
 - Given a PDF, render each page, extract words/boxes, run the trained model → predicted label.

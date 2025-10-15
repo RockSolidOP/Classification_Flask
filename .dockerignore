@@ -3,6 +3,27 @@ __pycache__/
 *.pyc
 .DS_Store
 *.log
+
+# VCS and local env
+.git/
+.env
+
+# Large data dirs (mount at runtime)
+dataset/
+training_data/
+Source_PDF/
+Ground_Truth/
+
+# Common large artifacts
+*.ipynb
+*.pt
+*.pth
+*.bin
+*.onnx
+*.pdf
+*.csv
+*.parquet
+
+# Legacy specific ignores (kept for safety)
 Ground_Truth/*.json
 Source_PDF/*.pdf
-
