@@ -1,0 +1,28 @@
+}
+
+
+You don’t have a custom classifier yet. Your Azure resource only shows prebuilt models (layout/read/invoice/etc.). For page classification by your labels, you must build a Custom Classifier; then it will appear under documentClassifiers (and you’ll get a classifierId to use with analyze).
+
+What to do next
+
+Export label folders (one per label) from your curated set:
+python azure/export_training_tree.py --out training_data --max-per-label 500
+Upload to Azure Blob and get a container SAS (Read + List):
+az storage blob upload-batch --account-name <account> -d <container> -s training_data --auth-mode login
+SAS=$(az storage container generate-sas --account-name <account> --name <container> --permissions rl --expiry 2030-01-01 --auth-mode login -o tsv)
+CONTAINER_SAS_BASE="https://<account>.blob.core.windows.net/<container>?$SAS"
+Build the classifier (Portal or script)
+Portal: Create Custom Classifier → point to the container (it will auto-find subfolders = labels)
+Script:
+export AZURE_DOC_AI_ENDPOINT=…; export AZURE_DOC_AI_KEY=…
+python azure/build_classifier.py --classifier-id page-labels-v1 --container-sas-base "$CONTAINER_SAS_BASE"
+Verify build
+python azure/list_assets.py
+You should see your classifier under "classifiers": { "value": [ { "classifierId": "page-labels-v1", … } ] }
+Classify a page (inference)
+python azure/analyze_page.py --classifier-id page-labels-v1 --file "dataset/v2/images/<label>/<doc>_<page>.png" --content-type image/png
+Notes
+
+The “models” you see listed are prebuilt extractors, not your custom classifier—hence the 404.
+If you built in Portal already, make sure it finished and the resource/region matches your endpoint. Then re-run python azure/list_assets.py to confirm the classifierId.
+After you have a classifierId, analyze_page.py will work without any SAS (it sends the image bytes in the request).

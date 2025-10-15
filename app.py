@@ -24,6 +24,19 @@ os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
 os.environ.setdefault("KMP_INIT_AT_FORK", "FALSE")
 os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
 
+# Load .env and map azure_key/azure_endpoint to Azure DI env vars
+try:
+    from dotenv import load_dotenv  # type: ignore
+    load_dotenv()
+    if os.environ.get("azure_key") and not os.environ.get("AZURE_DOC_AI_KEY"):
+        os.environ["AZURE_DOC_AI_KEY"] = os.environ["azure_key"]
+    if os.environ.get("azure_endpoint") and not os.environ.get("AZURE_DOC_AI_ENDPOINT"):
+        os.environ["AZURE_DOC_AI_ENDPOINT"] = os.environ["azure_endpoint"]
+    if os.environ.get("azure_classifier_id") and not os.environ.get("AZURE_DOC_AI_CLASSIFIER_ID"):
+        os.environ["AZURE_DOC_AI_CLASSIFIER_ID"] = os.environ["azure_classifier_id"]
+except Exception:
+    pass
+
 from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory, jsonify
 from werkzeug.utils import secure_filename
 

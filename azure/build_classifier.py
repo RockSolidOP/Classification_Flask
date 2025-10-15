@@ -12,6 +12,16 @@ import json
 
 
 def _endpoint_and_key():
+    # Load .env if present and map azure_key/azure_endpoint
+    try:
+        from dotenv import load_dotenv  # type: ignore
+        load_dotenv()
+        if os.environ.get("azure_key") and not os.environ.get("AZURE_DOC_AI_KEY"):
+            os.environ["AZURE_DOC_AI_KEY"] = os.environ["azure_key"]
+        if os.environ.get("azure_endpoint") and not os.environ.get("AZURE_DOC_AI_ENDPOINT"):
+            os.environ["AZURE_DOC_AI_ENDPOINT"] = os.environ["azure_endpoint"]
+    except Exception:
+        pass
     ep = os.environ.get("AZURE_DOC_AI_ENDPOINT")
     key = os.environ.get("AZURE_DOC_AI_KEY")
     if not ep or not key:
@@ -85,4 +95,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
