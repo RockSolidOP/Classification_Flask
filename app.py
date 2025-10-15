@@ -648,25 +648,33 @@ def api_suggest(stem: str, page: int):
     pdf_path = SOURCE_DIR / data.get("document")
     if not pdf_path.exists():
         return jsonify({"ok": False, "error": "source PDF not found"}), 404
+    # Fetch auto_label for this page (if available) and canonicalize for use as a prior
+    page_entry = None
+    for e in data.get("pages", []):
+        try:
+            if int(e.get("page")) == int(page):
+                page_entry = e
+                break
+        except Exception:
+            continue
     try:
+        from curation.rerank import rerank_suggestions
         q = embed_pdf_page(pdf_path, page)
         results = search_neighbors(ROOT, q, topk=10)
-        # Apply alias canonicalization to suggestion labels and dedupe by canonical
         aliases = _load_aliases()
-        agg = {}
-        for r in results:
-            lbl = r.get("label", "")
-            can = aliases.get(lbl, lbl)
-            # keep best score per canonical label
-            if can not in agg or float(r.get("score", 0.0)) > float(agg[can].get("score", 0.0)):
-                nr = dict(r)
-                nr["label"] = can
-                agg[can] = nr
-        # Sort by score desc and cap to top 5
-        merged = sorted(agg.values(), key=lambda x: float(x.get("score", 0.0)), reverse=True)[:5]
-        # Re-rank
-        for i, m in enumerate(merged, start=1):
-            m["rank"] = i
+        # previous page entry for continuity prior
+        prev_entry = None
+        if page_entry is not None:
+            prev_page = int(page_entry.get("page", 0)) - 1
+            if prev_page > 0:
+                for e in data.get("pages", []):
+                    try:
+                        if int(e.get("page")) == prev_page:
+                            prev_entry = e
+                            break
+                    except Exception:
+                        continue
+        merged = rerank_suggestions(results, page_entry, prev_entry, aliases, topk=5)
         return jsonify({"ok": True, "results": merged})
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 500
