@@ -1,0 +1,28 @@
+{
+  "document": "sample_18-19.pdf",
+  "config": "bookmarks_v2",
+  "source": "UltraTax",
+  "total_pages": 2,
+  "pages": [
+    {
+      "page": 1,
+      "family": "Other",
+      "label": "Other",
+      "auto_label": "Other",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Other"
+    },
+    {
+      "page": 2,
+      "family": "Other",
+      "label": "Other",
+      "auto_label": "Other",
+      "updated_label": false,
+      "multipage": false,
+      "raw_label": "Other"
+    }
+  ],
+  "bookmarks": null,
+  "ultratax_mode": false
+}
