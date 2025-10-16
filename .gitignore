@@ -1,3 +1,5 @@
 dataset
 curation/__pycache__/
 .env
+dataset.zip
+.DS_Store
