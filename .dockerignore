@@ -9,7 +9,15 @@ __pycache__/
 .env
 
 # Large data dirs (mount at runtime)
-dataset/
+dataset/*
+!dataset/v2/
+dataset/v2/*
+!dataset/v2/index/
+!dataset/v2/index/**
+!dataset/v2/embeddings/
+!dataset/v2/embeddings/**
+!dataset/v2/faiss/
+!dataset/v2/faiss/**
 training_data/
 Source_PDF/
 Ground_Truth/
