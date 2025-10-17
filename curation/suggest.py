@@ -43,7 +43,7 @@ def _ensure_faiss(root: Path):
         import faiss
     except Exception:
         raise RuntimeError("faiss-cpu not installed")
-    faiss_dir = root / "dataset" / "v2" / "faiss"
+    faiss_dir = root / "dataset" / "v1" / "faiss"
     active = None
     active_file = faiss_dir / "ACTIVE_VERSION.txt"
     if active_file.exists():

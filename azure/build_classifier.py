@@ -79,7 +79,7 @@ def main():
     ap.add_argument("--classifier-id", required=True)
     ap.add_argument("--container-sas-base", required=True, help="SAS URL to the container or folder root where label folders reside")
     ap.add_argument("--labels-file", help="Optional text file with one label per line")
-    ap.add_argument("--index-jsonl", default=str(Path(__file__).resolve().parents[1] / "dataset" / "v2" / "index" / "v2.jsonl"))
+    ap.add_argument("--index-jsonl", default=str(Path(__file__).resolve().parents[1] / "dataset" / "v1" / "index" / "v1.jsonl"))
     args = ap.parse_args()
 
     if args.labels_file:

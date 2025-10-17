@@ -21,7 +21,7 @@ def _load_records(index_path: Path) -> List[dict]:
 
 
 def _load_aliases(root: Path) -> dict:
-    p = root / "dataset" / "v2" / "aliases.json"
+    p = root / "dataset" / "v1" / "aliases.json"
     try:
         if p.exists():
             with open(p, "r", encoding="utf-8") as f:
@@ -67,8 +67,8 @@ def main():
     args = ap.parse_args()
 
     root = Path(__file__).resolve().parents[1]
-    index_path = root / "dataset" / "v2" / "index" / "v2.jsonl"
-    out_dir = root / "dataset" / "v2" / "embeddings"
+    index_path = root / "dataset" / "v1" / "index" / "v1.jsonl"
+    out_dir = root / "dataset" / "v1" / "embeddings"
     out_dir.mkdir(parents=True, exist_ok=True)
     suffix = f"_{args.version}" if args.version else ""
     out_parquet = out_dir / f"clip_vitb32{suffix}.parquet"

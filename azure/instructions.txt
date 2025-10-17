@@ -20,7 +20,7 @@ Verify build
 python azure/list_assets.py
 You should see your classifier under "classifiers": { "value": [ { "classifierId": "page-labels-v1", … } ] }
 Classify a page (inference)
-python azure/analyze_page.py --classifier-id page-labels-v1 --file "dataset/v2/images/<label>/<doc>_<page>.png" --content-type image/png
+python azure/analyze_page.py --classifier-id page-labels-v1 --file "dataset/v1/images/<label>/<doc>_<page>.png" --content-type image/png
 Notes
 
 The “models” you see listed are prebuilt extractors, not your custom classifier—hence the 404.

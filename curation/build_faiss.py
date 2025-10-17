@@ -12,11 +12,11 @@ def main():
     args = ap.parse_args()
 
     root = Path(__file__).resolve().parents[1]
-    emb_dir = root / "dataset" / "v2" / "embeddings"
+    emb_dir = root / "dataset" / "v1" / "embeddings"
     suffix = f"_{args.version}" if args.version else ""
     emb_parquet = emb_dir / f"clip_vitb32{suffix}.parquet"
     emb_jsonl = emb_dir / f"clip_vitb32{suffix}.jsonl"
-    out_dir = root / "dataset" / "v2" / "faiss"
+    out_dir = root / "dataset" / "v1" / "faiss"
     out_dir.mkdir(parents=True, exist_ok=True)
     out_index = out_dir / f"clip_vitb32{suffix}.index"
     out_idmap = out_dir / f"id_map{suffix}.jsonl"
@@ -34,12 +34,12 @@ def main():
             import pandas as pd  # type: ignore
             df = pd.read_parquet(emb_parquet)
             for _, row in df.iterrows():
-            by_id[row["id"]] = {
-                "label": row["label"],
-                "base_label": row.get("base_label", ""),
-                "page_in_form": int(row.get("page_in_form", 1)),
-                "vector": np.array(row["vector"], dtype="float32"),
-            }
+                by_id[row["id"]] = {
+                    "label": row["label"],
+                    "base_label": row.get("base_label", ""),
+                    "page_in_form": int(row.get("page_in_form", 1)),
+                    "vector": np.array(row["vector"], dtype="float32"),
+                }
         except Exception:
             # Fall back to JSONL if parquet cannot be read due to missing deps
             pass

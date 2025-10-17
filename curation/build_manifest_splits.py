@@ -77,8 +77,8 @@ def main():
     args = ap.parse_args()
 
     root = Path(__file__).resolve().parents[1]
-    ds_root = root / "dataset" / "v2"
-    index_path = ds_root / "index" / "v2.jsonl"
+    ds_root = root / "dataset" / "v1"
+    index_path = ds_root / "index" / "v1.jsonl"
     manifests_dir = ds_root / "manifests"
     splits_dir = ds_root / "splits"
     manifests_dir.mkdir(parents=True, exist_ok=True)
@@ -146,4 +146,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

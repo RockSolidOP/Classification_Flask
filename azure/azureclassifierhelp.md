@@ -13,8 +13,8 @@ This doc explains how to train and use an Azure AI Document Intelligence (Docume
 - Azure subscription + a Document Intelligence resource (you already have endpoint + key).
 - Azure Storage account + a container for training data.
 - Curated dataset with page images (created when you Curate in the app):
-  - Images under `dataset/v2/images/<base_label>/<doc>_<page>.png`
-  - Curated index at `dataset/v2/index/v2.jsonl`
+  - Images under `dataset/v1/images/<base_label>/<doc>_<page>.png`
+  - Curated index at `dataset/v1/index/v1.jsonl`
 
 ## 1) Export label‑organized training data
 
@@ -68,7 +68,7 @@ python azure/build_classifier.py \
 ```
 
 What happens
-- The script reads labels from `dataset/v2/index/v2.jsonl`.
+- The script reads labels from `dataset/v1/index/v1.jsonl`.
 - It builds a payload mapping each label to its folder SAS (`…/<label>?<SAS>`).
 - It POSTs to `{endpoint}/formrecognizer/documentClassifiers:build?api-version=2023-07-31`.
 - Response includes `Operation-Location`. Poll that URL (header `Ocp-Apim-Subscription-Key: $AZURE_DOC_AI_KEY`) until `status == succeeded`.
@@ -80,7 +80,7 @@ Use a curated page image or a one‑page PDF:
 ```
 python azure/analyze_page.py \
   --classifier-id page-labels-v1 \
-  --file dataset/v2/images/<base_label>/<doc>_<page>.png \
+  --file dataset/v1/images/<base_label>/<doc>_<page>.png \
   --content-type image/png
 ```
 
@@ -97,7 +97,7 @@ The JSON result includes the predicted label and confidence.
 ## Tips for better models
 
 - Balance classes: roughly equal examples per label; cap large classes (e.g., `--max-per-label 500`).
-- Canonical labels: keep `dataset/v2/aliases.json` tidy and rebuild training data after merges.
+- Canonical labels: keep `dataset/v1/aliases.json` tidy and rebuild training data after merges.
 - Page granularity: Decide if `_P1/_P2` are separate labels or train a base label model and track page index separately.
 - Image quality: 150–300 DPI; ensure varied sources/years; avoid duplicates. Rebuild embeddings/index after major label changes.
 - Iterate quickly: train a small model, review confusion, add more samples to hard classes.
@@ -113,4 +113,3 @@ The JSON result includes the predicted label and confidence.
 - `azure/export_training_tree.py` — builds local label folders from curated index.
 - `azure/build_classifier.py` — kicks off classifier build from a container SAS.
 - `azure/analyze_page.py` — classifies a single file via the trained classifier.
-

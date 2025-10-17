@@ -50,7 +50,7 @@
       <li><strong>Apply</strong> — fill the row’s Edit Label with the chosen suggestion (not saved yet).</li>
       <li><strong>Apply + Save</strong> — write the chosen label to the JSON immediately for that page.</li>
       <li><strong>Apply + Curate</strong> — save the chosen label, then append/update one curated record for that page (features extracted if available). Duplicates are prevented.</li>
-      <li><strong>Merge Alias + Curate</strong> — treat the current label as an alias of the chosen label going forward (stored in <code>dataset/v2/aliases.json</code>), save the canonical label, then curate. Suggestions are canonicalized to avoid showing old aliases.</li>
+      <li><strong>Merge Alias + Curate</strong> — treat the current label as an alias of the chosen label going forward (stored in <code>dataset/v1/aliases.json</code>), save the canonical label, then curate. Suggestions are canonicalized to avoid showing old aliases.</li>
     </ul>
 
     <h2>5) Curated Dataset (Review)</h2>
@@ -72,8 +72,8 @@
     <ul>
       <li>Click <em>Build Manifest + Splits</em> on the Curated page to create:
         <ul>
-          <li>A versioned manifest (e.g., <code>dataset/v2/manifests/v3.json</code>) with counts per label, total pages, and metadata.</li>
-          <li>Doc-level train/val/test splits (e.g., <code>dataset/v2/splits/v3_splits.json</code>) so pages from the same PDF don’t leak across splits.</li>
+          <li>A versioned manifest (e.g., <code>dataset/v1/manifests/v3.json</code>) with counts per label, total pages, and metadata.</li>
+          <li>Doc-level train/val/test splits (e.g., <code>dataset/v1/splits/v3_splits.json</code>) so pages from the same PDF don’t leak across splits.</li>
         </ul>
       </li>
       <li>Use these files to freeze a training/evaluation snapshot and keep experiments reproducible.</li>

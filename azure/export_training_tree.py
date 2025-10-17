@@ -58,7 +58,7 @@ def export_tree(index_path: Path, out_root: Path, max_per_label: int | None = No
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--index-jsonl", default=str(Path(__file__).resolve().parents[1] / "dataset" / "v2" / "index" / "v2.jsonl"))
+    ap.add_argument("--index-jsonl", default=str(Path(__file__).resolve().parents[1] / "dataset" / "v1" / "index" / "v1.jsonl"))
     ap.add_argument("--out", required=True, help="Output root that will contain one folder per label")
     ap.add_argument("--max-per-label", type=int, help="Optional cap per label (e.g., 500)")
     args = ap.parse_args()
@@ -71,4 +71,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

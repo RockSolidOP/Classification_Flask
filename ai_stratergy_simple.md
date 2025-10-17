@@ -78,8 +78,8 @@ Use this as a quick guide to how we’ll label pages, save examples, and train a
 - Output JSON name format: `<file>_{MonDate}.json`.
 
 2) Set Up Curated Dataset Skeleton
-- Create folders: `dataset/index`, `dataset/images`, `dataset/manifests`.
-- Decide JSONL file name (e.g., `dataset/index/v1.jsonl`).
+- Create folders: `dataset/v1/index`, `dataset/v1/images`, `dataset/v1/manifests`.
+- Decide JSONL file name (e.g., `dataset/v1/index/v1.jsonl`).
 - Define minimal per-page record: `document`, `page`, `label`, `auto_label`, `updated_label`, `base_label`, `page_in_form`, `multipage`, `raw_label`, `source_json`.
 
 3) Add “Curate” Path From App
@@ -87,23 +87,23 @@ Use this as a quick guide to how we’ll label pages, save examples, and train a
 - Backend endpoint: extracts features (next step) and appends a JSONL row + saves page image.
 
 4) Feature Extraction For Each Curated Page
-- Render page image (PyMuPDF) at ~300 DPI → save under `dataset/images/<base_label>/<doc>_<page>.png`.
+- Render page image (PyMuPDF) at ~300 DPI → save under `dataset/v1/images/<base_label>/<doc>_<page>.png`.
 - Extract words + boxes (pdfplumber or PyMuPDF). If text is empty, OCR fallback (Tesseract).
 - Normalize boxes to 0–1000 for LayoutLMv3.
 - Append to JSONL: add `image_path`, `image_size`, `words`, `boxes`, `boxes_norm`, `page_size_pts`, `text_source`, `text_len`.
 
 5) Build “Similar Pages” Index (Optional, High Impact)
 - Compute image embeddings (CLIP ViT-B/32) for curated images; store as Parquet.
-- Build FAISS index + id map under `dataset/faiss/`.
+- Build FAISS index + id map under `dataset/v1/faiss/`.
 - In the app, add a “Suggest labels” panel that queries the index for top-5 neighbors.
 
 6) Create Dataset Manifest + Splits
-- Generate `dataset/manifests/v1.json` with counts per label, sources, tool versions, timestamp.
-- Create doc-level stratified train/val/test split and save under `dataset/splits/v1_splits.json`.
+- Generate `dataset/v1/manifests/v1.json` with counts per label, sources, tool versions, timestamp.
+- Create doc-level stratified train/val/test split and save under `dataset/v1/splits/v1_splits.json`.
 
 7) Train Baseline, Then LayoutLMv3
 - Data readiness
-  - Inputs: `dataset/v2/index/v2.jsonl` (deduped), `dataset/v2/splits/vN_splits.json` (doc-level splits)
+  - Inputs: `dataset/v1/index/v1.jsonl` (deduped), `dataset/v1/splits/vN_splits.json` (doc-level splits)
   - Labels: start with fine‑grained `label` (e.g., `Form_1040_SR_P1`). Optionally switch to `base_label` later.
   - Filter for LayoutLMv3: keep only pages that have `image_path` + `words` + `boxes_norm`.
 

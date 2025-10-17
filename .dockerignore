@@ -10,14 +10,14 @@ __pycache__/
 
 # Large data dirs (mount at runtime)
 dataset/*
-!dataset/v2/
-dataset/v2/*
-!dataset/v2/index/
-!dataset/v2/index/**
-!dataset/v2/embeddings/
-!dataset/v2/embeddings/**
-!dataset/v2/faiss/
-!dataset/v2/faiss/**
+!dataset/v1/
+dataset/v1/*
+!dataset/v1/index/
+!dataset/v1/index/**
+!dataset/v1/embeddings/
+!dataset/v1/embeddings/**
+!dataset/v1/faiss/
+!dataset/v1/faiss/**
 training_data/
 Source_PDF/
 Ground_Truth/
