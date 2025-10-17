@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 import os
+import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -57,6 +59,31 @@ SOURCE_DIR.mkdir(parents=True, exist_ok=True)
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 DATASET_ROOT.mkdir(parents=True, exist_ok=True)
 DATASET_IMAGES.mkdir(parents=True, exist_ok=True)
+
+
+def _suggest_next_vector_version() -> str:
+    emb_dir = DATASET_ROOT / "embeddings"
+    emb_dir.mkdir(parents=True, exist_ok=True)
+    max_n = 0
+    for p in emb_dir.glob("clip_vitb32_*.jsonl"):
+        m = re.match(r"clip_vitb32_(v\\d+)\\.jsonl$", p.name)
+        if m:
+            try:
+                n = int(m.group(1)[1:])
+                max_n = max(max_n, n)
+            except Exception:
+                continue
+    return f"v{max_n + 1}" if max_n else "v1"
+
+
+def _reset_suggest_cache() -> None:
+    try:
+        from curation import suggest as suggest_mod  # type: ignore
+
+        suggest_mod._INDEX = None
+        suggest_mod._IDMAP = []
+    except Exception:
+        pass
 
 
 def _load_aliases() -> dict:
@@ -595,13 +622,7 @@ def api_build_embeddings():
     # Compute next version vN based on existing files
     emb_dir = DATASET_ROOT / "embeddings"
     emb_dir.mkdir(parents=True, exist_ok=True)
-    import re, subprocess
-    max_n = 0
-    for p in emb_dir.glob("clip_vitb32_*.jsonl"):
-        m = re.match(r"clip_vitb32_v(\d+)\.jsonl$", p.name)
-        if m:
-            max_n = max(max_n, int(m.group(1)))
-    ver = f"v{max_n+1}"
+    ver = _suggest_next_vector_version()
     cmd = [sys.executable, str((ROOT / "curation" / "build_embeddings.py")), "--version", ver]
     try:
         subprocess.run(cmd, check=True)
@@ -615,10 +636,10 @@ def api_build_index():
     ver = request.form.get("version") or request.args.get("version")
     if not ver:
         return jsonify({"ok": False, "error": "version required"}), 400
-    import subprocess
     cmd = [sys.executable, str((ROOT / "curation" / "build_faiss.py")), "--version", ver]
     try:
         subprocess.run(cmd, check=True)
+        _reset_suggest_cache()
         return jsonify({"ok": True, "version": ver})
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 500
@@ -632,7 +653,45 @@ def api_set_active_version():
     faiss_dir = DATASET_ROOT / "faiss"
     faiss_dir.mkdir(parents=True, exist_ok=True)
     (faiss_dir / "ACTIVE_VERSION.txt").write_text(ver, encoding="utf-8")
+    _reset_suggest_cache()
     return jsonify({"ok": True, "version": ver})
+
+
+@app.get("/api/vector_version")
+def api_vector_version():
+    return jsonify({"ok": True, "version": _suggest_next_vector_version()})
+
+
+@app.post("/api/build_vectors")
+def api_build_vectors():
+    payload = {}
+    try:
+        payload = request.get_json(force=True)
+    except Exception:
+        payload = {}
+    version = (payload.get("version") or "").strip()
+    if not version:
+        version = _suggest_next_vector_version()
+    if not re.match(r"^[A-Za-z0-9._-]+$", version):
+        return jsonify({"ok": False, "error": "invalid version name"}), 400
+
+    emb_dir = DATASET_ROOT / "embeddings"
+    emb_dir.mkdir(parents=True, exist_ok=True)
+    faiss_dir = DATASET_ROOT / "faiss"
+    faiss_dir.mkdir(parents=True, exist_ok=True)
+
+    embed_cmd = [sys.executable, str(ROOT / "curation" / "build_embeddings.py"), "--version", version]
+    index_cmd = [sys.executable, str(ROOT / "curation" / "build_faiss.py"), "--version", version]
+    try:
+        subprocess.run(embed_cmd, check=True)
+        subprocess.run(index_cmd, check=True)
+        (faiss_dir / "ACTIVE_VERSION.txt").write_text(version, encoding="utf-8")
+        _reset_suggest_cache()
+        return jsonify({"ok": True, "version": version})
+    except subprocess.CalledProcessError as e:
+        return jsonify({"ok": False, "error": f"vector build failed: {e}"}), 500
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
 
 
 @app.post("/api/build_manifest_splits")

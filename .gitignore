@@ -11,3 +11,4 @@ dataset/v1/*
 !dataset/v1/embeddings/**
 !dataset/v1/faiss/
 !dataset/v1/faiss/**
+__pycache__/
