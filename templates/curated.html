@@ -57,27 +57,42 @@
       <table>
         <thead>
           <tr>
-            <th>Doc</th>
-            <th>Page</th>
             <th>Label</th>
             <th>Base</th>
-            <th>P#</th>
-            <th title="Open this page in the PDF viewer">View</th>
-            <th title="Remove this record from curated dataset">Delete</th>
+            <th>Sample Size</th>
+            <th>Docs</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
-        {% for r in items %}
+        {% for entry in label_summary %}
           <tr>
-            <td class="mono">{{ r.document }}</td>
-            <td>{{ r.page }}</td>
-            <td class="mono">{{ r.label }}</td>
-            <td class="mono">{{ r.base_label }}</td>
-            <td>{{ r.page_in_form }}</td>
-            <td style="text-align:center"><a target="_blank" rel="noopener" href="{{ url_for('serve_pdf', filename=r.document) }}#page={{ r.page }}">🔍</a></td>
-            <td style="text-align:center"><button type="button" onclick="deleteCurated('{{ r.document }}', {{ r.page }})">Delete</button></td>
+            <td class="mono">{{ entry.label }}</td>
+            <td class="mono">{{ entry.base_label }}</td>
+            <td>{{ entry.count }}</td>
+            <td>
+              {% if entry.docs %}
+                {% for doc in entry.docs %}
+                  <a target="_blank" rel="noopener" href="{{ url_for('serve_pdf', filename=doc) }}">{{ doc }}</a>{% if not loop.last %}, {% endif %}
+                {% endfor %}
+              {% else %}
+                <span style="color:#9ca3af;">None</span>
+              {% endif %}
+            </td>
+            <td style="text-align:center"><button type="button" onclick="deleteLabel('{{ entry.label }}')">Delete</button></td>
           </tr>
         {% endfor %}
+        {% if label_summary|length == 0 %}
+          {% for r in items %}
+            <tr>
+              <td class="mono">{{ r.label }}</td>
+              <td class="mono">{{ r.base_label }}</td>
+              <td>1</td>
+              <td><a target="_blank" rel="noopener" href="{{ url_for('serve_pdf', filename=r.document) }}">{{ r.document }}</a></td>
+              <td style="text-align:center"><button type="button" onclick="deleteLabel('{{ r.label }}')">Delete</button></td>
+            </tr>
+          {% endfor %}
+        {% endif %}
         </tbody>
       </table>
       <script>
@@ -174,7 +189,26 @@
           } catch (e) { alert('Delete error'); }
           finally { hideBusy(); }
         }
+        async function deleteLabel(label) {
+          if (!confirm(`Delete all curated records for label ${label}?`)) return;
+          showBusy('Deleting label records...');
+          try {
+            const res = await fetch('{{ url_for('api_curated_delete_label') }}', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ label, delete_images: true })
+            });
+            const data = await res.json();
+            if (!data.ok) {
+              alert('Delete label failed: ' + (data.error || res.status));
+            } else {
+              alert(`Deleted ${data.deleted} records for ${label}.`);
+              location.reload();
+            }
+          } catch (e) { alert('Delete label error'); }
+          finally { hideBusy(); }
+        }
       </script>
     {% endif %}
   </body>
-  </html>
+</html>

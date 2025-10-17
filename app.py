@@ -380,6 +380,7 @@ def api_label_alias_merge():
 def curated():
     total = 0
     items = []
+    label_summary = {}
     # List embedding/index versions
     faiss_dir = ROOT / "dataset" / "v2" / "faiss"
     emb_dir = ROOT / "dataset" / "v2" / "embeddings"
@@ -406,13 +407,50 @@ def curated():
             for line in f:
                 total += 1
                 dq.append(line)
+                try:
+                    rec = json.loads(line)
+                except Exception:
+                    continue
+                lbl = rec.get("label")
+                if not lbl:
+                    continue
+                info = label_summary.setdefault(
+                    lbl,
+                    {"label": lbl, "count": 0, "docs": set(), "base_label": rec.get("base_label")},
+                )
+                if not info.get("base_label") and rec.get("base_label"):
+                    info["base_label"] = rec.get("base_label")
+                info["count"] += 1
+                doc = rec.get("document")
+                if doc:
+                    info["docs"].add(doc)
         for line in dq:
             try:
                 rec = json.loads(line)
                 items.append(rec)
             except Exception:
                 continue
-    return render_template("curated.html", total=total, items=items, versions=versions, active_ver=active_ver)
+    summary_rows = []
+    for lbl, info in label_summary.items():
+        docs = sorted(info["docs"])
+        summary_rows.append(
+            {
+                "label": lbl,
+                "count": info["count"],
+                "docs": docs,
+                "doc_count": len(docs),
+                "base_label": info.get("base_label"),
+            }
+        )
+    summary_rows.sort(key=lambda x: (-x["count"], x["label"]))
+    return render_template(
+        "curated.html",
+        total=total,
+        items=items,
+        versions=versions,
+        active_ver=active_ver,
+        label_summary=summary_rows,
+    )
 
 
 def _delete_curated_records(doc: str, page: int | None = None, delete_images: bool = True) -> dict:
@@ -461,6 +499,47 @@ def _delete_curated_records(doc: str, page: int | None = None, delete_images: bo
     return {"deleted": deleted, "kept": kept}
 
 
+def _delete_curated_by_label(label: str, delete_images: bool = True) -> dict:
+    """Delete all curated records that match a given label."""
+    import json
+    import os
+    from tempfile import NamedTemporaryFile
+
+    if not DATASET_INDEX.exists():
+        return {"deleted": 0, "kept": 0}
+
+    deleted = 0
+    kept = 0
+    with open(DATASET_INDEX, "r", encoding="utf-8") as src, NamedTemporaryFile(
+        "w", delete=False, dir=str(DATASET_INDEX.parent), encoding="utf-8"
+    ) as tmp:
+        tmp_path = Path(tmp.name)
+        for line in src:
+            line_s = line.strip()
+            if not line_s:
+                continue
+            try:
+                rec = json.loads(line_s)
+            except Exception:
+                tmp.write(line)
+                kept += 1
+                continue
+            if rec.get("label") == label:
+                deleted += 1
+                if delete_images:
+                    img = rec.get("image_path")
+                    if img:
+                        try:
+                            Path(img).unlink(missing_ok=True)
+                        except Exception:
+                            pass
+                continue
+            tmp.write(json.dumps(rec, ensure_ascii=False) + "\n")
+            kept += 1
+    os.replace(tmp_path, DATASET_INDEX)
+    return {"deleted": deleted, "kept": kept}
+
+
 @app.post("/api/curated_delete")
 def api_curated_delete():
     """Delete a curated record by doc and optional page.
@@ -487,6 +566,24 @@ def api_curated_delete():
             return jsonify({"ok": False, "error": "invalid page"}), 400
     stats = _delete_curated_records(doc=doc, page=page_int, delete_images=bool(delete_images))
     return jsonify({"ok": True, **stats})
+
+
+@app.post("/api/curated_delete_label")
+def api_curated_delete_label():
+    """Delete all curated records for a specific label."""
+    payload = {}
+    try:
+        payload = request.get_json(force=False, silent=True) or {}
+    except Exception:
+        payload = {}
+    label = (payload.get("label") or request.args.get("label") or "").strip()
+    delete_images = payload.get("delete_images")
+    if delete_images is None:
+        delete_images = request.args.get("delete_images", "1") in ("1", "true", "True")
+    if not label:
+        return jsonify({"ok": False, "error": "label required"}), 400
+    stats = _delete_curated_by_label(label=label, delete_images=bool(delete_images))
+    return jsonify({"ok": True, "label": label, **stats})
 
 
 @app.post("/api/build_embeddings")
