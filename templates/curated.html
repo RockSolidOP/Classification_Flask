@@ -165,7 +165,8 @@
             if (!data.ok) {
               alert('Delete all failed');
             } else {
-              alert(`Deleted ${data.deleted} records, removed ${data.images_deleted} files`);
+              const featureImgs = data.images_deleted ?? 0;
+              alert(`Deleted ${data.deleted} records and removed ${featureImgs} images`);
               location.reload();
             }
           } catch (e) { alert('Delete all error'); }
@@ -202,7 +203,8 @@
             if (!data.ok) {
               alert('Delete label failed: ' + (data.error || res.status));
             } else {
-              alert(`Deleted ${data.deleted} records for ${label}.`);
+              const removed = data.deleted ?? 0;
+              alert(`Deleted ${removed} records for ${label}.`);
               location.reload();
             }
           } catch (e) { alert('Delete label error'); }

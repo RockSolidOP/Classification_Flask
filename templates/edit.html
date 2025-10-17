@@ -304,25 +304,5 @@
         <button type="button" onclick="mergeAndCurate()" title="Map current label to the selected canonical label, then apply, save, and curate">Merge Alias + Curate</button>
       </div>
     </div>
-
-    {% if mapping.bookmarks %}
-      <h3>Original Bookmarks</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Page</th>
-            <th>Bookmark Title</th>
-          </tr>
-        </thead>
-        <tbody>
-        {% for b in mapping.bookmarks %}
-          <tr>
-            <td>{{ b.page }}</td>
-            <td class="mono">{{ b.label }}</td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
-    {% endif %}
   </body>
   </html>

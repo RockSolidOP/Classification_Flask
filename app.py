@@ -49,11 +49,13 @@ app.secret_key = "dev-secret"
 ROOT = Path(__file__).resolve().parent
 SOURCE_DIR = ROOT / "Source_PDF"
 OUT_DIR = ROOT / "Ground_Truth"
-DATASET_INDEX = ROOT / "dataset" / "v2" / "index" / "v2.jsonl"
-DATASET_IMAGES = ROOT / "dataset" / "v2" / "images"
-DATASET_ALIASES = ROOT / "dataset" / "v2" / "aliases.json"
+DATASET_ROOT = ROOT / "dataset" / "v1"
+DATASET_INDEX = DATASET_ROOT / "index" / "v1.jsonl"
+DATASET_IMAGES = DATASET_ROOT / "images"
+DATASET_ALIASES = DATASET_ROOT / "aliases.json"
 SOURCE_DIR.mkdir(parents=True, exist_ok=True)
 OUT_DIR.mkdir(parents=True, exist_ok=True)
+DATASET_ROOT.mkdir(parents=True, exist_ok=True)
 DATASET_IMAGES.mkdir(parents=True, exist_ok=True)
 
 
@@ -318,7 +320,7 @@ def api_restore_all(stem: str):
 
 @app.post("/api/curate/<stem>/<int:page>")
 def api_curate_page(stem: str, page: int):
-    """Append a single curated record for the given page to dataset/v2/index/v2.jsonl."""
+    """Append a single curated record for the given page to dataset/v1/index/v1.jsonl."""
     name = request.args.get("name")
     json_path = _resolve_json_path(stem, name=name)
     if not json_path or not json_path.exists():
@@ -382,8 +384,10 @@ def curated():
     items = []
     label_summary = {}
     # List embedding/index versions
-    faiss_dir = ROOT / "dataset" / "v2" / "faiss"
-    emb_dir = ROOT / "dataset" / "v2" / "embeddings"
+    faiss_dir = DATASET_ROOT / "faiss"
+    emb_dir = DATASET_ROOT / "embeddings"
+    faiss_dir.mkdir(parents=True, exist_ok=True)
+    emb_dir.mkdir(parents=True, exist_ok=True)
     versions = []
     active_ver = None
     act_file = faiss_dir / "ACTIVE_VERSION.txt"
@@ -589,7 +593,7 @@ def api_curated_delete_label():
 @app.post("/api/build_embeddings")
 def api_build_embeddings():
     # Compute next version vN based on existing files
-    emb_dir = ROOT / "dataset" / "v2" / "embeddings"
+    emb_dir = DATASET_ROOT / "embeddings"
     emb_dir.mkdir(parents=True, exist_ok=True)
     import re, subprocess
     max_n = 0
@@ -625,7 +629,7 @@ def api_set_active_version():
     ver = request.form.get("version") or request.args.get("version")
     if not ver:
         return jsonify({"ok": False, "error": "version required"}), 400
-    faiss_dir = ROOT / "dataset" / "v2" / "faiss"
+    faiss_dir = DATASET_ROOT / "faiss"
     faiss_dir.mkdir(parents=True, exist_ok=True)
     (faiss_dir / "ACTIVE_VERSION.txt").write_text(ver, encoding="utf-8")
     return jsonify({"ok": True, "version": ver})
@@ -634,7 +638,7 @@ def api_set_active_version():
 @app.post("/api/build_manifest_splits")
 def api_build_manifest_splits():
     # Compute next vN
-    man_dir = ROOT / "dataset" / "v2" / "manifests"
+    man_dir = DATASET_ROOT / "manifests"
     man_dir.mkdir(parents=True, exist_ok=True)
     import re, subprocess
     max_n = 0
