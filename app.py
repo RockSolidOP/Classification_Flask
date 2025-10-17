@@ -61,19 +61,43 @@ DATASET_ROOT.mkdir(parents=True, exist_ok=True)
 DATASET_IMAGES.mkdir(parents=True, exist_ok=True)
 
 
+def _vector_embeddings_dir() -> Path:
+    return DATASET_ROOT / "embeddings"
+
+
+def _vector_faiss_dir() -> Path:
+    return DATASET_ROOT / "faiss"
+
+
+def _vector_versions() -> list[str]:
+    versions: list[str] = []
+    emb_dir = _vector_embeddings_dir()
+    if not emb_dir.exists():
+        return versions
+    for p in sorted(emb_dir.glob("clip_vitb32*.jsonl")):
+        name = p.name
+        if name == "clip_vitb32.jsonl":
+            versions.append("default")
+        elif name.startswith("clip_vitb32_") and name.endswith(".jsonl"):
+            versions.append(name[len("clip_vitb32_"):-6])
+    return versions
+
+
+def _active_vector_version() -> str:
+    act_path = _vector_faiss_dir() / "ACTIVE_VERSION.txt"
+    if act_path.exists():
+        try:
+            return act_path.read_text(encoding="utf-8").strip() or "default"
+        except Exception:
+            pass
+    return "default"
+
+
 def _suggest_next_vector_version() -> str:
-    emb_dir = DATASET_ROOT / "embeddings"
-    emb_dir.mkdir(parents=True, exist_ok=True)
-    max_n = 0
-    for p in emb_dir.glob("clip_vitb32_*.jsonl"):
-        m = re.match(r"clip_vitb32_(v\\d+)\\.jsonl$", p.name)
-        if m:
-            try:
-                n = int(m.group(1)[1:])
-                max_n = max(max_n, n)
-            except Exception:
-                continue
-    return f"v{max_n + 1}" if max_n else "v1"
+    versions = _vector_versions()
+    numeric = [int(v[1:]) for v in versions if re.fullmatch(r"v\d+", v)]
+    next_n = max(numeric) + 1 if numeric else 1
+    return f"v{next_n}"
 
 
 def _reset_suggest_cache() -> None:
@@ -411,7 +435,7 @@ def curated():
     items = []
     label_summary = {}
     # List embedding/index versions
-    faiss_dir = DATASET_ROOT / "faiss"
+    faiss_dir = _vector_faiss_dir()
     emb_dir = DATASET_ROOT / "embeddings"
     faiss_dir.mkdir(parents=True, exist_ok=True)
     emb_dir.mkdir(parents=True, exist_ok=True)
@@ -620,7 +644,7 @@ def api_curated_delete_label():
 @app.post("/api/build_embeddings")
 def api_build_embeddings():
     # Compute next version vN based on existing files
-    emb_dir = DATASET_ROOT / "embeddings"
+    emb_dir = _vector_embeddings_dir()
     emb_dir.mkdir(parents=True, exist_ok=True)
     ver = _suggest_next_vector_version()
     cmd = [sys.executable, str((ROOT / "curation" / "build_embeddings.py")), "--version", ver]
@@ -650,11 +674,16 @@ def api_set_active_version():
     ver = request.form.get("version") or request.args.get("version")
     if not ver:
         return jsonify({"ok": False, "error": "version required"}), 400
-    faiss_dir = DATASET_ROOT / "faiss"
+    faiss_dir = _vector_faiss_dir()
     faiss_dir.mkdir(parents=True, exist_ok=True)
     (faiss_dir / "ACTIVE_VERSION.txt").write_text(ver, encoding="utf-8")
     _reset_suggest_cache()
     return jsonify({"ok": True, "version": ver})
+
+
+@app.get("/api/vector_versions")
+def api_vector_versions():
+    return jsonify({"ok": True, "versions": _vector_versions(), "active": _active_vector_version()})
 
 
 @app.get("/api/vector_version")
@@ -675,9 +704,9 @@ def api_build_vectors():
     if not re.match(r"^[A-Za-z0-9._-]+$", version):
         return jsonify({"ok": False, "error": "invalid version name"}), 400
 
-    emb_dir = DATASET_ROOT / "embeddings"
+    emb_dir = _vector_embeddings_dir()
     emb_dir.mkdir(parents=True, exist_ok=True)
-    faiss_dir = DATASET_ROOT / "faiss"
+    faiss_dir = _vector_faiss_dir()
     faiss_dir.mkdir(parents=True, exist_ok=True)
 
     embed_cmd = [sys.executable, str(ROOT / "curation" / "build_embeddings.py"), "--version", version]
