@@ -723,6 +723,42 @@ def api_build_vectors():
         return jsonify({"ok": False, "error": str(e)}), 500
 
 
+@app.post("/api/build_calibration")
+def api_build_calibration():
+    """Build Platt calibration from the current active FAISS vectors.
+
+    Optional parameter: max (int) to cap pages for speed.
+    Outputs dataset/v1/manifests/calibration.json when successful.
+    """
+    # Accept body JSON, form or query param
+    maxn = None
+    try:
+        payload = request.get_json(force=False, silent=True) or {}
+        maxn = payload.get("max")
+    except Exception:
+        pass
+    if maxn is None:
+        maxn = request.form.get("max") or request.args.get("max")
+    cmd = [sys.executable, str(ROOT / "curation" / "build_calibration.py")]
+    if maxn is not None and str(maxn).strip() != "":
+        try:
+            max_int = int(maxn)
+            if max_int > 0:
+                cmd.extend(["--max", str(max_int)])
+        except Exception:
+            pass
+    try:
+        proc = subprocess.run(cmd, capture_output=True, text=True)
+        if proc.returncode != 0:
+            msg = (proc.stdout or "")
+            if proc.stderr:
+                msg = (msg + "\n" + proc.stderr) if msg else proc.stderr
+            msg = (msg or f"Calibration failed (code {proc.returncode})").strip()
+            return jsonify({"ok": False, "error": msg}), 500
+        return jsonify({"ok": True, "message": (proc.stdout or "").strip()})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
 @app.post("/api/build_manifest_splits")
 def api_build_manifest_splits():
     # Compute next vN
@@ -848,6 +884,8 @@ def api_suggest(stem: str, page: int):
             continue
     try:
         from curation.rerank import rerank_suggestions
+        # Optional: load Platt calibration if present
+        from curation.calibration import load_platt  # type: ignore
         q = embed_pdf_page(pdf_path, page)
         results = search_neighbors(ROOT, q, topk=10)
         aliases = _load_aliases()
@@ -864,6 +902,16 @@ def api_suggest(stem: str, page: int):
                     except Exception:
                         continue
         merged = rerank_suggestions(results, page_entry, prev_entry, aliases, topk=5)
+        # Attach calibrated confidence from raw_score if calibration file exists
+        calib_path = DATASET_ROOT / "manifests" / "calibration.json"
+        model = load_platt(calib_path)
+        if model is not None:
+            for r in merged:
+                raw = r.get("raw_score", r.get("score", 0.0))
+                try:
+                    r["confidence"] = float(model.predict(float(raw)))
+                except Exception:
+                    r["confidence"] = None
         return jsonify({"ok": True, "results": merged})
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 500

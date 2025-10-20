@@ -331,18 +331,18 @@
     {
       "page": 37,
       "family": "UltraTax",
-      "label": "Profit_or_Loss_From_Business_P1",
+      "label": "Schedule_C_Profit_or_Loss_From_Business_P1",
       "auto_label": "Profit_or_Loss_From_Business_P1",
-      "updated_label": false,
+      "updated_label": true,
       "multipage": true,
       "raw_label": "Profit or Loss From Business"
     },
     {
       "page": 38,
       "family": "UltraTax",
-      "label": "Profit_or_Loss_From_Business_P2",
+      "label": "Schedule_C_Profit_or_Loss_From_Business_P2",
       "auto_label": "Profit_or_Loss_From_Business_P2",
-      "updated_label": false,
+      "updated_label": true,
       "multipage": true,
       "raw_label": "P2"
     },
@@ -619,18 +619,18 @@
     {
       "page": 69,
       "family": "UltraTax",
-      "label": "Farm_Income_P1",
+      "label": "Schedule_F_1040_P1",
       "auto_label": "Farm_Income_P1",
-      "updated_label": false,
+      "updated_label": true,
       "multipage": true,
       "raw_label": "Farm Income"
     },
     {
       "page": 70,
       "family": "UltraTax",
-      "label": "Farm_Income_P2",
+      "label": "Schedule_F_1040_P2",
       "auto_label": "Farm_Income_P2",
-      "updated_label": false,
+      "updated_label": true,
       "multipage": true,
       "raw_label": "P2"
     },

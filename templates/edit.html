@@ -303,7 +303,8 @@
             list.innerHTML = '';
             (data.results || []).forEach((r, idx) => {
               const li = document.createElement('li');
-              li.innerHTML = `<label><input type="radio" name="suggPick" value="${idx}" ${idx===0?'checked':''}/> ${r.label} <span style='color:#6b7280'>(score ${r.score.toFixed(3)})</span></label>`;
+              const conf = (typeof r.confidence === 'number') ? r.confidence : r.score;
+              li.innerHTML = `<label><input type=\"radio\" name=\"suggPick\" value=\"${idx}\" ${idx===0?'checked':''}/> ${r.label} <span style='color:#6b7280'>(conf ${conf.toFixed(2)})</span></label>`;
               list.appendChild(li);
             });
           }).catch(() => {

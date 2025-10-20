@@ -27,8 +27,9 @@
     <h2>Curated Dataset</h2>
     <p>Total curated pages: <strong>{{ total }}</strong></p>
     <div style="border:1px solid #e5e7eb; padding:.6rem; border-radius:6px; margin-bottom:1rem; display:flex; gap:1rem; align-items:center; flex-wrap:wrap;">
-      <div style="display:flex; gap:.5rem; align-items:center;">
+      <div style="display:flex; gap:.5rem; align-items:center; flex-wrap:wrap;">
         <button type="button" onclick="buildVectorsManual()" title="Build embeddings, build index, and activate using a version name you choose">Build Vectors (custom)</button>
+        <button type="button" onclick="buildCalibration()" title="Fit Platt scaling on curated pages for calibrated confidence">Rebuild Calibration</button>
         <span style="color:#6b7280;">Active vectors: {{ active_ver or 'default' }}</span>
       </div>
       <div>
@@ -154,6 +155,16 @@
               location.reload();
             }
           } catch (e) { alert('Delete error'); }
+          finally { hideBusy(); }
+        }
+        async function buildCalibration() {
+          showBusy('Building calibration...');
+          try {
+            const res = await fetch('{{ url_for('api_build_calibration') }}', { method: 'POST' });
+            const data = await res.json();
+            if (!data.ok) return alert('Calibration build failed: ' + (data.error || ''));
+            alert('Calibration rebuilt. Suggestions will show calibrated confidence.');
+          } catch (e) { alert('Calibration build error'); }
           finally { hideBusy(); }
         }
         async function deleteLabel(label) {

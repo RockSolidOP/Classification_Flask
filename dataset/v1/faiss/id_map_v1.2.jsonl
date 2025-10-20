@@ -3,3 +3,7 @@
 {"offset": 2, "id": "1040_US_FED.pdf#3", "label": "Form_1040_SR_P1", "base_label": "Form_1040_SR", "page_in_form": 1}
 {"offset": 3, "id": "sample_18-19.pdf#1", "label": "Form_1040_P1", "base_label": "Form_1040", "page_in_form": 1}
 {"offset": 4, "id": "sample_18-19.pdf#2", "label": "Form_1040_P2", "base_label": "Form_1040", "page_in_form": 2}
+{"offset": 5, "id": "1040_US_FED.pdf#37", "label": "Schedule_C_Profit_or_Loss_From_Business_P1", "base_label": "Schedule_C_Profit_or_Loss_From_Business", "page_in_form": 1}
+{"offset": 6, "id": "1040_US_FED.pdf#38", "label": "Schedule_C_Profit_or_Loss_From_Business_P2", "base_label": "Schedule_C_Profit_or_Loss_From_Business", "page_in_form": 2}
+{"offset": 7, "id": "1040_US_FED.pdf#69", "label": "Schedule_F_1040_P1", "base_label": "Schedule_F_1040", "page_in_form": 1}
+{"offset": 8, "id": "1040_US_FED.pdf#70", "label": "Schedule_F_1040_P2", "base_label": "Schedule_F_1040", "page_in_form": 2}

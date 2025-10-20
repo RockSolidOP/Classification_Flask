@@ -7,19 +7,19 @@
     {
       "page": 1,
       "family": "Other",
-      "label": "Form_1040_P1",
+      "label": "Other",
       "auto_label": "Other",
-      "updated_label": true,
-      "multipage": true,
+      "updated_label": false,
+      "multipage": false,
       "raw_label": "Other"
     },
     {
       "page": 2,
       "family": "Other",
-      "label": "Form_1040_P2",
+      "label": "Other",
       "auto_label": "Other",
-      "updated_label": true,
-      "multipage": true,
+      "updated_label": false,
+      "multipage": false,
       "raw_label": "Other"
     }
   ],
