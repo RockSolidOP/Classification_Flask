@@ -1,5 +1,19 @@
 from __future__ import annotations
 
+"""
+Suggestion engine helpers for vector search.
+
+This module provides two main capabilities used by the app:
+- Create OpenCLIP image embeddings for a rendered PDF page
+- Query a FAISS index of curated page embeddings to retrieve similar pages
+
+Conventions and expectations:
+- Embeddings use OpenCLIP ViT-B/32 on CPU and are L2-normalized.
+- FAISS artifacts live under `dataset/v1/faiss/` and the active
+  index version is selected via `ACTIVE_VERSION.txt` in that folder.
+- Public entry points are `embed_pdf_page` and `search_neighbors`.
+"""
+
 import os
 from pathlib import Path
 from typing import List, Dict, Any
@@ -15,6 +29,13 @@ _IDMAP = []
 
 
 def _ensure_open_clip():
+    """Load and cache the OpenCLIP model and preprocess pipeline.
+
+    Returns a tuple ``(model, preprocess, torch)``. The model is set to
+    eval mode on CPU. Environment variables are adjusted to reduce
+    OpenMP/threading conflicts in constrained environments. Raises a
+    RuntimeError if required packages are missing.
+    """
     global _MODEL, _PREPROCESS, _TORCH
     if _MODEL is not None:
         return _MODEL, _PREPROCESS, _TORCH
@@ -36,6 +57,15 @@ def _ensure_open_clip():
 
 
 def _ensure_faiss(root: Path):
+    """Load and cache the active FAISS index and its id map.
+
+    Reads `dataset/v1/faiss/ACTIVE_VERSION.txt` to determine which
+    index (``clip_vitb32_<ver>.index``) and id map
+    (``id_map_<ver>.jsonl``) to load. Returns a tuple ``(index, idmap)``
+    where ``idmap`` is a list of metadata dicts aligned with vector
+    offsets. Raises RuntimeError if FAISS is not installed or artifacts
+    are missing.
+    """
     global _INDEX, _IDMAP
     if _INDEX is not None and _IDMAP:
         return _INDEX, _IDMAP
@@ -72,6 +102,11 @@ def _ensure_faiss(root: Path):
 
 
 def _embed_image(img, model, preprocess, torch):
+    """Compute an L2-normalized OpenCLIP embedding for a PIL image.
+
+    Returns a numpy vector (float32) on CPU with unit length.
+    ``model`` and ``preprocess`` come from ``_ensure_open_clip``.
+    """
     with torch.no_grad():
         image = preprocess(img).unsqueeze(0)
         feats = model.encode_image(image)
@@ -80,6 +115,11 @@ def _embed_image(img, model, preprocess, torch):
 
 
 def embed_pdf_page(pdf_path: Path, page: int):
+    """Render a 1-based PDF page and return its CLIP embedding.
+
+    Uses ``pypdfium2`` to render the given page, then produces an
+    L2‑normalized OpenCLIP ViT-B/32 embedding as a float32 numpy array.
+    """
     from PIL import Image
     import pypdfium2 as pdfium
     model, preprocess, torch = _ensure_open_clip()
@@ -98,6 +138,17 @@ def embed_pdf_page(pdf_path: Path, page: int):
 
 
 def search_neighbors(root: Path, query_vec: np.ndarray, topk: int = 5) -> List[Dict[str, Any]]:
+    """Search the active FAISS index for nearest neighbors.
+
+    Parameters
+    - root: repository root path used to locate dataset folders
+    - query_vec: L2-normalized embedding vector (float32)
+    - topk: number of neighbors to return
+
+    Returns a list of dicts with keys: ``rank``, ``score``, ``id``,
+    ``label``, ``base_label``, and ``page_in_form``. Scores are inner
+    products (cosine similarity when vectors are normalized).
+    """
     index, idmap = _ensure_faiss(root)
     import faiss
     D, I = index.search(query_vec.reshape(1, -1), topk)
