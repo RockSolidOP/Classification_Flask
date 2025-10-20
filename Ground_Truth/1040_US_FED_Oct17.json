@@ -331,7 +331,7 @@
     {
       "page": 37,
       "family": "UltraTax",
-      "label": "Schedule_C_Profit_or_Loss_From_Business_P1",
+      "label": "Schedule_C_1040_P1",
       "auto_label": "Profit_or_Loss_From_Business_P1",
       "updated_label": true,
       "multipage": true,
@@ -340,7 +340,7 @@
     {
       "page": 38,
       "family": "UltraTax",
-      "label": "Schedule_C_Profit_or_Loss_From_Business_P2",
+      "label": "Schedule_C_1040_P2",
       "auto_label": "Profit_or_Loss_From_Business_P2",
       "updated_label": true,
       "multipage": true,

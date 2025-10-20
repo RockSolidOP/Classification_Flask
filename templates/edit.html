@@ -304,7 +304,12 @@
             (data.results || []).forEach((r, idx) => {
               const li = document.createElement('li');
               const conf = (typeof r.confidence === 'number') ? r.confidence : r.score;
-              li.innerHTML = `<label><input type=\"radio\" name=\"suggPick\" value=\"${idx}\" ${idx===0?'checked':''}/> ${r.label} <span style='color:#6b7280'>(conf ${conf.toFixed(2)})</span></label>`;
+              // Store the canonical label separately to avoid UI text leaking into saved labels
+              li.innerHTML = `<label>
+                <input type=\"radio\" name=\"suggPick\" value=\"${idx}\" ${idx===0?'checked':''}/>
+                <span class=\"lbl\" data-label=\"${r.label}\">${r.label}</span>
+                <span style='color:#6b7280'>(conf ${conf.toFixed(2)})</span>
+              </label>`;
               list.appendChild(li);
             });
           }).catch(() => {
@@ -324,19 +329,18 @@
         showBusy('Applying...');
         const { pick, page } = getSelectedSuggestion();
         const rowInput = document.getElementById('label_' + page);
-        const labels = Array.from(document.querySelectorAll('#suggList label'));
-        if (!labels[pick]) return;
-        const text = labels[pick].innerText;
-        const cand = text.split(' (score')[0];
+        const nodes = Array.from(document.querySelectorAll('#suggList label .lbl'));
+        if (!nodes[pick]) return;
+        const cand = nodes[pick].dataset.label || nodes[pick].textContent;
         if (rowInput) rowInput.value = cand;
         closeSuggest(); hideBusy();
       }
       async function saveSuggestion() {
         showBusy('Saving...');
         const { pick, page } = getSelectedSuggestion();
-        const labels = Array.from(document.querySelectorAll('#suggList label'));
-        if (!labels[pick]) return;
-        const cand = labels[pick].innerText.split(' (score')[0];
+        const nodes = Array.from(document.querySelectorAll('#suggList label .lbl'));
+        if (!nodes[pick]) return;
+        const cand = nodes[pick].dataset.label || nodes[pick].textContent;
         const res = await fetch('{{ url_for('api_update_label', stem=stem, page=0) }}?name={{ download_name }}'.replace('/0','/' + page), {
           method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ label: cand })
         });
@@ -349,9 +353,9 @@
       async function curateSuggestion() {
         showBusy('Saving and curating...');
         const { pick, page } = getSelectedSuggestion();
-        const labels = Array.from(document.querySelectorAll('#suggList label'));
-        if (!labels[pick]) return;
-        const cand = labels[pick].innerText.split(' (score')[0];
+        const nodes = Array.from(document.querySelectorAll('#suggList label .lbl'));
+        if (!nodes[pick]) return;
+        const cand = nodes[pick].dataset.label || nodes[pick].textContent;
         // save then curate
         const res = await fetch('{{ url_for('api_update_label', stem=stem, page=0) }}?name={{ download_name }}'.replace('/0','/' + page), {
           method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ label: cand })
@@ -366,9 +370,9 @@
       async function mergeAndCurate() {
         showBusy('Merging, saving and curating...');
         const { pick, page } = getSelectedSuggestion();
-        const labels = Array.from(document.querySelectorAll('#suggList label'));
-        if (!labels[pick]) return;
-        const cand = labels[pick].innerText.split(' (score')[0];
+        const nodes = Array.from(document.querySelectorAll('#suggList label .lbl'));
+        if (!nodes[pick]) return;
+        const cand = nodes[pick].dataset.label || nodes[pick].textContent;
         const current = (document.getElementById('label_' + page)?.value || '').trim();
         if (!current) return alert('No current label');
         // Merge alias mapping: current -> cand

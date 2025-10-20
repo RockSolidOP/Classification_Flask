@@ -136,6 +136,20 @@ def _canonicalize_label(label: str) -> str:
     return aliases.get(label, label)
 
 
+def _sanitize_label_text(text: str) -> str:
+    """Strip any trailing UI confidence/score annotation from a label.
+
+    Examples: "Form_1040_P1 (conf 0.98)" -> "Form_1040_P1".
+    Conservative: only removes a final parenthesized segment that starts
+    with 'conf ' or 'score '.
+    """
+    try:
+        import re as _re
+        return _re.sub(r"\s*\((?:conf|score) [^)]*\)\s*$", "", str(text or "").strip())
+    except Exception:
+        return str(text or "").strip()
+
+
 def _resolve_json_path(stem: str, name: str | None = None) -> Path | None:
     if name:
         p = OUT_DIR / name
@@ -245,7 +259,7 @@ def _append_curated_record(mapping: dict, page_entry: dict, json_name: str) -> N
     DATASET_INDEX.parent.mkdir(parents=True, exist_ok=True)
     # Build minimal record
     # Canonicalize label via alias mapping
-    cur_lbl = page_entry.get("label", "Other")
+    cur_lbl = _sanitize_label_text(page_entry.get("label", "Other"))
     can_lbl = _canonicalize_label(cur_lbl)
     base_label, page_in_form = _derive_base_and_page(can_lbl)
     record = {
@@ -301,7 +315,7 @@ def api_update_label(stem: str, page: int):
         payload = request.get_json(force=True)
     except Exception:
         payload = {}
-    new_label = (payload.get("label") or "").strip()
+    new_label = _sanitize_label_text(payload.get("label") or "")
     if not new_label:
         return jsonify({"ok": False, "error": "label required"}), 400
     with open(json_path, "r", encoding="utf-8") as f:
@@ -845,6 +859,9 @@ def api_curated_dedupe():
     deleted = len(lines) - kept
     os.replace(tmp_path, DATASET_INDEX)
     return jsonify({"ok": True, "deleted": deleted, "kept": kept})
+
+
+    
 
 
 @app.route("/help")
