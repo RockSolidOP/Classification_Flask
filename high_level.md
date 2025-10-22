@@ -1,4 +1,4 @@
-# AI Plan (Simple Version)
+# High level project overview 
 
 Use this as a quick guide to how we’ll label pages, save examples, and train a model. It’s written to be easy to scan and act on.
 
@@ -72,7 +72,7 @@ Use this as a quick guide to how we’ll label pages, save examples, and train a
 
 ## Step-by-Step Workflow Plan
 
-1) Stabilize Auto-Labeling (Today)
+1) Stabilize Auto-Labeling
 - Confirm labels created by the app: `label`, `auto_label`, `updated_label`, `multipage`, `raw_label`.
 - Ensure prefixing (Base_P1, Base_P2…) behaves as expected on your PDFs.
 - Output JSON name format: `<file>_{MonDate}.json`.
@@ -101,7 +101,7 @@ Use this as a quick guide to how we’ll label pages, save examples, and train a
 - Generate `dataset/v1/manifests/v1.json` with counts per label, sources, tool versions, timestamp.
 - Create doc-level stratified train/val/test split and save under `dataset/v1/splits/v1_splits.json`.
 
-7) Train Baseline, Then LayoutLMv3
+7) Train Baseline, Then LayoutLMv3 [TBD]
 - Data readiness
   - Inputs: `dataset/v1/index/v1.jsonl` (deduped), `dataset/v1/splits/vN_splits.json` (doc-level splits)
   - Labels: start with fine‑grained `label` (e.g., `Form_1040_SR_P1`). Optionally switch to `base_label` later.
