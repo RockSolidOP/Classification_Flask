@@ -96,14 +96,50 @@ def main():
     pnums: List[int] = []
     vecs: List[list] = []
 
+    images_root = root / "dataset" / "v1" / "images"
+
     for ident, r in by_id.items():
+        # Resolve image path robustly (handle absolute, relative, and moved workspaces)
         img_path = r.get("image_path")
-        if not img_path:
+        p = None
+        if img_path:
+            q = Path(img_path)
+            if not q.is_absolute():
+                q = root / q
+            if q.exists():
+                p = q
+        if p is None:
+            # Fallback: reconstruct expected image path from base_label/doc/page
+            try:
+                base_lbl = r.get("base_label") or ""
+                doc = r.get("document") or ""
+                pg = int(r.get("page", 0))
+                cand = images_root / base_lbl / f"{doc}_{pg}.png"
+                if cand.exists():
+                    p = cand
+            except Exception:
+                p = None
+        vec = None
+        if p is not None:
+            vec = _embed_image(p, model, preprocess, torch)
+        else:
+            # Last resort: render from source PDF
+            try:
+                import pypdfium2 as pdfium
+                pdf_path = root / "Source_PDF" / (r.get("document") or "")
+                if pdf_path.exists():
+                    doc = pdfium.PdfDocument(str(pdf_path))
+                    pg_idx = int(r.get("page", 1)) - 1
+                    pil_image = doc[pg_idx].render().to_pil()
+                    with torch.no_grad():
+                        image = preprocess(pil_image).unsqueeze(0)
+                        feats = model.encode_image(image)
+                        feats = feats / feats.norm(dim=-1, keepdim=True)
+                    vec = feats.squeeze(0).cpu().numpy()
+            except Exception:
+                vec = None
+        if vec is None:
             continue
-        p = Path(img_path)
-        if not p.exists():
-            continue
-        vec = _embed_image(p, model, preprocess, torch)
         lbl = r.get("label", "")
         can = aliases.get(lbl, lbl)
         # if alias mapping changed, recompute base/page from canonical

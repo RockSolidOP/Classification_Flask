@@ -279,7 +279,20 @@ def _append_curated_record(mapping: dict, page_entry: dict, json_name: str) -> N
         if feats:
             # Store image path relative to repo root for portability
             if "image_path" in feats:
-                feats["image_path"] = str(Path(feats["image_path"]).as_posix())
+                ip = Path(feats["image_path"])  # absolute path from extractor
+                try:
+                    # Prefer path relative to repo root if possible
+                    rel = ip.relative_to(ROOT)
+                    feats["image_path"] = str(rel.as_posix())
+                except Exception:
+                    # Fallback: if it contains '/dataset/v1/images/', slice from there
+                    pstr = str(ip)
+                    anchor = "/dataset/v1/images/"
+                    idx = pstr.find(anchor)
+                    if idx >= 0:
+                        feats["image_path"] = pstr[idx + 1 :]
+                    else:
+                        feats["image_path"] = str(ip.as_posix())
             record.update(feats)
     except Exception:
         pass
