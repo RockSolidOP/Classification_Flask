@@ -61,9 +61,9 @@
     {
       "page": 7,
       "family": "UltraTax",
-      "label": "Schedule_F_Page_1_ScheduleF_P1",
+      "label": "Schedule_F_P1",
       "auto_label": "Schedule_F_Page_1_ScheduleF_P1",
-      "updated_label": false,
+      "updated_label": true,
       "multipage": false,
       "raw_label": "Schedule F Page 1 - ScheduleF"
     },
