@@ -1,3 +1,4 @@
+# Rerank CLIP neighbor suggestions using page context and sequence priors
 from __future__ import annotations
 
 import re

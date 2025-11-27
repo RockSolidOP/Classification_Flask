@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+# Compute and version CLIP image embeddings for curated dataset pages
+
 import json
 from pathlib import Path
 from typing import List

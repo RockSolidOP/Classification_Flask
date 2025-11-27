@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+# Build a FAISS similarity index and ID map from CLIP page embeddings
+
 from pathlib import Path
 import argparse
 import json

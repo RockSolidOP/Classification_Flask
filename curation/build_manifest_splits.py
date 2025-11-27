@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+# Build dataset manifest metadata and train/val/test splits from the curated index
+
 import argparse
 import json
 import math

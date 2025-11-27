@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+# Extract page images and word/box layout features for curated PDF pages
+
 from pathlib import Path
 from typing import Dict, List, Any
 
