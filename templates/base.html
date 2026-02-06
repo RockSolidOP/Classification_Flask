@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>{% block title %}UltraTax Labeler{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+    {% block head_extra %}{% endblock %}
+  </head>
+  <body class="ut-body">
+    <div class="ut-shell">
+      <header class="ut-nav">
+        <div class="ut-nav-brand">
+          <div class="ut-nav-title">UltraTax Labeler</div>
+          <div class="ut-nav-subtitle">{% block subtitle %}{% endblock %}</div>
+        </div>
+        <nav class="ut-nav-links">
+          <a href="{{ url_for('index') }}" class="{% block nav_upload_active %}{% endblock %}" title="Upload a PDF and generate labels">Upload</a>
+          <a href="{{ url_for('curated') }}" class="{% block nav_curated_active %}{% endblock %}" title="Review curated dataset, build embeddings, manage versions">Curated</a>
+          <a href="{{ url_for('help_page') }}" class="{% block nav_help_active %}{% endblock %}" title="How to use this app">Help</a>
+        </nav>
+      </header>
+      <main class="ut-page">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for m in messages %}<div class="ut-flash">{{ m }}</div>{% endfor %}
+          {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+    {% block scripts %}{% endblock %}
+  </body>
+  </html>
+

@@ -1,77 +1,51 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>UltraTax Labeler</title>
-    <style>
-      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 2rem; }
-      .nav { position: sticky; top: 0; background: #fff; border-bottom: 1px solid #e5e7eb; padding: .6rem 1rem; margin: -2rem -2rem 1rem -2rem; z-index: 10; display:flex; gap:1rem; }
-      .nav a { text-decoration: none; color: #2563eb; font-weight: 600; }
-      .flash { background: #fff3cd; padding: .5rem .75rem; border: 1px solid #ffeeba; margin-bottom: 1rem; }
-      .card { border: 1px solid #ddd; padding: 1rem; border-radius: 6px; max-width: 640px; }
-      .list { margin-top: 1rem; }
-      a { text-decoration: none; color: #2563eb; }
-      .busy { display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:2000; align-items:center; justify-content:center; }
-      .busy .box { background:#111827; color:#e5e7eb; padding:1rem 1.25rem; border-radius:10px; min-width:280px; text-align:center; box-shadow:0 10px 25px rgba(0,0,0,.3); }
-      .spinner { width:28px; height:28px; border:3px solid #93c5fd; border-top-color:transparent; border-radius:50%; animation:spin 1s linear infinite; margin:0 auto .5rem auto; }
-      @keyframes spin{to{transform:rotate(360deg)}}
-    </style>
-  </head>
-  <body>
-    <div class="nav">
-      <a href="{{ url_for('index') }}" title="Upload a PDF and generate labels">Upload</a>
-      <a href="{{ url_for('curated') }}" title="Review curated dataset, build embeddings, manage versions">Curated</a>
-      <a href="{{ url_for('help_page') }}" title="How to use this app">Help</a>
-    </div>
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        {% for m in messages %}<div class="flash">{{ m }}</div>{% endfor %}
-      {% endif %}
-    {% endwith %}
+{% extends "base.html" %}
 
-    <div class="card">
-      <h2>Upload PDF</h2>
-      <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
-        <div style="margin-bottom:.5rem;">
-          <input type="file" accept="application/pdf" name="pdf" required>
-        </div>
-        <label style="display:flex; align-items:center; gap:.5rem; margin:.5rem 0;">
-          <input type="checkbox" name="ultratax_mode" value="1">
-          Apply UltraTax P1/P2 normalization
-        </label>
-        <button type="submit">Generate Mapping</button>
-      </form>
-      <div id="busy" class="busy">
-        <div class="box">
-          <div class="spinner"></div>
-          <div id="busyMsg">Working...</div>
-        </div>
+{% block title %}UltraTax Labeler — Upload{% endblock %}
+{% block subtitle %}PDF page labels → curated dataset{% endblock %}
+{% block nav_upload_active %}ut-nav-active{% endblock %}
+
+{% block content %}
+  <div class="ut-card">
+    <div class="ut-card-header">
+      <div class="ut-card-title">Upload a PDF</div>
+      <div class="ut-card-subtitle">
+        Generate a mapping JSON, then refine labels and curate pages into a training-ready dataset.
       </div>
-
-      {% if existing %}
-        <div class="list">
-          <h3>Existing mappings</h3>
-          <ul>
-            {% for name in existing %}
-              <li>
-                <a href="{{ url_for('edit', stem=name, name=name) }}">{{ name }}</a>
-                • <a href="{{ url_for('download', filename=name) }}">download</a>
-              </li>
-            {% endfor %}
-          </ul>
-        </div>
-      {% endif %}
     </div>
-    <script>
-      const busy = document.getElementById('busy');
-      const busyMsg = document.getElementById('busyMsg');
-      function showBusy(msg){ if(busy){ busyMsg.textContent = msg||'Working...'; busy.style.display='flex'; } }
-      function hideBusy(){ if(busy){ busy.style.display='none'; } }
-      const form = document.querySelector('form[action="{{ url_for('upload') }}"]');
-      if (form) {
-        form.addEventListener('submit', ()=>{ showBusy('Generating mapping...'); });
-      }
-      window.addEventListener('pageshow', hideBusy);
-    </script>
-  </body>
-  </html>
+    <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data" class="ut-upload-form" data-upload-form>
+      <div>
+        <input type="file" accept="application/pdf" name="pdf" required class="ut-file-input">
+      </div>
+      <label class="ut-checkbox-label">
+        <input type="checkbox" name="ultratax_mode" value="1">
+        <span>Apply UltraTax P1/P2 normalization</span>
+      </label>
+      <button type="submit" class="ut-btn-primary">Generate Mapping</button>
+    </form>
+    <div id="busy" class="ut-busy-overlay">
+      <div class="ut-busy-box">
+        <div class="ut-spinner"></div>
+        <div id="busyMsg">Working...</div>
+      </div>
+    </div>
+
+    {% if existing %}
+      <div class="ut-list">
+        <h3>Existing mappings</h3>
+        <ul>
+          {% for name in existing %}
+            <li>
+              <a href="{{ url_for('edit', stem=name, name=name) }}" class="ut-link">{{ name }}</a>
+              • <a href="{{ url_for('download', filename=name) }}" class="ut-link">download</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+{% endblock %}
+

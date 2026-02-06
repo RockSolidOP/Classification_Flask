@@ -1,182 +1,95 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Curated Dataset</title>
-    <style>
-      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 1rem; }
-      .nav { position: sticky; top: 0; background: #fff; border-bottom: 1px solid #e5e7eb; padding: .6rem 1rem; margin: -1rem -1rem 1rem -1rem; z-index: 10; display:flex; gap:1rem; }
-      .nav a { text-decoration: none; color: #2563eb; font-weight: 600; }
-      table { border-collapse: collapse; width: 100%; }
-      th, td { border: 1px solid #e5e7eb; padding: .4rem .5rem; font-size: 14px; }
-      th { background: #f9fafb; text-align: left; }
-      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-      .busy { display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:2000; align-items:center; justify-content:center; }
-      .busy .box { background:#111827; color:#e5e7eb; padding:1rem 1.25rem; border-radius:10px; min-width:280px; text-align:center; box-shadow:0 10px 25px rgba(0,0,0,.3); }
-      .spinner { width:28px; height:28px; border:3px solid #93c5fd; border-top-color:transparent; border-radius:50%; animation:spin 1s linear infinite; margin:0 auto .5rem auto; }
-      @keyframes spin{to{transform:rotate(360deg)}}
-    </style>
-  </head>
-  <body>
-    <div class="nav">
-      <a href="{{ url_for('index') }}" title="Upload a PDF and generate labels">Upload</a>
-      <a href="{{ url_for('curated') }}" title="Review curated dataset, build embeddings, manage versions">Curated</a>
-      <a href="{{ url_for('help_page') }}" title="How to use this app">Help</a>
-    </div>
+{% extends "base.html" %}
 
-    <h2>Curated Dataset</h2>
-    <p>Total curated pages: <strong>{{ total }}</strong></p>
-    <div style="border:1px solid #e5e7eb; padding:.6rem; border-radius:6px; margin-bottom:1rem; display:flex; gap:1rem; align-items:center; flex-wrap:wrap;">
-      <div style="display:flex; gap:.5rem; align-items:center;">
-        <button type="button" onclick="buildVectorsManual()" title="Build embeddings, build index, and activate using a version name you choose">Build Vectors (custom)</button>
-        <span style="color:#6b7280;">Active vectors: {{ active_ver or 'default' }}</span>
-      </div>
-      <div>
-        <button type="button" onclick="deleteAll()" style="background:#fee2e2;border:1px solid #fecaca;padding:.4rem .6rem;" title="Delete ALL curated records and images (irreversible)">Delete All</button>
-      </div>
+{% block title %}UltraTax Labeler — Curated{% endblock %}
+{% block subtitle %}Curated dataset overview & housekeeping{% endblock %}
+{% block nav_curated_active %}ut-nav-active{% endblock %}
+
+{% block content %}
+  <h2>Curated Dataset</h2>
+  <div class="ut-summary-row">
+    <div class="ut-summary-card">
+      <div class="ut-summary-label">Total curated pages</div>
+      <div class="ut-summary-value">{{ total }}</div>
+      <div class="ut-summary-hint">Pages currently available for training or search.</div>
     </div>
-    {% if total == 0 %}
-      <p>No curated records yet. Use the editor to Curate pages.</p>
-    {% else %}
-      <table>
-        <thead>
+    <div class="ut-summary-card">
+      <div class="ut-summary-label">Active suggestion engine</div>
+      <div class="ut-summary-value ut-mono">{{ active_ver or 'default' }}</div>
+      <div class="ut-summary-hint">Version used when you click Suggest in the editor.</div>
+    </div>
+  </div>
+
+  <div style="border:1px solid #e5e7eb; padding:.6rem; border-radius:6px; margin-bottom:1.25rem; display:flex; gap:1rem; align-items:center; flex-wrap:wrap; background:#f9fafb;">
+    <div style="display:flex; gap:.5rem; align-items:center;">
+      <button type="button" class="ut-actions-button" data-build-vectors title="Build embeddings, build index, and activate using a version name you choose">Build Vectors (custom)</button>
+      <span style="color:#6b7280;font-size:13px;">Creates a new embedding + FAISS version from current curated pages.</span>
+    </div>
+    <div style="margin-left:auto;">
+      <button type="button" class="ut-btn-danger" data-delete-all title="Delete ALL curated records and images (irreversible)">Delete All</button>
+    </div>
+  </div>
+
+  {% if total == 0 %}
+    <p>No curated records yet. Use the editor to curate pages.</p>
+  {% else %}
+    <table class="ut-table">
+      <thead>
+        <tr>
+          <th>Label</th>
+          <th>Base</th>
+          <th>Sample Size</th>
+          <th>Docs</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for entry in label_summary %}
+        <tr>
+          <td class="ut-mono">{{ entry.label }}</td>
+          <td class="ut-mono">{{ entry.base_label }}</td>
+          <td>{{ entry.count }}</td>
+          <td>
+            {% if entry.docs %}
+              {% for doc in entry.docs %}
+                <a target="_blank" rel="noopener" href="{{ url_for('serve_pdf', filename=doc) }}">{{ doc }}</a>{% if not loop.last %}, {% endif %}
+              {% endfor %}
+            {% else %}
+              <span style="color:#9ca3af;">None</span>
+            {% endif %}
+          </td>
+          <td style="text-align:center">
+            <button type="button" class="ut-actions-button" data-delete-label="{{ entry.label }}">Delete</button>
+          </td>
+        </tr>
+      {% endfor %}
+      {% if label_summary|length == 0 %}
+        {% for r in items %}
           <tr>
-            <th>Label</th>
-            <th>Base</th>
-            <th>Sample Size</th>
-            <th>Docs</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-        {% for entry in label_summary %}
-          <tr>
-            <td class="mono">{{ entry.label }}</td>
-            <td class="mono">{{ entry.base_label }}</td>
-            <td>{{ entry.count }}</td>
-            <td>
-              {% if entry.docs %}
-                {% for doc in entry.docs %}
-                  <a target="_blank" rel="noopener" href="{{ url_for('serve_pdf', filename=doc) }}">{{ doc }}</a>{% if not loop.last %}, {% endif %}
-                {% endfor %}
-              {% else %}
-                <span style="color:#9ca3af;">None</span>
-              {% endif %}
+            <td class="ut-mono">{{ r.label }}</td>
+            <td class="ut-mono">{{ r.base_label }}</td>
+            <td>1</td>
+            <td><a target="_blank" rel="noopener" href="{{ url_for('serve_pdf', filename=r.document) }}">{{ r.document }}</a></td>
+            <td style="text-align:center">
+              <button type="button" class="ut-actions-button" data-delete-label="{{ r.label }}">Delete</button>
             </td>
-            <td style="text-align:center"><button type="button" onclick="deleteLabel('{{ entry.label }}')">Delete</button></td>
           </tr>
         {% endfor %}
-        {% if label_summary|length == 0 %}
-          {% for r in items %}
-            <tr>
-              <td class="mono">{{ r.label }}</td>
-              <td class="mono">{{ r.base_label }}</td>
-              <td>1</td>
-              <td><a target="_blank" rel="noopener" href="{{ url_for('serve_pdf', filename=r.document) }}">{{ r.document }}</a></td>
-              <td style="text-align:center"><button type="button" onclick="deleteLabel('{{ r.label }}')">Delete</button></td>
-            </tr>
-          {% endfor %}
-        {% endif %}
-        </tbody>
-      </table>
-      <script>
-        const busy = document.createElement('div');
-        busy.className = 'busy';
-        busy.innerHTML = '<div class="box"><div class="spinner"></div><div id="busyMsg">Working...</div></div>';
-        document.body.appendChild(busy);
-        function showBusy(msg){ const msgEl = document.getElementById('busyMsg'); if(msgEl) msgEl.textContent = msg||'Working...'; busy.style.display='flex'; }
-        function hideBusy(){ busy.style.display='none'; }
-        async function getSuggestedVectorVersion() {
-          try {
-            const res = await fetch('{{ url_for('api_vector_version') }}');
-            const data = await res.json();
-            if (data.ok && data.version) return data.version;
-          } catch (e) {}
-          return 'v1';
-        }
+      {% endif %}
+      </tbody>
+    </table>
+  {% endif %}
 
-        async function buildVectors(version) {
-          showBusy('Building vectors...');
-          try {
-            const res = await fetch('{{ url_for('api_build_vectors') }}', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ version })
-            });
-            const data = await res.json();
-            if (!data.ok) return alert('Vector build failed: ' + (data.error || ''));
-            alert('Vectors built and activated: ' + data.version);
-            location.reload();
-          } catch (e) {
-            alert('Vector build error');
-          } finally {
-            hideBusy();
-          }
-        }
+  <script id="curatedUrls" type="application/json">
+    {
+      "vector_version": "{{ url_for('api_vector_version') }}",
+      "build_vectors": "{{ url_for('api_build_vectors') }}",
+      "delete_all": "{{ url_for('api_curated_delete_all') }}",
+      "delete_label": "{{ url_for('api_curated_delete_label') }}"
+    }
+  </script>
+{% endblock %}
 
-        async function buildVectorsManual() {
-          const suggested = await getSuggestedVectorVersion();
-          const version = prompt('Enter version name for new vectors (Cancel to skip)', suggested);
-          if (version === null) return;
-          const trimmed = version.trim();
-          if (!trimmed) return;
-          await buildVectors(trimmed);
-        }
-        async function deleteAll() {
-          if (!confirm('Delete ALL curated records and images? This cannot be undone.')) return;
-          showBusy('Deleting all curated records...');
-          try {
-            const res = await fetch('{{ url_for('api_curated_delete_all') }}', { method: 'POST' });
-            const data = await res.json();
-            if (!data.ok) {
-              alert('Delete all failed');
-            } else {
-              const featureImgs = data.images_deleted ?? 0;
-              alert(`Deleted ${data.deleted} records and removed ${featureImgs} images`);
-              location.reload();
-            }
-          } catch (e) { alert('Delete all error'); }
-          finally { hideBusy(); }
-        }
-        async function deleteCurated(doc, page) {
-          if (!confirm(`Delete curated record for ${doc}#${page}?`)) return;
-          showBusy('Deleting record...');
-          try {
-            const res = await fetch('{{ url_for('api_curated_delete') }}', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ doc, page, delete_images: true })
-            });
-            const data = await res.json();
-            if (!data.ok) {
-              alert('Delete failed: ' + (data.error || res.status));
-            } else {
-              location.reload();
-            }
-          } catch (e) { alert('Delete error'); }
-          finally { hideBusy(); }
-        }
-        async function deleteLabel(label) {
-          if (!confirm(`Delete all curated records for label ${label}?`)) return;
-          showBusy('Deleting label records...');
-          try {
-            const res = await fetch('{{ url_for('api_curated_delete_label') }}', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ label, delete_images: true })
-            });
-            const data = await res.json();
-            if (!data.ok) {
-              alert('Delete label failed: ' + (data.error || res.status));
-            } else {
-              const removed = data.deleted ?? 0;
-              alert(`Deleted ${removed} records for ${label}.`);
-              location.reload();
-            }
-          } catch (e) { alert('Delete label error'); }
-          finally { hideBusy(); }
-        }
-      </script>
-    {% endif %}
-  </body>
-</html>
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/curated.js') }}"></script>
+{% endblock %}
+
